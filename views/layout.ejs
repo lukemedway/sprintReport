@@ -6,7 +6,7 @@
 	  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     
     <!-- Update the template title -->
-    <title><%=typeof title == 'undefined' ? 'Red Ant Sprint Report' : title %></title>
+    <title><%=typeof title == 'undefined' ? 'Sprint Report' : title %></title>
 
     <!-- Viewport mobile tag for sensible mobile support -->
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
@@ -35,7 +35,6 @@
     -->
 
     <!--STYLES-->
-    <link rel="stylesheet" href="/styles/importer.css">
     <link rel="stylesheet" href="/styles/third-party/animate.min.css">
     <link rel="stylesheet" href="/styles/third-party/bootstrap.min.css">
     <link rel="stylesheet" href="/styles/third-party/light-bootstrap-dashboard.css">
@@ -53,18 +52,8 @@
   <body>
     
     <div class="wrapper">
-      <div class="sidebar" data-color="red" data-image="/images/sidebar-4.jpg">
-
-      <!--
-
-          Tip 1: you can change the color of the sidebar using: data-color="blue | azure | green | orange | red | purple"
-          Tip 2: you can also add an image using data-image tag
-
-      -->
-
-
-    <%- partial('./static/sidebar') %>
-    <%- body %>
+      <%- partial('./static/sidebar') %>
+      <%- body %>
     </div>
 
     <!--
@@ -118,13 +107,13 @@
 
     <!--SCRIPTS-->
     <script src="/js/dependencies/sails.io.js"></script>
-    <script src="/js/third-party/bootstrap-checkbox-radio-switch.js"></script>
-    <script src="/js/third-party/bootstrap-notify.js"></script>
-    <script src="/js/third-party/bootstrap-select.js"></script>
+    <script src="/js/dependencies/jquery-1.10.2.js"></script>
     <script src="/js/third-party/bootstrap.min.js"></script>
+    <script src="/js/third-party/bootstrap-checkbox-radio-switch.js"></script>
     <script src="/js/third-party/chartist.min.js"></script>
-    <script src="/js/third-party/jquery-1.10.2.js"></script>
+    <script src="/js/third-party/bootstrap-notify.js"></script>
     <script src="/js/third-party/light-bootstrap-dashboard.js"></script>
+    <script src="/js/third-party/bootstrap-select.js"></script>
     <!--SCRIPTS END-->
     
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
