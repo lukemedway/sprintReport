@@ -14,7 +14,10 @@ module.exports = {
     
     login: function(req, res, next) {
         
-        res.send("");
+       var email = req.param('email');
+       var password = req.param('password');
+       
+       // res.send(email + " " + password);
         
     }
 };

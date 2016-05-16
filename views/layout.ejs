@@ -53,7 +53,19 @@
     
     <div class="wrapper">
       <%- partial('./static/sidebar') %>
-      <%- body %>
+      <%- partial('./static/mainpanel') %>
+      
+        <div class="content">
+          <div class="container-fluid">
+            <div class="row">
+              <%- body %>
+            </div>
+          </div>
+        </div>
+        
+        <%- partial('./static/footer') %>
+      </div>
+      
     </div>
 
     <!--
