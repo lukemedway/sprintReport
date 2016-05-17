@@ -46,7 +46,8 @@ module.exports.routes = {
   
   
   // Hard coded routes, used primarily for the prototype
-  '/clients/client/:id': { controller: "ClientsController", action: "client" }
+  '/reports/client/:id': { controller: "ReportsController", action: "client" }, 
+  '/reports/report/:id': { controller: "ReportsController", action: "report" }
   
   
   // DEBUG LINE

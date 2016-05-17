@@ -24,14 +24,7 @@ module.exports = {
        res.view({ title: 'CLIENTS' });
     },
     
-    client: function(req, res, next) {
-        if( req.param('id') != undefined ) {
-            res.view({ title: 'OASIS' });
-        } else {
-            res.redirect('/clients');
-            console.log('redirected to clients because there was no ID');
-        }
-    }
+
     
 };
 
