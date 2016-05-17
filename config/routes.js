@@ -34,7 +34,7 @@ module.exports.routes = {
 
   '/': {
     view: 'static/home'
-  }
+  }, 
 
   /***************************************************************************
   *                                                                          *
@@ -46,5 +46,12 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
   
+  
+  // Hard coded routes, used primarily for the prototype
+  '/clients/client/:id': { controller: "ClientsController", action: "client" }
+  
+  
+  // DEBUG LINE
+  // '/clients/client/:id': function(req, res) { res.send('Nice!'); }
 
 };
