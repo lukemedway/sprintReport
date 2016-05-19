@@ -21,7 +21,7 @@ module.exports = {
     },
     
     report: function(req, res, next) {
-        res.view('reports/report');
+        res.view({ title: 'OASIS REPORTS' });
     }
     
 };
