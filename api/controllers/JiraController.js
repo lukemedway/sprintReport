@@ -13,16 +13,29 @@
 module.exports = {
     
     test2: function(req, res) {
-       var data = Jira.getJIRAStoryByKey("OAS-200");
-       res.locals.requestData = data;
-       res.view('jiratest2');
+       var data = Jira.getJIRAStoryByKey("OAS-200", {
+            success: function(data) {
+                res.locals.requestData = data;
+                res.view('jiratest2');
+            },
+            error: function(err) {
+                console.log('ERROR: getJIRAStoryByKey Service Method CB');
+            }
+       });
     },
     
-    debugoutput: function(req, res) {
-        var data = Jira.getJIRAStoryByKey("OAS-200");
-        //res.locals.requestData = data;
-        res.json(data);
+    test3: function(req, res) {
+        var data = Jira.getJIRAStoriesByProjectKey("OAS", {
+           success: function(data) {
+               res.locals.requestData = data;
+               res.view('jiratest3');
+           },
+           error: function(err) {
+               console.log('ERROR: getStoriesByProjectKey Service Method CB.');
+           }
+        });
     }
+    
     
     /**************************************************************
      * 

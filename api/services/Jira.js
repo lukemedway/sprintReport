@@ -4,13 +4,18 @@
 
 module.exports = {
     
-    getJIRAStoryByKey: function(storyKey) {
+    getJIRAStoryByKey: function(storyKey, cb) {
         var endpoint = "/rest/api/2/search?jql=key=" + storyKey;
-        return this.doRequest(endpoint, "GET");
+        return this.doRequest(endpoint, "GET", cb);
+    },
+    
+    getJIRAStoriesByProjectKey: function(projectKey, cb) {
+        var endpoint = "/rest/api/2/search?jql=project=" + projectKey + "%20AND%20issuetype=story&maxResults=9999&fields=key";
+        return this.doRequest(endpoint, "GET", cb);
     },
     
     
-    doRequest: function(endpoint, method) {
+    doRequest: function(endpoint, method, cb) {
         /********************************************************************************************************************************
         // JIRA 'Basic' Authentication accepts username:password values as credentials located in config/jira.js.
         // Contents of config/jira.js = apiUser: "username", apiPass: "password" and file will need to be generated if it does not exist.
@@ -41,6 +46,7 @@ module.exports = {
 
             response.once('error', function(err){
                 // Some error handling here, e.g.:
+                cb.error(err);
                 res.serverError(err);
             });
 
@@ -50,8 +56,10 @@ module.exports = {
                     // res.locals.requestData = JSON.parse(responseData);
                     
                     // Return the requested JSON back to the controller via data
-                    var data;
-                    return data = JSON.parse(responseData);
+                    var restData;
+                    restData = JSON.parse(responseData);
+                    cb.success(restData);
+                    return restData;
                 } catch (e) {
                     sails.log.warn('Could not parse response from options.hostname: ' + e + ' [location: api/services/Jira.js]');
                 }
