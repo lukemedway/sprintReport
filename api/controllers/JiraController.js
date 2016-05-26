@@ -9,6 +9,17 @@
 
 module.exports = {
     
+    getkeys: function(req, res) {
+        var data = Jira.getJIRAStoriesByProjectKey("OAS", {
+           success: function(data) {
+               res.send(200, data);
+           },
+           error: function(err) {
+               console.log('ERROR: getStoriesByProjectKey Service Method CB.');
+           }
+        });  
+    },
+    
     test2: function(req, res) {
        var data = Jira.getJIRAStoryByKey("OAS-200", {
             success: function(data) {
