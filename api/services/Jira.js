@@ -10,7 +10,7 @@ module.exports = {
     },
     
     getJIRAStoriesByProjectKey: function(projectKey, cb) {
-        var endpoint = "/rest/api/2/search?jql=project=" + projectKey + "%20AND%20issuetype=story&maxResults=9999&fields=key";
+        var endpoint = "/rest/api/2/search?jql=project=" + projectKey + "%20AND%20issuetype=story&maxResults=9999&fields=key,summary,priority,status";
         return this.doRequest(endpoint, "GET", cb);
     },
     
