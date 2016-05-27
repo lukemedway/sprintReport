@@ -35,18 +35,15 @@ $(function() {
             success: function(response){
                 
                 var objResponse = response;
-                var objKeys = objResponse['issues'];
+                var arrIssues = objResponse.issues;
                 var arrKeys = [];
-                
-                
                                
-                for (i=0; i<objKeys.length; i++)
+                for (i=0; i<arrIssues.length; i++)
                 {
-                    arrKeys.push(objKeys[i].key);
-                    var fields = objKeys[i].fields;
-                    console.dir("summary: " + typeof objKeys[i]);
+                    arrKeys.push(arrIssues[i].key);
                 }
         
+       
                 $('#storylist .typeahead').typeahead({
                     hint: true,
                     highlight: true,
@@ -58,16 +55,35 @@ $(function() {
                 });
                 
                 $('#storyid').on('typeahead:selected', function() {
-                    $('#storypriority').val('SET');
+                    if ($('#storyid').val() !== '' && $('#storyid').val() !== undefined) {
+                        $('#storyid').addClass('loading');
+                        getStory($('#storyid').val());
+                    }
                 });
                 
                 $('#storyid').on('keyup', function() {
                     if ($('#storyid').val() == '') {
-                        $('#storypriority').val('');
-                    }    
+                        $('#commitment')[0].reset();
+                    }
                 });
-                
-                
             }
         });
+        
+        function getStory(storyid) {
+            $.ajax({
+                url: '/jira/getstory/' + storyid, 
+                method: "GET",
+                success: function(response) {
+                    $('#storypriority').val(response.issues[0].fields.priority.name);
+                    $('#storysummary').val(response.issues[0].fields.summary);
+                    $('#storystatus').val(response.issues[0].fields.status.statusCategory.name);
+                    $('#storyid').removeClass('loading');
+                }, 
+                error: function(err) {
+                    // Handle Error
+                    $('#storyid').removeClass('loading');
+                }
+            });
+        }
+        
 });

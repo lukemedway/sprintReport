@@ -20,6 +20,21 @@ module.exports = {
         });  
     },
     
+    getstory: function(req, res) {
+        if (req.param("id") !== null) {
+            var data = Jira.getJIRAStoryByKey(req.param("id"), {
+                success: function(data) {
+                    res.send(200, data);
+                },
+                error: function(err) {
+                    console.log('ERROR: getstory Service Method CB');
+                }
+            });
+        } else {
+            return false;
+        }
+    },
+    
     test2: function(req, res) {
        var data = Jira.getJIRAStoryByKey("OAS-200", {
             success: function(data) {
