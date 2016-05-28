@@ -130,16 +130,21 @@
     <script src="/js/third-party/bootstrap-checkbox-radio-switch.js"></script>
     <script src="/js/third-party/chartist.min.js"></script>
     <script src="/js/third-party/bootstrap-notify.js"></script>
-    <script src="/js/third-party/light-bootstrap-dashboard.js"></script>
     <script src="/js/login/light-bootstrap-dashboard.js"></script>
-    <script src="/js/third-party/app.js"></script>
-    <script src="/js/third-party/bootstrap-select.js"></script>
-    <script src="/js/third-party/bootstrap-table.js"></script>
     <script src="/js/third-party/bootstrap-typeahead.js"></script>
+    <script src="/js/third-party/bootstrap-table.js"></script>
+    <script src="/js/inc/app.js"></script>
     <!--SCRIPTS END-->
     
-
+    <!-- VIEW SCRIPTS -->
+    <% 
+    if(scripts) { 
+       for(i=0; i<scripts.length; i++) {   
+    %>
+    <script src="/js/<%= scripts[i] %>"></script>
+    <% }
+    } %>
+    <!-- VIEW SCRIPTS END -->
     
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
   </body>
 </html>

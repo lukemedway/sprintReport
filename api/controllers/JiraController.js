@@ -51,7 +51,8 @@ module.exports = {
         var data = Jira.getJIRAStoriesByProjectKey("OAS", {
            success: function(data) {
                res.locals.requestData = data;
-               res.view('jiratest3');
+               var arrScripts = [ "data-table.js" ];
+               res.view('jiratest3', { scripts: arrScripts });
            },
            error: function(err) {
                console.log('ERROR: getStoriesByProjectKey Service Method CB.');

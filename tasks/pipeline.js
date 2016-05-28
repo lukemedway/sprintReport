@@ -36,11 +36,14 @@ var jsFilesToInject = [
   'js/third-party/bootstrap-checkbox-radio-switch.js',
   'js/third-party/chartist.min.js',
   'js/third-party/bootstrap-notify.js',
-  'js/third-party/light-bootstrap-dashboard.js',
+  'js/login/light-bootstrap-dashboard.js',
+  'js/third-party/bootstrap-typeahead.js',
+  'js/third-party/bootstrap-table.js',
+
 
   // All of the rest of your client-side js files
   // will be injected here in no particular order.
-  'js/**/*.js'
+  'js/inc/*.js',
 ];
 
 
