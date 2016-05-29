@@ -13,7 +13,12 @@
 
 
 .tt-hint {
-  color: #999
+  color: #999;
+  visibility: hidden;
+}
+
+.tt-input {
+  background-color: #FFFFFF !important;
 }
 
 .tt-menu {
@@ -55,4 +60,39 @@
 
 .gist {
   font-size: 14px;
+}
+
+
+.box {
+    background-color: #fff !important;
+    -webkit-animation: box 3s ease 0s 1 !important;
+}
+
+@-webkit-keyframes box {
+    from { background-color: #FAE8AD;}
+    to {background-color: #fff;}
+}
+-moz-animation: box 3s ease 0s 1 !important;
+}
+@-moz-keyframes box {
+    from { background-color: #FAE8AD;}
+    to {background-color: #fff;}
+}
+-ms-animation: box 3s ease 0s 1 !important;
+}
+@-ms-keyframes box {
+    from { background-color: #FAE8AD;}
+    to {background-color: #fff;}
+}
+-o-animation: box 3s ease 0s 1 !important;
+}
+@-o-keyframes box {
+    from { background-color: #FAE8AD;}
+    to {background-color: #fff;}
+}
+animation: box 3s ease 0s 1 !important;
+}
+@keyframes box {
+    from { background-color: #FAE8AD;}
+    to {background-color: #fff;}
 }

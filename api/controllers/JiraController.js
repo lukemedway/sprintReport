@@ -10,7 +10,7 @@
 module.exports = {
     
     getkeys: function(req, res) {
-        var data = Jira.getJIRAStoriesByProjectKey("OAS", {
+        var data = JiraService.getJIRAStoriesByProjectKey("OAS", {
            success: function(data) {
                res.send(200, data);
            },
@@ -22,7 +22,7 @@ module.exports = {
     
     getstory: function(req, res) {
         if (req.param("id") !== null) {
-            var data = Jira.getJIRAStoryByKey(req.param("id"), {
+            var data = JiraService.getJIRAStoryByKey(req.param("id"), {
                 success: function(data) {
                     res.send(200, data);
                 },
@@ -36,7 +36,7 @@ module.exports = {
     },
     
     test2: function(req, res) {
-       var data = Jira.getJIRAStoryByKey("OAS-200", {
+       var data = JiraService.getJIRAStoryByKey("OAS-200", {
             success: function(data) {
                 res.locals.requestData = data;
                 res.view('jiratest2');
@@ -48,7 +48,7 @@ module.exports = {
     },
     
     test3: function(req, res) {
-        var data = Jira.getJIRAStoriesByProjectKey("OAS", {
+        var data = JiraService.getJIRAStoriesByProjectKey("OAS", {
            success: function(data) {
                res.locals.requestData = data;
                var arrScripts = [ "data-table.js" ];

@@ -52,14 +52,9 @@ module.exports = {
 
             response.on('end', function(){
                 try {
-                    // response available as `responseData` in `yourview`
-                    // res.locals.requestData = JSON.parse(responseData);
-                    
                     // Return the requested JSON back to the controller via data
-                    var restData;
-                    restData = JSON.parse(responseData);
+                    var restData = JSON.parse(responseData);
                     cb.success(restData);
-                    return restData;
                 } catch (e) {
                     sails.log.warn('Could not parse response from options.hostname: ' + e + ' [location: api/services/Jira.js]');
                 }
