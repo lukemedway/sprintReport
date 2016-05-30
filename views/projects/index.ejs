@@ -2,21 +2,21 @@
 <div class="col-md-12">
     <div class="card" id="add-control">
         <div class="header">
-            <h4 class="title">Clients</h4>
-            <p class="category">Add/Modify a client</p>
+            <h4 class="title">Projects</h4>
+            <p class="category">Add/Modify a project</p>
         </div>
         <div class="content">
-            <form id="clients">
+            <form id="projects">
                 <div class="row">
                     <div class="col-md-2">
                         <div class="form-group">
-                            <label class="loading">Client Name</label>
-                            <input class="form-control" type="text" placeholder="Client Name" id="name" name="name" />
+                            <label class="loading">Project Name *</label>
+                            <input class="form-control" required="required" aria-required="true" type="text" placeholder="Client Name" id="name" name="name" />
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
-                            <label>Project Ref (JIRA)</label>
+                            <label>Project Ref (JIRA) *</label>
                             <input type="text" class="form-control" id="jiraprojectref" placeholder="Project REF" name="jiraprojectref" />
                         </div>
                     </div>
@@ -50,21 +50,15 @@
                 <thead>
                     <tr>
                         <th class="hidden" data-field="id">ID</th>
-                        <th class="col-md-3" data-field="name" data-sortable="true" data-formatter="formatLink">Name</th>
-                        <th class="col-md-2" data-field="jiraprojectref" data-sortable="true">Reference (JIRA)</th>
+                        <th class="col-md-3" data-field="name" data-sortable="true" data-formatter="formatLink">Project Name</th>
+                        <th class="col-md-2" data-field="jiraprojectref" data-sortable="true">Project REF (JIRA)</th>
                         <th class="col-md-2" data-field="complete" data-sortable="true">Approx % Complete</th>
                         <th class="col-md-2" data-field="velocitytgt" data-sortable="true">Target Velocity</th>
                         <th class="col-md-2" data-field="velocityavg" data-sortable="true">Average Velocity</th>
                         <th class="col-md-3 td-actions text-right" data-field="actions" data-events="operateEvents" data-formatter="operateFormatter">Actions</th>
                     </tr>
                 </thead>
-            </table>
-            
-            <table id="client-table" class="table table-hover table-striped">
-                
-            </table>
-            
-                                    
+            </table>                        
         </div>
     </div>
 </div>

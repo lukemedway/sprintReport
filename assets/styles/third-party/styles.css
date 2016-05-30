@@ -96,3 +96,9 @@ animation: box 3s ease 0s 1 !important;
     from { background-color: #FAE8AD;}
     to {background-color: #fff;}
 }
+
+.sidebar .nav > li.previous {
+    position: absolute;
+    width: 100%;
+    bottom: 10px;
+}

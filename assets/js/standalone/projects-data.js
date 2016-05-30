@@ -13,16 +13,19 @@
         }
         
         function formatLink(value, row, index) {
-            return [ "<a href='/reports/client/" + row.id + "'>" + value + "</a>" ].join('');
+            return [ "<a href='/sprints/project/" + row.id + "'>" + value + "</a>" ].join('');
+        }
+        
+        function resetForm() {
+            $("#cancel").addClass('hidden');
+            $("#submit").val('Add');
+            $("#id").val('');
         }
 
         $().ready(function(){
             
-
             $("#cancel").click(function() {
-                $("#cancel").addClass('hidden');
-                $("#submit").val('Add');
-                $("#id").val('');
+                resetForm();
             });
             
             window.operateEvents = {
@@ -38,7 +41,6 @@
                     $('#submit').val('Save');
                     $('#cancel').removeClass('hidden');
                     $('#id').val(row.id);
-
                     
                     setTimeout(function() { $('#add-control').removeClass('box') }, 2000);
                 },
@@ -62,7 +64,7 @@
                 pageSize: 10,
                 pageList: [10,25,50,100],
                 ordering: true,
-                url: '/clients/getclients',
+                url: '/projects/getProjects/',
                 dataType: 'json',
                 sidePagination: 'client',
                 queryParams: false,
@@ -89,15 +91,16 @@
                 $table.bootstrapTable('resetView');
             });
             
-            $('#clients').on('submit', function(e) {
+            // Handle the data for POST and PUT requests to the server.
+            $('#projects').on('submit', function(e) {
                 e.preventDefault();
                 var url, method, formData = $(this).serializeArray();
                 
                 if($('#id').val() === '' || $('#id').val() == 'undefined') {
-                    url = '/clients/create/';
+                    url = '/projects/create/';
                     method = 'POST';
                 } else {
-                    url = '/clients/update/';
+                    url = '/projects/update/';
                     method = "PUT";
                 }
                 
@@ -106,66 +109,14 @@
                     method: method,
                     data: formData,
                     success: function(data) {
-                        $table.bootstrapTable('refresh');                 
+                        $table.bootstrapTable('refresh');
+                        resetForm();    
                     },
                     error: function(err) {
                         console.dir(err);
                     }
                 });
-                
-                $(this)[0].reset();
-                
+                                
             });
-
-
-            //    $table2 = $('#client-table');
-               
-            //    $table2.bootstrapTable({
-            //         toolbar: ".toolbar",
-            //         clickToSelect: false,
-            //         showRefresh: true,
-            //         search: true,
-            //         showToggle: true,
-            //         showColumns: true,
-            //         pagination: true,
-            //         searchAlign: 'left',
-            //         pageSize: 10,
-            //         pageList: [10,25,50,100],
-            //         ordering: true,
-            //         url: '../../clients/',
-            //         dataType: 'json',
-            //         sidePagination: 'client',
-            //         queryParams: false,
-            //         ShowingRows: function(pageFrom, pageTo, totalRows){
-            //             //do nothing here, we don't want to show the text "showing x of y from..."
-            //         },
-            //         formatRecordsPerPage: function(pageNumber){
-            //             return pageNumber + " rows visible";
-            //         },
-            //         icons: {
-            //             refresh: 'fa fa-refresh',
-            //             toggle: 'fa fa-th-list',
-            //             columns: 'fa fa-columns',
-            //             detailOpen: 'fa fa-plus-circle',
-            //             detailClose: 'fa fa-minus-circle'
-            //         },
-            //         columns: [
-            //             {
-            //                 field: 'id',
-            //                 title: 'id',
-            //                 sortable: true,
-            //                 class: 'col-md-2'
-            //             },
-            //             {
-            //                 field: 'name',
-            //                 title: 'name',
-            //                 sortable: false
-            //             }
-            //         ]     
-
-            // });
-
-
-
 
         });

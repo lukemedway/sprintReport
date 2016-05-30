@@ -1,5 +1,5 @@
 /**
- * Clients.js
+ * Projects.js
  *
  * @description :: TODO: You might write a short summary of how this model works and what it represents here.
  * @docs        :: http://sailsjs.org/documentation/concepts/models-and-orm/models
@@ -8,14 +8,15 @@
 module.exports = {
 
   attributes: {
-
      name: {
        type: 'string',
-       required: true
+       required: true,
+       unique: true
      },
      jiraprojectref: {
        type: 'string',
-       defaultsTo: ''
+       defaultsTo: '',
+       unique: true
      },
      complete: {
        type: 'float',
@@ -33,8 +34,6 @@ module.exports = {
        type: 'boolean',
        defaultsTo: false
      }
-     
   }
-  
 };
 

@@ -15,7 +15,7 @@
         </div>
         
         <div class="sidebar-wrapper">
-            
+            <!--
             <div class="user">
                 <div class="photo">
                     <img src="/images/default-avatar.png">
@@ -34,16 +34,40 @@
                     </div>
                 </div>
             </div>
+            -->
             
             
             <ul class="nav">
+                <% if(req.path !== '/projects' && req.path !== '/projects/') { %>
                 <li class="active">
-                    <a href="/clients/">
-                        <i class="pe-7s-diamond"></i>
-                        <p>Client List</p>
+                    <a href="#componentsExamples" data-toggle="collapse" aria-expanded="false" class="collapsed">
+                        <i class="pe-7s-display1"></i>
+                        <p>Sprint Reports <b class="caret"></b></p>
+                    </a>
+                    <div class="collapse out" id="componentsExamples" aria-expanded="false">
+                        <ul class="nav">
+                            <li><a href="#">Sprint 5</a></li>
+                            <li><a href="#">Sprint 4</a></li>
+                            <li><a href="#">Sprint 3</a></li>
+                            <li><a href="#">Sprint 2</a></li>
+                            <li><a href="#">Sprint 1</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="active previous">
+                    <a href="/projects/">
+                        <i class="pe-7s-folder"></i>
+                        <p>Back to Projects</p>
                     </a>
                 </li>
-
+                <% } else { %>
+                <li class="active">
+                    <a href="/projects/">
+                        <i class="pe-7s-folder"></i>
+                        <p>Projects</p>
+                    </a>
+                </li>
+                <% } %>
             </ul>
     	</div>
     </div>
