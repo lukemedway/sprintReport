@@ -8,19 +8,7 @@
 module.exports = {
 
   attributes: {
-     projectid: {
-       type: 'string',
-       unique: true,
-       required: true
-     },
-     projectname: {
-       type: 'string',
-       required: true
-     },
-     sprintid: {
-       type: 'integer',
-       autoincrement: true
-     },
+     // Data attributes
      sprintname: {
        type: 'string',
        required: true
@@ -32,7 +20,12 @@ module.exports = {
      sprintdeleted: {
        type: 'boolean',
        defaultsTo: 0
-     }
+     },
+     
+     // Relationship
+     project: {
+       model: 'projects'
+     } 
      
   }
   

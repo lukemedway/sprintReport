@@ -1,16 +1,16 @@
 <div class="col-md-12">
     <div class="card">
         <div class="header">
-            <h4 class="title"><%- title %> - Sprint Reports</h4>
+            <h4 class="title"><%= projectData.name %> - Sprint Reports</h4>
             <p class="category">Select a report to view more details</p>
         </div>
         <div class="content table-responsive table-full-width">
-            <table id="sprinttable" class="table table-hover table-striped">
+            <table id="bootstrap-table" class="table table-hover table-striped">
                 <thead>
                     <tr>
-                        <th>Sprint</th>
-                        <th>Date</th>
-                        <th>Public URL</th>
+                        <th class="col-md-3" data-field="sprintname" data-sortable="true" data-formatter="formatLink">Sprint</th>
+                        <th class="col-md-3" data-field="createdAt" data-sortable="true" data-formatter="formatDate">Date</th>
+                        <th class="col-md-3" data-field="sprintpublicurl" data-sortable="true" data-formatter="formatLink">Public URL</th>
                     </tr>
                 </thead>
                 <tbody>

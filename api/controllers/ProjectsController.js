@@ -21,9 +21,7 @@ module.exports = {
     },
     
     getProjectById: function(id, cb) {
-        console.log("id passed in: " + id);
         Projects.findOne( { 'id': id } ).exec(function foundProject(err, project){
-        // Projects.findOne( { 'name': 'OASIS' } ).exec(function foundProject(err, project){
             if(err) return cb.error(err);
             if(!project) return cb.notFound('Could not find record');
             return cb.success(project);

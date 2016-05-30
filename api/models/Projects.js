@@ -33,6 +33,13 @@ module.exports = {
      deleted: {
        type: 'boolean',
        defaultsTo: false
+     },
+     
+     // Relationship to sprint
+     // One-to-many: project can have many sprints
+     sprints: {
+       collection: 'sprints',
+       via: 'project'
      }
   }
 };
