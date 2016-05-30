@@ -1653,6 +1653,7 @@
             return;
         }
 
+
         if (this.options.queryParamsType === 'limit') {
             params = {
                 search: params.searchText,

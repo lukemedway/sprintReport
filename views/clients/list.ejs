@@ -6,32 +6,32 @@
             <p class="category">Add/Modify a client</p>
         </div>
         <div class="content">
-            <form id="commitment" action="/clients/create">
+            <form id="clients">
                 <div class="row">
                     <div class="col-md-2">
                         <div class="form-group">
                             <label class="loading">Client Name</label>
-                            <input class="form-control" type="text" placeholder="Client Name" id="name" />
+                            <input class="form-control" type="text" placeholder="Client Name" id="name" name="name" />
                         </div>
                     </div>
-                    <div class="col-md-1">
+                    <div class="col-md-2">
                         <div class="form-group">
                             <label>Project Ref (JIRA)</label>
-                            <input type="text" class="form-control" id="jiraprojectref" placeholder="Project REF" />
+                            <input type="text" class="form-control" id="jiraprojectref" placeholder="Project REF" name="jiraprojectref" />
                         </div>
                     </div>
 
                     <div class="col-md-1">
                         <div class="form-group">
                             <label>&nbsp;</label>
-                            <input type="button" id="submit" class="btn btn-primary btn-fill form-control" value="Add" />
+                            <input type="submit" id="submit" class="btn btn-primary btn-fill form-control" value="Add" />
                         </div>
                     </div>
                     <div class="col-md-1">
                         <div class="form-group">
                             <label>&nbsp;</label>
-                            <input type="button" id="cancel" class="btn btn-secondary btn-fill form-control hidden" value="Cancel" />
-                            <input type="hidden" id="id" value="" />
+                            <input type="reset" id="cancel" class="btn btn-secondary btn-fill form-control hidden" value="Cancel" />
+                            <input type="hidden" id="id" value="" name="id" />
                         </div>
                     </div>
                    
@@ -50,7 +50,7 @@
                 <thead>
                     <tr>
                         <th class="hidden" data-field="id">ID</th>
-                        <th class="col-md-3" data-field="name" data-sortable="true">Name</th>
+                        <th class="col-md-3" data-field="name" data-sortable="true" data-formatter="formatLink">Name</th>
                         <th class="col-md-2" data-field="jiraprojectref" data-sortable="true">Reference (JIRA)</th>
                         <th class="col-md-2" data-field="complete" data-sortable="true">Approx % Complete</th>
                         <th class="col-md-2" data-field="velocitytgt" data-sortable="true">Target Velocity</th>
@@ -58,20 +58,13 @@
                         <th class="col-md-3 td-actions text-right" data-field="actions" data-events="operateEvents" data-formatter="operateFormatter">Actions</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <% for(i=0; i<clients.length; i++) { %>
-                    <tr>
-                        <td class="hidden"><%= clients[i].id %></td>
-                        <td><a href="/reports/client/<%= clients[i].id %>"><%= clients[i].name %></a></td>
-                        <td><%= clients[i].jiraprojectref %></td>
-                        <td><%= clients[i].complete %></td>
-                        <td><%= clients[i].velocitytgt %></td>
-                        <td><%= clients[i].velocityavg %></td>
-                        <td></td>
-                    </tr>
-                    <% } %>
-                </tbody>
-            </table>                            
+            </table>
+            
+            <table id="client-table" class="table table-hover table-striped">
+                
+            </table>
+            
+                                    
         </div>
     </div>
 </div>

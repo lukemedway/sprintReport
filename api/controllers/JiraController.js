@@ -51,7 +51,7 @@ module.exports = {
         var data = JiraService.getJIRAStoriesByProjectKey("OAS", {
            success: function(data) {
                res.locals.requestData = data;
-               var arrScripts = [ "data-table.js" ];
+               var arrScripts = [ "sprint-dependencies.js", "data-table.js" ];
                res.view('jiratest3', { scripts: arrScripts });
            },
            error: function(err) {
