@@ -1,53 +1,56 @@
+
+<div class="col-md-12">
+    <div class="card" id="add-control">
+        <div class="header">
+            <h4 class="title"><%= projectData.name %> - Sprints</h4>
+            <p class="category">Add/Modify Sprints</p>
+        </div>
+        <div class="content">
+            <form id="sprintform">
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label class="loading">Sprint Name *</label>
+                            <input class="form-control" required="required" aria-required="true" type="text" placeholder="Sprint Name" id="sprintname" name="sprintname" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <label>&nbsp;</label>
+                            <input type="submit" id="submit" class="btn btn-primary btn-fill form-control" value="Add" />
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <label>&nbsp;</label>
+                            <input type="reset" id="cancel" class="btn btn-secondary btn-fill form-control hidden" value="Cancel" />
+                            <input type="hidden" id="sprintid" value="" name="sprintid" />
+                            <input type="hidden" id="projectid" value="<%= projectData.id %>" name="projectid" />
+                            <input type="hidden" id="sprintpublicurl" value="" name="sprintpublicurl" />
+                        </div>
+                    </div>
+                   
+                </div>
+            </form>
+        </div>
+    </div>
+</div>  
+
+
 <div class="col-md-12">
     <div class="card">
-        <div class="header">
-            <h4 class="title"><%= projectData.name %> - Sprint Reports</h4>
-            <p class="category">Select a report to view more details</p>
-        </div>
         <div class="content table-responsive table-full-width">
-            <table id="bootstrap-table" class="table table-hover table-striped">
+            <table id="sprints-bootstrap-table" class="table table-hover table-striped">
                 <thead>
                     <tr>
                         <th class="col-md-3" data-field="sprintname" data-sortable="true" data-formatter="formatLink">Sprint</th>
                         <th class="col-md-3" data-field="createdAt" data-sortable="true" data-formatter="formatDate">Date</th>
                         <th class="col-md-3" data-field="sprintpublicurl" data-sortable="true" data-formatter="formatLink">Public URL</th>
+                        <th class="col-md-3 td-actions text-right" data-field="actions" data-events="operateEvents" data-formatter="operateFormatter">Actions</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td><a href="/reports/report/1">Sprint 5</a></td>
-                        <td>17/05/2016</td>
-                        <td>http://bit.ly/17HyF</td>
-                    </tr>
-                    <tr>
-                        <td><a href="#">Sprint 4</a></td>
-                        <td>10/05/2016</td>
-                        <td>http://bit.ly/17HyF</td>
-                    </tr>
-                    <tr>
-                        <td><a href="#">Sprint 3</a></td>
-                        <td>03/05/2016</td>
-                        <td>http://bit.ly/17HyF</td>
-                    </tr>
-                    <tr>
-                        <td><a href="#">Sprint 2</a></td>
-                        <td>25/04/2016</td>
-                        <td>http://bit.ly/17HyF</td>
-                    </tr>
-                    <tr>
-                        <td><a href="#">Sprint 1</a></td>
-                        <td>18/04/2016</td>
-                        <td>http://bit.ly/17HyF</td>
-                    </tr>
-                </tbody>
             </table>
-                
-            
-                
         </div>
-        <div class="footer">
-            <a href="#" class="btn btn-fill btn-info">Add Report</a>
-        </div>
-        <div class="clearfix"></div>
     </div>
 </div>

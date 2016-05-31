@@ -1,4 +1,4 @@
-        var $table = $('#bootstrap-table');
+        var $table = $('#sprints-bootstrap-table');
         
         // Called from data-formatter attribute in th
         function operateFormatter(value, row, index) {
@@ -20,14 +20,20 @@
             var date = new Date(value).toLocaleDateString();
             return [ date ].join('');
         }
+
+
         
         function resetForm() {
             $("#cancel").addClass('hidden');
             $("#submit").val('Add');
-            $("#id").val('');
+            $("#sprintid").val('');
+            $("#sprintpublicurl").val('http://' + window.location.host + '/');
         }
 
         $().ready(function(){
+
+            $('#sprintform').validate();
+            $("#sprintpublicurl").val('http://' + window.location.host + '/');
             
             $("#cancel").click(function() {
                 resetForm();
@@ -41,11 +47,11 @@
                     
                     $('#add-control').addClass('box');
 
-                    $('#name').val(row.name);
-                    $('#jiraprojectref').val(row.jiraprojectref);
+                    $('#sprintname').val(row.sprintname);
                     $('#submit').val('Save');
                     $('#cancel').removeClass('hidden');
-                    $('#id').val(row.id);
+                    $('#sprintid').val(row.id);
+                    $('#sprintpublicurl').val('');
                     
                     setTimeout(function() { $('#add-control').removeClass('box') }, 2000);
                 },
@@ -104,18 +110,20 @@
             });
             
             // Handle the data for POST and PUT requests to the server.
-            $('#projects').on('submit', function(e) {
+            $('#sprintform').on('submit', function(e) {
                 e.preventDefault();
                 var url, method, formData = $(this).serializeArray();
                 
-                if($('#id').val() === '' || $('#id').val() == 'undefined') {
-                    url = '/projects/create/';
+                if($('#projectid').val() !== '' && $('#projectid').val() !== 'undefined') {
+                    url = '/sprints/create/';
                     method = 'POST';
-                } else {
-                    url = '/projects/update/';
+                }
+            
+                if ($('#sprintid').val() !== '' && $('#sprintid').val() !== 'undefined') {
+                    url = '/sprints/update/';
                     method = "PUT";
                 }
-                
+                    
                 $.ajax({
                     url: url,
                     method: method,

@@ -20,11 +20,11 @@ module.exports = {
         });
     },
     
-    getProjectById: function(id, cb) {
+    getProjectById: function(id, next) {
         Projects.findOne( { 'id': id } ).exec(function foundProject(err, project){
-            if(err) return cb.error(err);
-            if(!project) return cb.notFound('Could not find record');
-            return cb.success(project);
+            if(err) return next.error(err);
+            if(!project) return next.notFound('Could not find record');
+            return next.success(project);
         });   
     },
     
@@ -49,13 +49,14 @@ module.exports = {
    },
    
    update: function(req, res, next) {
-        if(req.param('id') !== '' && req.param('name') !== '') {
-            Projects.update({ 'id' : req.param('id')}, req.params.all()).exec( function updatedProject(err, projects) {
+        if(typeof req.param('id') !== 'undefined' && typeof req.param('name') !== 'undefined') {
+            Projects.update({ 'id' : req.param('id')}, req.params.all()).exec( function updatedProject(err, project) {
                 if(err) return next(err);
-                res.json(projects);
+                if(!project) return res.badRequest('One or more expected parameters were missing in the requested resource',  { view: 'responses/badrequest', layout: 'responses/layout' } );
+                res.json(project);
             });
         } else {
-            return false;
+            return res.badRequest('One or more expected parameters were missing in the requested resource',  { view: 'responses/badrequest', layout: 'responses/layout' } );
         }
    }
     
