@@ -40,8 +40,6 @@ module.exports = {
     },
     
     
-    
-    // Hard Coded create function testing relationships
     create: function(req, res, next) {
         var projectid = req.param('projectid');
         Sprints.create({ 
