@@ -59,7 +59,7 @@ $(function() {
             $('#storyid').focus();
             
             $('#storyid').on('typeahead:selected', function() {
-                if ($('#storyid').val() !== '' && $('#storyid').val() !== undefined) {
+                if ($('#storyid').val() !== '' && typeof $('#storyid').val() !== 'undefined') {
                     $('#storyid').addClass('loading');
                     getStory($('#storyid').val());
                 }

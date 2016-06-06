@@ -8,7 +8,22 @@
 module.exports = {
 
   attributes: {
-
+      reportdatefrom: {
+        type: 'datetime'
+      },
+      reportdateto: {
+        type: 'datetime'
+      },
+      
+      
+      // One-to-many relationship to stories
+      // A report may have many stories
+      stories: {
+        collection: 'stories',
+        via: 'report'
+      }
+      
   }
+  
 };
 

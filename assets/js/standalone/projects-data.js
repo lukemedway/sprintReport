@@ -24,12 +24,13 @@
 
         $().ready(function(){
             
+            $('#projects').validate();
             $("#cancel").click(function() {
                 resetForm();
             });
             
             window.operateEvents = {
-                'click .edit': function (e, value, row, index) {
+                'click .edit': function(e, value, row, index) {
                     $(".main-panel").animate({
                         scrollTop: $(".container-fluid").offset().top
                     }, 300);
@@ -44,10 +45,16 @@
                     
                     setTimeout(function() { $('#add-control').removeClass('box') }, 2000);
                 },
-                'click .remove': function (e, value, row, index) {
-                    $table.bootstrapTable('remove', {
-                        field: 'id',
-                        values: [row.id]
+                'click .remove': function(e, value, row, index) {             
+                    $.ajax({
+                        url: '/projects/delete/' + row.id,
+                        method: 'PUT',
+                        success: function(data) {
+                            $table.bootstrapTable('refresh');
+                        },
+                        error: function(err) {
+                            console.dir(err);
+                        }
                     });
                 }
             };

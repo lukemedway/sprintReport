@@ -5,24 +5,50 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
+
+// Reports Controller holds information about the current status of the project
+// Updates main project progress data including: Approximate Complete (%), 
+
 module.exports = {
 	
+    // *******************************************************************
+    
+    // VIEW METHODS
+    
+    // *******************************************************************   
+    
+    
     index: function(req, res) {
         res.view();
     },
     
     client: function(req, res, next) {
-        if(req.param('id') != undefined) {
-            res.view({ title: 'OASIS' });
-        } else {
-            res.redirect('/index');
-            console.log('redirected to reports index because there was no ID');
-        }
+        
     },
     
     report: function(req, res, next) {
         res.view({ title: 'OASIS REPORTS' });
     }
+    
+    
+    // *******************************************************************
+    
+    // CRUD METHODS
+    
+    // *******************************************************************  
+
+
+
+
+
+
+
+    // *******************************************************************
+    
+    // DATA METHODS
+    
+    // *******************************************************************    
+
     
 };
 
