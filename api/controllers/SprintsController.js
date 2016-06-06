@@ -18,7 +18,7 @@ var SprintsController = {
     index: function(req, res, next) {
         Projects.getProjectById(req.param('id'), {
             success: function(projectData) {
-                SprintsController.getLastXSprintsByProject(req.param('id'), 5, {
+                SprintsController.getLastXSprintsByProject(req.param('id'), 5, false, {
                     success: function(sprintData) {
                         var arrScripts = ['sprints-data.js'];
                         res.view({
@@ -46,14 +46,23 @@ var SprintsController = {
     },
     
     report: function(req, res, next) {
-        Sprints.find({ id: req.param('id') }).populate('project').exec(function foundSprint(err, sprintData) {
+        Sprints.find({ id: req.param('id') }).populate('project').exec(function foundSprint(err, reportData) {
             if(err) return next(err);
-            if(!sprintData) return next(err);
-            var arrScripts = ['sprintreport.js'];
-            res.view({
-                titie: "SPRINT REPORT",
-                scripts: arrScripts,
-                sprintData: sprintData
+            if(!reportData) return next(err);
+            SprintsController.getLastXSprintsByProject(reportData[0].project.id, 5, false, {
+                success: function(sprintData) {
+                    var arrScripts = ['sprintreport.js'];
+                    res.view({
+                        titie: "SPRINT REPORT",
+                        scripts: arrScripts,
+                        sprintData: sprintData,
+                        reportData: reportData
+                    });
+                },
+                error: function(err){
+                    console.log(err);
+                    res.send(500, err);
+                }
             });
         });        
     },
@@ -129,15 +138,26 @@ var SprintsController = {
         });       
     },
     
-    getLastXSprintsByProject: function(projectid, x, next) {
-        Sprints.find( { project: projectid } )
-        .sort({ 'createdAt': -1 })
-        .where({ 'sprintdeleted': false })
-        .limit(x)
-        .exec(function foundLastXSprintsByProject(err, sprints) {
-            if(err) return next.error(err);
-            return next.success(sprints);
-        });
+    getLastXSprintsByProject: function(projectid, x, all, next) {
+        if (all) {
+            Sprints.find( { project: projectid } )
+            .sort({ 'createdAt': -1 })
+            .where({ 'sprintdeleted': false })
+            .limit(x)
+            .exec(function foundLastXSprintsByProject(err, sprints) {
+                if(err) return next.error(err);
+                return next.success(sprints);
+            });
+        } else {
+            Sprints.find( { project: projectid }, { select: ['id', 'sprintname'] } )
+            .sort({ 'createdAt': -1 })
+            .where({ 'sprintdeleted': false })
+            .limit(x)
+            .exec(function foundLastXSprintsByProject(err, sprints) {
+                if(err) return next.error(err);
+                return next.success(sprints);
+            });
+        }
     }
         
 };
