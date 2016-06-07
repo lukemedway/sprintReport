@@ -21,11 +21,18 @@ module.exports = {
        type: 'boolean',
        defaultsTo: 0
      },
+     sprintdatefrom: {
+       type: 'date'
+     },
+     sprintdateto: {
+       type: 'date'
+     },
      
-     // Relationship
+     // One-to-many relationship with projects
+     // Many sprints may belong to a project
      project: {
        model: 'projects'
-     } 
+     }
      
   }
   

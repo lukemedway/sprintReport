@@ -13,12 +13,13 @@
         }
         
         function formatLink(value, row, index) {
-            return [ "<a href='/reports/report/" + row.id + "'>" + value + "</a>" ].join('');
+            return [ "<a href='/sprints/report/" + row.id + "'>" + value + "</a>" ].join('');
         }
         
         function formatDate(value, row, index) {
-            var date = new Date(value).toLocaleDateString();
-            return [ date ].join('');
+            var date = new Date(value);
+            var dateFormatted = ('0' + date.getDate()).slice(-2) + '/'+ ('0' + (date.getMonth()+1)).slice(-2) + '/' + date.getFullYear();
+            return [ dateFormatted ].join('');
         }
 
 
@@ -27,6 +28,7 @@
             $("#cancel").addClass('hidden');
             $("#submit").val('Add');
             $("#sprintid").val('');
+            $('#sprintname').val('');
             $("#sprintpublicurl").val('http://' + window.location.host + '/');
         }
 
@@ -56,9 +58,15 @@
                     setTimeout(function() { $('#add-control').removeClass('box') }, 2000);
                 },
                 'click .remove': function (e, value, row, index) {
-                    $table.bootstrapTable('remove', {
-                        field: 'id',
-                        values: [row.id]
+                    $.ajax({
+                        url: '/sprints/delete/' + row.id,
+                        method: 'PUT',
+                        success: function(data) {
+                            $table.bootstrapTable('refresh');
+                        },
+                        error: function(err) {
+                            console.dir(err);
+                        }
                     });
                 }
             };

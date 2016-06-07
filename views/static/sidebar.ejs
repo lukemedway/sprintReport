@@ -46,11 +46,14 @@
                     </a>
                     <div class="collapse out" id="componentsExamples" aria-expanded="false">
                         <ul class="nav">
-                            <li><a href="#">Sprint 5</a></li>
-                            <li><a href="#">Sprint 4</a></li>
-                            <li><a href="#">Sprint 3</a></li>
-                            <li><a href="#">Sprint 2</a></li>
-                            <li><a href="#">Sprint 1</a></li>
+                            <% if (typeof sprintData !== 'undefined') { %>
+                            <% for(i=0; i<sprintData.length; i++) { %>
+                            <li><a href="/reports/report/<%=sprintData[i].id %>"><%=sprintData[i].sprintname %></a></li>
+                            <% } %>
+                            <% if (sprintData.length == 5) { %>
+                            <li><a href="/sprints/project/<%=projectData.id %>">... View All</a></li>
+                            <% } %>
+                            <% } %>
                         </ul>
                     </div>
                 </li>
