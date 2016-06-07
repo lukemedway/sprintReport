@@ -1,8 +1,14 @@
 $().ready(function(){
-    
     setTimeout(function() { 
-        $('#componentsExamples').removeClass('collapsed');
-        $('#compontentsExamples').attr('aria-expanded').val('true'); 
-    }, 400);
-    
+        $('#componentLink').attr('aria-expanded', 'true');
+        $('#componentLink').removeClass('collapsed');
+        setTimeout(function() {
+            $('#componentsExamples').attr('aria-expanded', 'true');
+            $('#componentsExamples').removeClass('collapse');
+            $('#componentsExamples').addClass('collapsing');
+            $('#componentsExamples').removeClass('collapsing');
+            $('#componentsExamples').addClass('collapse');
+            $('#componentsExamples').addClass('in');
+        }, 200 );
+    }, 200);
 });
