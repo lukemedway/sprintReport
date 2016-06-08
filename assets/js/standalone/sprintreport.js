@@ -11,4 +11,8 @@ $().ready(function(){
             $('#componentsExamples').addClass('in');
         }, 200 );
     }, 200);
+
+    $('[data-toggle="tooltip"]').tooltip();
+
+
 });

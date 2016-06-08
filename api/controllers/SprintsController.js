@@ -66,6 +66,10 @@ var SprintsController = {
             });
         });        
     },
+
+    edit: function(req, res, next) {
+        res.view('sprints/edit', { title: 'EDIT SPRINT DATA' });
+    },
     
     
     reportjson: function(req, res, next) {

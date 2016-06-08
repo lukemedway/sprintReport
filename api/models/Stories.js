@@ -35,11 +35,12 @@ module.exports = {
         defaultsTo: false
       },
       
-      // One-to-many relationship to reports
-      // Many stories may belong to a report
-      report: {
-        model: 'reports'
-      }  
+      // Many-to-many relationship to sprint
+      // Many stories may belong to many sprints
+      sprintparents: {
+        collection: 'sprints',
+        via: 'stories'
+      }
       
   }
   

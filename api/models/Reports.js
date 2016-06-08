@@ -13,15 +13,15 @@ module.exports = {
       },
       reportdateto: {
         type: 'datetime'
-      },
+      }
       
       
       // One-to-many relationship to stories
       // A report may have many stories
-      stories: {
-        collection: 'stories',
-        via: 'report'
-      }
+      // stories: {
+      //   collection: 'stories',
+      //   via: 'report'
+      // }
       
   }
   
