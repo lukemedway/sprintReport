@@ -1,5 +1,5 @@
 /**
- * Stories.js
+ * Story.js
  *
  * @description :: TODO: You might write a short summary of how this model works and what it represents here.
  * @docs        :: http://sailsjs.org/documentation/concepts/models-and-orm/models
@@ -38,8 +38,8 @@ module.exports = {
       // Many-to-many relationship to sprint
       // Many stories may belong to many sprints
       sprintparents: {
-        collection: 'sprints',
-        via: 'stories'
+        collection: 'sprint',
+        via: 'story'
       }
       
   }

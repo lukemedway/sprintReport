@@ -5,7 +5,7 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
-var Projects = require('./ProjectsController');
+var Project = require('./ProjectsController');
 
 var SprintsController = {
 	
@@ -16,8 +16,9 @@ var SprintsController = {
     // *******************************************************************   
     
     index: function(req, res, next) {
-        Projects.getProjectById(req.param('id'), {
+        Project.getProjectById(req.param('id'), {
             success: function(projectData) {
+                if( projectData.issetup == false ) { return res.redirect('/sprints/setup/' + projectData.id ) };
                 SprintsController.getLastXSprintsByProject(req.param('id'), 5, false, {
                     success: function(sprintData) {
                         var arrScripts = ['sprints-data.js'];
@@ -46,9 +47,10 @@ var SprintsController = {
     },
     
     report: function(req, res, next) {
-        Sprints.find({ id: req.param('id') }).populate('project').exec(function foundSprint(err, reportData) {
+        Sprint.find({ id: req.param('id') }).populate('project').exec(function foundSprint(err, reportData) {
             if(err) return next(err);
             if(!reportData) return next(err);
+            if(reportData.length == 0) return next(err);
             SprintsController.getLastXSprintsByProject(reportData[0].project.id, 5, false, {
                 success: function(sprintData) {
                     var arrScripts = ['sprintreport.js'];
@@ -68,12 +70,17 @@ var SprintsController = {
     },
 
     edit: function(req, res, next) {
-        res.view('sprints/edit', { title: 'EDIT SPRINT DATA' });
+        res.view({ title: 'EDIT SPRINT DATA' });
+    },
+    
+    setup: function(req, res, next) {
+        res.view({ title: 'SPRINT SETUP' });
+        
     },
     
     
     reportjson: function(req, res, next) {
-        Sprints.find({ id: req.param('id') }).populate('project').exec(function foundSprint(err, sprintData) {
+        Sprint.find({ id: req.param('id') }).populate('project').exec(function foundSprint(err, sprintData) {
             if(err) return next(err);
             if(!sprintData) return next(err);
             res.json(sprintData);
@@ -89,14 +96,14 @@ var SprintsController = {
     
    create: function(req, res, next) {
         var projectid = req.param('projectid');
-        Sprints.create({ 
+        Sprint.create({ 
             sprintname: req.param('sprintname'),
             sprintpublicurl: req.param('sprintpublicurl'),
             sprintdeleted: false,
             project: projectid
         }).exec(function createdSprint(err, sprint) {
             if(err) return next(err);
-            Sprints.update({ 
+            Sprint.update({ 
                 id: sprint.id
             }, 
             { 
@@ -110,7 +117,7 @@ var SprintsController = {
     },
     
     update: function(req, res, next) {
-        Sprints.update({ 'id': req.param('sprintid') }, { sprintname: req.param('sprintname') }).exec(function updatedSprint(err, sprint) {
+        Sprint.update({ 'id': req.param('sprintid') }, { sprintname: req.param('sprintname') }).exec(function updatedSprint(err, sprint) {
             if(err) return next(err);
             if(!sprint) return next(err);
             res.json(sprint);
@@ -118,7 +125,7 @@ var SprintsController = {
     },
     
     delete: function(req, res, next) {
-        Sprints.update( { 'id': req.param('id') }, { 'sprintdeleted': true }).exec(function deletedSprint(err, sprint) {
+        Sprint.update( { 'id': req.param('id') }, { 'sprintdeleted': true }).exec(function deletedSprint(err, sprint) {
             if(err) return next(err);
             if(!sprint) return res.badRequest('One or more expected parameters were missing in the requested resource',  { view: 'responses/badrequest', layout: 'responses/layout' });
             res.json(sprint);
@@ -132,7 +139,7 @@ var SprintsController = {
     // *******************************************************************      
     
     getSprints: function(req, res, next) {
-        Sprints.find({ project: req.param('id') })
+        Sprint.find({ project: req.param('id') })
         .sort({ 'createdAt': -1 })
         .where({ 'sprintdeleted': false })
         .exec(function foundSprints(err, sprints) {
@@ -144,21 +151,23 @@ var SprintsController = {
     
     getLastXSprintsByProject: function(projectid, x, all, next) {
         if (all) {
-            Sprints.find( { project: projectid } )
+            Sprint.find( { project: projectid } )
             .sort({ 'createdAt': -1 })
             .where({ 'sprintdeleted': false })
             .limit(x)
             .exec(function foundLastXSprintsByProject(err, sprints) {
                 if(err) return next.error(err);
+                if (!sprints) return next.error(err)
                 return next.success(sprints);
             });
         } else {
-            Sprints.find( { project: projectid }, { select: ['id', 'sprintname'] } )
+            Sprint.find( { project: projectid }, { select: ['id', 'sprintname'] } )
             .sort({ 'createdAt': -1 })
             .where({ 'sprintdeleted': false })
             .limit(x)
             .exec(function foundLastXSprintsByProject(err, sprints) {
                 if(err) return next.error(err);
+                if(!sprints) return next.notFound(err);
                 return next.success(sprints);
             });
         }

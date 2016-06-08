@@ -1,5 +1,5 @@
 /**
- * Sprints.js
+ * Sprint.js
  *
  * @description :: TODO: You might write a short summary of how this model works and what it represents here.
  * @docs        :: http://sailsjs.org/documentation/concepts/models-and-orm/models
@@ -19,7 +19,7 @@ module.exports = {
      },
      sprintdeleted: {
        type: 'boolean',
-       defaultsTo: 0
+       defaultsTo: false
      },
      sprintdatefrom: {
        type: 'date'
@@ -27,21 +27,27 @@ module.exports = {
      sprintdateto: {
        type: 'date'
      },
+     sprintvelocity: {
+       type: 'float',
+       defaultsTo: 0
+     },
+     sprintnotes: {
+       type: 'text'
+     },
      
      // One-to-many relationship with projects
      // Many sprints may belong to a project
      project: {
-       model: 'projects'
+       model: 'project'
      },
 
      // Many-to-many relationship with stories
      // Many stories can belong to many sprints
-     
-    stories: {
-      collection: 'stories',
-      via: 'sprintparents',
-      dominant: true
-    }
+     story: {
+       collection: 'story',
+       via: 'sprintparents',
+       dominant: true
+     }
 
   }
   

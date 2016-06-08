@@ -30,15 +30,15 @@ module.exports = {
     
     
     create: function(req, res, next) {
-        Projects.create(req.params.all(), function createdProject(err, projects) {
+        Project.create(req.params.all(), function createdProject(err, project) {
             if(err) return next(err);
-            res.json(projects);
+            res.json(project);
         });
     },
 
     update: function(req, res, next) {
         if(typeof req.param('id') !== 'undefined' && typeof req.param('name') !== 'undefined') {
-            Projects.update({ 'id': req.param('id')}, req.params.all()).exec(function updatedProject(err, project) {
+            Project.update({ 'id': req.param('id')}, req.params.all()).exec(function updatedProject(err, project) {
                 if(err) return next(err);
                 if(!project) return res.badRequest('One or more expected parameters were missing in the requested resource',  { view: 'responses/badrequest', layout: 'responses/layout' } );
                 res.json(project);
@@ -49,7 +49,7 @@ module.exports = {
     }, 
 
     delete: function(req, res, next) {
-        Projects.update({ 'id': req.param('id')}, { 'deleted': true }).exec(function deletedProject(err, project) {
+        Project.update({ 'id': req.param('id')}, { 'deleted': true }).exec(function deletedProject(err, project) {
             if(err) return next(err);
             if(!project) return res.badRequest('One or more expected parameters were missing in the requested resource',  { view: 'responses/badrequest', layout: 'responses/layout' });
             res.send(200);
@@ -65,7 +65,7 @@ module.exports = {
     
     
     getProjects: function(req, res, next) {
-        Projects.find()
+        Project.find()
         .sort({ 'createdAt': -1 })
         .where({ 'deleted': false })
         .exec(function foundProjects(err, projects){
@@ -76,7 +76,7 @@ module.exports = {
     },
     
     getProjectById: function(id, next) {
-        Projects.findOne({ 'id': id }).exec(function foundProject(err, project) {
+        Project.findOne({ 'id': id }).exec(function foundProject(err, project) {
             if(err) return next.error(err);
             if(!project) return next.notFound('Could not find record');
             return next.success(project);
@@ -84,7 +84,7 @@ module.exports = {
     },
     
     getProjectSprintsByProjectId: function(id, next) {
-        Projects.findOne({ 'id': id }).populate('sprints').exec(function foundProjectSprints(err, projectsprints) {
+        Project.findOne({ 'id': id }).populate('sprints').exec(function foundProjectSprints(err, projectsprints) {
            if(err) return next(err);
            if(!projectsprints) return next(err);
            return next(projectsprints); 
