@@ -50,6 +50,7 @@ module.exports.routes = {
   '/reports/client/:id': { controller: "ReportsController", action: "client" }, 
   '/reports/report/:id': { controller: "ReportsController", action: "report" },
   '/jira/getstory/:id' : { controller: "JiraController", action: "getstory" },
+  '/stories/:id' : { controller: 'StoriesController', action: 'index' },
   
   // CRUD ACTIONS VIA AJAX
   '/projects/delete/:id': { controller: "ProjectsController", action: "delete" },

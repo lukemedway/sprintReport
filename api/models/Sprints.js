@@ -32,8 +32,14 @@ module.exports = {
      // Many sprints may belong to a project
      project: {
        model: 'projects'
-     }
+     }, 
+
+     // Many-to-many relationship with stories
+     // Many stories can belong to many sprints
      
+    //  story: {
+       
+    //  }
   }
   
 };
