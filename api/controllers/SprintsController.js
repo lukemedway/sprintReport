@@ -18,7 +18,6 @@ var SprintsController = {
     index: function(req, res, next) {
         Project.getProjectById(req.param('id'), {
             success: function(projectData) {
-                if( projectData.issetup == false ) { return res.redirect('/sprints/setup/' + projectData.id ) };
                 SprintsController.getLastXSprintsByProject(req.param('id'), 5, false, {
                     success: function(sprintData) {
                         var arrScripts = ['sprints-data.js'];
@@ -53,9 +52,12 @@ var SprintsController = {
             if(reportData.length == 0) return next(err);
             SprintsController.getLastXSprintsByProject(reportData[0].project.id, 5, false, {
                 success: function(sprintData) {
+                    var strView = '';
+                    if(reportData[0].sprintissetup == false) { strView = 'sprints/setup'; }
+                    console.dir(strView);
                     var arrScripts = ['sprintreport.js'];
-                    res.view({
-                        titie: "SPRINT REPORT",
+                    res.view(strView, {
+                        title: "SPRINT REPORT",
                         scripts: arrScripts,
                         sprintData: sprintData,
                         reportData: reportData
@@ -72,13 +74,7 @@ var SprintsController = {
     edit: function(req, res, next) {
         res.view({ title: 'EDIT SPRINT DATA' });
     },
-    
-    setup: function(req, res, next) {
-        res.view({ title: 'SPRINT SETUP' });
         
-    },
-    
-    
     reportjson: function(req, res, next) {
         Sprint.find({ id: req.param('id') }).populate('project').exec(function foundSprint(err, sprintData) {
             if(err) return next(err);

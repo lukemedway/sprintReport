@@ -48,7 +48,6 @@ module.exports.routes = {
   // Hard coded routes, used primarily for the prototype
   '/sprints/project/:id': { controller: "SprintsController", action: "index" },
   '/sprints/edit/:id' : { controller: "SprintsController", action: "edit" },
-  '/sprints/setup/:id' : { controller: "SprintsController", action: "setup" },
   '/reports/client/:id': { controller: "ReportsController", action: "client" }, 
   '/reports/report/:id': { controller: "ReportsController", action: "report" },
   '/jira/getstory/:id' : { controller: "JiraController", action: "getstory" },

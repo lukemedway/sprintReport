@@ -33,6 +33,10 @@ module.exports = {
      },
      sprintnotes: {
        type: 'text'
+     },     
+     sprintissetup: {
+       type: 'boolean',
+       defaultsTo: false
      },
      
      // One-to-many relationship with projects

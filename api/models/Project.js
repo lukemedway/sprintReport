@@ -34,10 +34,7 @@ module.exports = {
        type: 'boolean',
        defaultsTo: false
      },
-     issetup: {
-       type: 'boolean',
-       defaultsTo: false
-     },
+
      
      // Relationship to sprint
      // One-to-many: project can have many sprints
