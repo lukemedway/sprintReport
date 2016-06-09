@@ -54,7 +54,6 @@ var SprintsController = {
                 success: function(sprintData) {
                     var strView = '';
                     if(reportData[0].sprintissetup == false) { strView = 'sprints/setup'; }
-                    console.dir(strView);
                     var arrScripts = ['sprintreport.js'];
                     res.view(strView, {
                         title: "SPRINT REPORT",
