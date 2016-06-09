@@ -31,6 +31,14 @@ module.exports = {
        type: 'float',
        defaultsTo: 0
      },
+     sprintvelocitytarget: {
+       type: 'float',
+       defaultsTo: 0
+     },
+     sprintcompletion: {
+       type: 'float',
+       defaultsTo: 0
+     },
      sprintnotes: {
        type: 'text'
      },     

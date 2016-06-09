@@ -52,11 +52,12 @@ var SprintsController = {
             if(reportData.length == 0) return next(err);
             SprintsController.getLastXSprintsByProject(reportData[0].project.id, 5, false, {
                 success: function(sprintData) {
-                    var strView = '';
-                    if(reportData[0].sprintissetup == false) { strView = 'sprints/setup'; }
+                    var view = '', title = '';
+                    if(reportData[0].sprintissetup == false) { view = 'sprints/setup'; title = 'SPRINT SETUP'; }
+                    (title.length == 0) ? title = 'REPORT' : title = title;
                     var arrScripts = ['sprintreport.js'];
-                    res.view(strView, {
-                        title: "SPRINT REPORT",
+                    res.view(view, {
+                        title: title,
                         scripts: arrScripts,
                         sprintData: sprintData,
                         reportData: reportData

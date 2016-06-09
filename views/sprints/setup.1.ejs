@@ -1,0 +1,118 @@
+<div class="col-md-12">
+    <div class="card">
+        <div class="header">
+            <h4 class="title"><%=reportData[0].sprintname %> - Setup</h4>
+            <p class="category">Initial Configuration</p>
+        </div>
+        <div class="content">
+            <div class="col-md-6">
+                
+                
+                
+                
+                
+
+                
+                
+                
+                
+                
+                
+                
+                <form id="sprint-form">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="loading">Sprint Name *</label>
+                                <input class="form-control" required="required" aria-required="true" type="text" placeholder="Sprint Name" value="<%= reportData[0].sprintname%>" id="sprintname" name="sprintname" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Sprint Start Date *</label>
+                                <input type="text" required="required" class="form-control datetimepicker" id="sprintdatefrom" name="sprintdatefrom" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Sprint End Date *</label>
+                                <input type="text" required="required" class="form-control datetimepicker" id="sprintdateto" name="sprintdateto" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        
+
+                        <div class="col-md-10">
+                            <div class="form-group">
+                                <label class="loading">Public URL</label>
+                                <input class="form-control" required="required" disabled="disabled" ng-disabled="disabled" aria-required="true" type="text" value="<%= reportData[0].sprintpublicurl%>" id="sprintname" name="sprintname" />
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label class="loading">&nbsp;</label>
+                                <input type="button" class="btn btn-primary form-control" value="Bit.ly" id="bitly" name="bitly" />
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="loading">Sprint Velocity</label>
+                                <input class="form-control" required="required" aria-required="true" type="text" placeholder="Sprint Veloctiy" value="<%= reportData[0].sprintvelocity%>" id="sprintname" name="sprintname" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="loading">Sprint Target</label>
+                                <input class="form-control" required="required" aria-required="true" type="text" placeholder="Sprint Veloctiy" value="<%= reportData[0].sprintvelocity%>" id="sprintname" name="sprintname" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="loading">Average Velocity (Auto)</label>
+                                <input class="form-control" required="required" aria-required="true" type="text" placeholder="Sprint Veloctiy" value="<%= reportData[0].sprintvelocity%>" id="sprintname" name="sprintname" />
+                            </div>
+                        </div>
+                    </div>
+                        
+                    
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="loading">Sprint Notes</label>
+                                <textarea class="form-control" rows="10" id="sprintnotes" name="sprintnotes"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label>&nbsp;</label>
+                                <input type="submit" id="submit" class="btn btn-primary btn-fill form-control" value="Continue" />
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-group">
+                                <label>&nbsp;</label>
+                                <input type="reset" id="cancel" class="btn btn-secondary btn-fill form-control hidden" value="Cancel" />
+                                <input type="hidden" id="id" value="" name="id" />
+                                <input type="hidden" id="sprintissetup" name="sprintissetup" value="true" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-6">
+                
+                content
+                
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>

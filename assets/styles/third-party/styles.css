@@ -102,3 +102,7 @@ animation: box 3s ease 0s 1 !important;
     width: 100%;
     bottom: 10px;
 }
+
+.content .no-content {
+    min-height: 250px;
+}

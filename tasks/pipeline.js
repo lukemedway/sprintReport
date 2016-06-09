@@ -17,6 +17,7 @@
 // (if you're using LESS with the built-in default config, you'll want
 //  to change `assets/styles/importer.less` instead.)
 var cssFilesToInject = [
+  'styles/third-party/bootstrap.min.css',
   'styles/third-party/**/*.css'
 ];
 
@@ -33,12 +34,14 @@ var jsFilesToInject = [
   // Dependencies like jQuery, or Angular are brought in here
   'js/dependencies/**/*.js',
   'js/third-party/bootstrap.min.js',
+  'js/third-party/moment.min.js',
   'js/third-party/bootstrap-checkbox-radio-switch.js',
   'js/third-party/chartist.min.js',
   'js/third-party/bootstrap-notify.js',
   'js/login/light-bootstrap-dashboard.js',
   'js/third-party/bootstrap-typeahead.js',
   'js/third-party/bootstrap-table.js',
+  'js/third-party/bootstrap-datetimepicker.js',
 
 
   // All of the rest of your client-side js files
