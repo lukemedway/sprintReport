@@ -17,20 +17,13 @@
                     <div class="col-md-2">
                         <div class="form-group">
                             <label>Sprint Start Date *</label>
-                            <input type="text" required="required" class="form-control" id="sprintdatefrom" name="sprintdatefrom" />
+                            <input type="text" required="required" class="form-control datetimepicker" id="sprintdatefrom" name="sprintdatefrom" />
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
                             <label>Sprint End Date *</label>
-                            <input type="text" required="required" class="form-control" id="sprintdateto" name="sprintdateto" />
-                        </div>
-                    </div>
-
-                    <div class="col-md-1">
-                        <div class="form-group">
-                            <label>&nbsp;</label>
-                            <input type="submit" id="submit" class="btn btn-primary btn-fill form-control" value="Add" />
+                            <input type="text" required="required" class="form-control datetimepicker" id="sprintdateto" name="sprintdateto" />
                         </div>
                     </div>
                     <div class="col-md-1">
@@ -50,12 +43,37 @@
                         </div>
                     </div>
 
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="loading">Public URL</label>
+                            <input class="form-control" required="required" disabled="disabled" ng-disabled="disabled" aria-required="true" type="text" value="<%= reportData[0].sprintpublicurl%>" id="sprintname" name="sprintname" />
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <label class="loading">&nbsp;</label>
+                            <input type="button" class="btn btn-primary" value="Bitly" id="bitly" name="bitly" />
+                        </div>
+                    </div>
+                    
+                    
+
                 </div>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="loading">Sprint Notes</label>
                             <textarea class="form-control" rows="10" id="sprintnotes" name="sprintnotes"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>&nbsp;</label>
+                            <input type="submit" id="submit" class="btn btn-primary btn-fill form-control" value="Continue" />
                         </div>
                     </div>
                 </div>
