@@ -1,1 +1,66 @@
-Sprint Setup Page
+<div class="col-md-12">
+    <div class="card">
+        <div class="header">
+            <h4 class="title"><%=reportData[0].sprintname %> - Setup Sprint Report</h4>
+            <p class="category"></p>
+        </div>
+        <div class="content">
+            
+            <form id="sprint-form">
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label class="loading">Sprint Name *</label>
+                            <input class="form-control" required="required" aria-required="true" type="text" placeholder="Sprint Name" value="<%= reportData[0].sprintname%>" id="sprintname" name="sprintname" />
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Sprint Start Date *</label>
+                            <input type="text" required="required" class="form-control" id="sprintdatefrom" name="sprintdatefrom" />
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Sprint End Date *</label>
+                            <input type="text" required="required" class="form-control" id="sprintdateto" name="sprintdateto" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <label>&nbsp;</label>
+                            <input type="submit" id="submit" class="btn btn-primary btn-fill form-control" value="Add" />
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <label>&nbsp;</label>
+                            <input type="reset" id="cancel" class="btn btn-secondary btn-fill form-control hidden" value="Cancel" />
+                            <input type="hidden" id="id" value="" name="id" />
+                            <input type="hidden" id="sprintissetup" name="sprintissetup" value="true" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label class="loading">Sprint Velocity</label>
+                            <input class="form-control" required="required" aria-required="true" type="text" placeholder="Sprint Veloctiy" value="<%= reportData[0].sprintvelocity%>" id="sprintname" name="sprintname" />
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="loading">Sprint Notes</label>
+                            <textarea class="form-control" rows="10" id="sprintnotes" name="sprintnotes"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
