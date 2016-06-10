@@ -114,10 +114,19 @@ var SprintsController = {
 
     setupcomplete: function(req, res, next) {
         var datefrom, dateto
-        datefrom = new Date(req.param('sprintdatefrom'));
-        dateto = new Date(req.param('sprintdateto'));
-        console.dir("sprintdateto: " + req.param('sprintdateto'));
-        Sprint.update({ 'id': req.param('id') }, {
+        datefrom = req.param('sprintdatefrom');
+        dateto = req.param('sprintdateto');
+
+        var partsfrom = datefrom.match(/(\d+)/g);
+        datefrom = new Date(partsfrom[2], partsfrom[1]-1, partsfrom[0]);
+
+        var partsto = dateto.match(/(\d+)/g);
+        dateto = new Date(partsto[2], partsto[1]-1, partsto[0]);
+
+        console.dir("Type: " + typeof datefrom);
+        return false;
+
+        Sprint.update({ 'id': req.param('sprintid') }, {
             sprintname: req.param('sprintname'),
             sprintdatefrom: datefrom,
             sprintdateto: dateto,
