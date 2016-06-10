@@ -111,6 +111,28 @@ var SprintsController = {
             });
         });
     },
+
+    setupcomplete: function(req, res, next) {
+        var datefrom, dateto
+        datefrom = new Date(req.param('sprintdatefrom'));
+        dateto = new Date(req.param('sprintdateto'));
+        console.dir("sprintdateto: " + req.param('sprintdateto'));
+        Sprint.update({ 'id': req.param('id') }, {
+            sprintname: req.param('sprintname'),
+            sprintdatefrom: datefrom,
+            sprintdateto: dateto,
+            sprintpublicurl: req.param('sprintpublicurl'),
+            sprintvelocity: req.param('sprintvelocity'),
+            sprintvelocitytarget: req.param('sprintvelocitytarget'),
+            sprintcompletion: req.param('sprintcompletion'),
+            sprintnotes: req.param('sprintnotes')
+        })
+        .exec(function updatedSprintSetup(err, sprint) {
+            if(err) return next(err);
+            res.redirect('/sprints/report/' + req.param('sprintid'));
+        });
+
+    },
     
     update: function(req, res, next) {
         Sprint.update({ 'id': req.param('sprintid') }, { sprintname: req.param('sprintname') }).exec(function updatedSprint(err, sprint) {

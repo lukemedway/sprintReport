@@ -7,7 +7,7 @@
             </div>
             <div class="content">
 
-                    <form id="sprint-form">
+                    <form id="sprint-form" method="POST" action="/sprints/setupcomplete/">
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
@@ -51,25 +51,25 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="control-label">Sprint Velocity <star>*</star></label>
-                                    <input class="form-control" required="required" aria-required="true" type="text" placeholder="Sprint Veloctiy" value="<%= reportData[0].sprintvelocity%>" id="sprintname" name="sprintname" />
+                                    <input class="form-control" required="required" aria-required="true" type="text" placeholder="Sprint Velocity" value="<%= reportData[0].sprintvelocity%>" id="sprintvelocity" name="sprintvelocity" />
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="control-label">Sprint Target <star>*</star></label>
-                                    <input class="form-control" required="required" aria-required="true" type="text" placeholder="Sprint Veloctiy" value="<%= reportData[0].sprintvelocity%>" id="sprintname" name="sprintname" />
+                                    <input class="form-control" required="required" aria-required="true" type="text" placeholder="Sprint Target" value="<%= reportData[0].sprinttarget%>" id="sprintvelocitytarget" name="sprintvelocitytarget" />
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="control-label">Average Velocity</label>
-                                    <input class="form-control" type="text" placeholder="Sprint Veloctiy" value="<%= reportData[0].sprintvelocity%>" id="sprintname" name="sprintname" />
+                                    <input class="form-control" type="text" placeholder="Sprint Veloctiy" value="" id="" name="" />
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="control-label">Completion %</label>
-                                    <input class="form-control" type="text" placeholder="Percent Complete" value="<%= reportData[0].sprintvelocity%>" id="sprintname" name="sprintname" />
+                                    <input class="form-control" data-toggle="tooltip" title="Overall project completion" type="text" placeholder="Percent Complete" value="<%= reportData[0].sprintcompletion%>" id="sprintcompletion" name="sprintcompletion" />
                                 </div>
                             </div>
                         </div>
@@ -78,7 +78,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="loading">Sprint Notes</label>
+                                    <label class="loading">Sprint Observations</label>
                                     <textarea class="form-control" rows="10" id="sprintnotes" name="sprintnotes"></textarea>
                                 </div>
                             </div>
@@ -92,13 +92,14 @@
                             <div class="col-md-1">
                                 <div class="form-group">
                                     <input type="reset" id="cancel" class="btn btn-secondary btn-fill form-control hidden" value="Cancel" />
-                                    <input type="hidden" id="id" value="" name="id" />
+                                    <input type="hidden" id="id" value="<%=reportData[0].id%>" name="id" />
                                     <input type="hidden" id="sprintissetup" name="sprintissetup" value="true" />
+                                    <input type="hidden" id="sprintpublicurl" name="sprintpublicurl" value="<%=reportData[0].sprintpublicurl%>" />
                                 </div>
                             </div>
                         </div>
                     </form>
-        </div>
+            </div>
         </div>
     </div>
     <div class="col-md-4">
@@ -112,18 +113,17 @@
                     <thead>
                         <tr>
                         <th>Sprint</th>
-                        <th>Velocity</th>
-                        <th>Target</th>
-                        <th>Complete</th>
+                        <th class="text-align">Velocity</th>
+                        <th class="text-align">Target</th>
+                        <th class="text-align">Complete</th>
                     </tr></thead>
                     <tbody>
                         <tr>
                             <td>Sprint 1</td>
-                            <td>98</td>
-                            <td>120</td>
-                            <td>10%</td>
+                            <td class="text-center">98</td>
+                            <td class="text-center">120</td>
+                            <td class="text-center">10%</td>
                         </tr>
-                      
                     </tbody>
                 </table>
             </div>
