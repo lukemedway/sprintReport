@@ -6,14 +6,9 @@
  */
 
 module.exports = {
-
   attributes: {
-    dependencynumber: {
+    dependencyref: {
       type: 'integer'
-    },
-    dependencyname: {
-      type: 'string',
-      required: true
     },
     dependencypriority: {
       type: 'string'
@@ -26,8 +21,18 @@ module.exports = {
     },
     dependencystatus: {
       type: 'text'
+    },
+    dependencydeleted: {
+      type: 'boolean',
+      defaultsTo: false
+    },
+    
+    // Relationship attribute
+    // One-to-many relationship with a project
+    project: {
+      model: 'project'
     }
+    
   }
-
 };
 

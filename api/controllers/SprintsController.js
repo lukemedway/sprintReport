@@ -20,10 +20,11 @@ var SprintsController = {
             success: function(projectData) {
                 SprintsController.getLastXSprintsByProject(req.param('id'), 5, false, {
                     success: function(sprintData) {
-                        var arrScripts = ['sprints-data.js'];
+
+                        var scripts = ['sprints-data.js'];
                         res.view({
-                            title: "SPRINTS",
-                            scripts: arrScripts,
+                            title: projectData.name,
+                            scripts: scripts,
                             projectData: projectData,
                             sprintData: sprintData
                         });
@@ -50,16 +51,14 @@ var SprintsController = {
             if(err) return next(err);
             if(!reportData) return next(err);
             if(reportData.length == 0) return next(err);
+            if(reportData[0].sprintissetup == false) { return SprintsController.setupreport(req, res, next); }
             SprintsController.getLastXSprintsByProject(reportData[0].project.id, 5, false, {
-                success: function(sprintData) {
-                    var view = '', title = '';
-                    if(reportData[0].sprintissetup == false) { view = 'sprints/setup'; title = 'SPRINT SETUP'; }
-                    (title.length == 0) ? title = 'REPORT' : title = title;
-                    var arrScripts = ['sprintreport.js'];
-                    res.view(view, {
-                        title: title,
-                        scripts: arrScripts,
-                        sprintData: sprintData,
+                success: function(menuData) {
+                    var scripts = ['sprintreport.js', 'chart.js'];
+                    res.view('sprints/report', {
+                        title: reportData[0].project.name + " REPORT",
+                        scripts: scripts,
+                        sprintData: menuData,
                         reportData: reportData
                     });
                 },
@@ -70,19 +69,37 @@ var SprintsController = {
             });
         });        
     },
+    
+    setupreport: function(req, res, next) {
+        Sprint.find({ id: req.param('id') }).populate('project').exec(function foundSprint(err, reportData) {
+            if(err) return next(err);
+            if(!reportData) return next(err);
+            if(reportData.length == 0) return next(err);
+            Sprint.find({ project: reportData[0].project.id })
+            .populate('project')
+            .sort({ 'createdAt': -1 })
+            .where({ createdAt: { '<=': reportData[0].createdAt }, 'sprintdeleted': false })
+            .exec(function foundSprints(err, sprints) {
+                if(err) return next(err);
+                if(!sprints) return next(err);
+                var scripts = ['sprintreport.js'];
+                res.view('sprints/setup', {
+                    title: 'REPORT SETUP',
+                    scripts: scripts,
+                    reportData: reportData,
+                    sprints: sprints,
+                    sprintData: sprints
+                });
+                
+            }); 
+
+        });
+    },
 
     edit: function(req, res, next) {
-        res.view({ title: 'EDIT SPRINT DATA' });
+        SprintsController.setupreport(req, res, next);
     },
         
-    reportjson: function(req, res, next) {
-        Sprint.find({ id: req.param('id') }).populate('project').exec(function foundSprint(err, sprintData) {
-            if(err) return next(err);
-            if(!sprintData) return next(err);
-            res.json(sprintData);
-        });        
-    },
-    
 
     // *******************************************************************
     
@@ -105,14 +122,19 @@ var SprintsController = {
             { 
                 sprintpublicurl: sprint.sprintpublicurl + sprint.id
             })
-            .exec(function updatedSprint(err, sprint) {
+            .exec(function updatedSprint(err, sprintData) {
                 if(err) return next(err);
-                res.json(sprint);
+                res.json(sprintData);
             });
         });
     },
 
     setupcomplete: function(req, res, next) {
+        
+        // *********************************************  
+        // Processing Date Object - Forcing Format. 
+        // *********************************************   
+           
         var datefrom, dateto
         datefrom = req.param('sprintdatefrom');
         dateto = req.param('sprintdateto');
@@ -122,10 +144,26 @@ var SprintsController = {
 
         var partsto = dateto.match(/(\d+)/g);
         dateto = new Date(partsto[2], partsto[1]-1, partsto[0]);
-
-        console.dir("Type: " + typeof datefrom);
-        return false;
-
+        
+        // *********************************************  
+        // End Date Object Handling
+        // *********************************************
+        
+        var sprintVelocities = req.param('sprintvelocityavg');
+        var arrSV = sprintVelocities.split(',');
+        if(arrSV.length > 1) {
+            
+            for(i=0; i<arrSV.length; i++) { arrSV[i] = Number(arrSV[i]) };
+            
+            var sum = arrSV.reduce(function(total, num) { return total + num }, 0);
+            var avg = sum / arrSV.length;
+            avg = Number(avg).toFixed(1);
+            
+            console.dir(avg);
+        } else {
+            avg = Number(req.param('sprintvelocity'));
+        }
+                
         Sprint.update({ 'id': req.param('sprintid') }, {
             sprintname: req.param('sprintname'),
             sprintdatefrom: datefrom,
@@ -133,8 +171,10 @@ var SprintsController = {
             sprintpublicurl: req.param('sprintpublicurl'),
             sprintvelocity: req.param('sprintvelocity'),
             sprintvelocitytarget: req.param('sprintvelocitytarget'),
+            sprintvelocityavg: avg,
             sprintcompletion: req.param('sprintcompletion'),
-            sprintnotes: req.param('sprintnotes')
+            sprintnotes: req.param('sprintnotes'),
+            sprintissetup: req.param('sprintissetup')
         })
         .exec(function updatedSprintSetup(err, sprint) {
             if(err) return next(err);
@@ -179,6 +219,7 @@ var SprintsController = {
     getLastXSprintsByProject: function(projectid, x, all, next) {
         if (all) {
             Sprint.find( { project: projectid } )
+            .populate('project')
             .sort({ 'createdAt': -1 })
             .where({ 'sprintdeleted': false })
             .limit(x)
@@ -188,7 +229,8 @@ var SprintsController = {
                 return next.success(sprints);
             });
         } else {
-            Sprint.find( { project: projectid }, { select: ['id', 'sprintname'] } )
+            Sprint.find( { project: projectid }, { select: ['id', 'sprintname', 'sprintissetup'] } )
+            .populate('project')
             .sort({ 'createdAt': -1 })
             .where({ 'sprintdeleted': false })
             .limit(x)
@@ -198,8 +240,43 @@ var SprintsController = {
                 return next.success(sprints);
             });
         }
+    },
+
+    getReportJson: function(req, res, next) {
+        Sprint.find({ id: req.param('id') }).populate('project').exec(function foundSprint(err, sprintData) {
+            if(err) return next(err);
+            if(!sprintData) return next(err);
+            res.json(sprintData);
+        });        
+    },
+    
+    getSprintsByProjectJson: function(req, res, next) {
+        Sprint.find()
+        .where( { project: req.param('id'), sprintdeleted: false } )
+        .exec(function foundSprintsByProject(err, sprintsData) {
+            if(err) return next(err);
+            if(!sprintsData) return next(err)
+            res.json(sprintsData);
+        });
+    },
+
+    getSprintsBySprintJson: function(req, res, next) {
+        Sprint.find({ id: req.param('id') })
+        .populate('project')
+        .exec(function foundSprint(err, sprintData) {
+            if(err) return next(err);
+            if(!sprintData) return next(err);
+            if(sprintData.length == 0) return next(err);
+            Sprint.find({ createdAt: { '<=': sprintData[0].createdAt } })
+            .where( { project: sprintData[0].project.id, sprintdeleted: false } )
+            .exec(function foundSprintsByProject(err, sprints) {
+               if(err) return next(err);
+               if(!sprints) return next(err);
+               res.json(sprints); 
+            });
+        });
     }
-        
+  
 };
 
 module.exports = SprintsController;

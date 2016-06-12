@@ -47,11 +47,17 @@
                     <div class="collapse out" id="componentsExamples" aria-expanded="false">
                         <ul class="nav">
                             <% if (typeof sprintData !== 'undefined') { %>
-                            <% for(i=0; i<sprintData.length; i++) { %>
-                            <li><a href="/reports/report/<%=sprintData[i].id %>"><%=sprintData[i].sprintname %></a></li>
+                            <% 
+                            var max = 5;
+                            if(sprintData.length < 5) {
+                                max = sprintData.length;
+                            }
+                            
+                            for(i=0; i<max; i++) { %>
+                            <li><a href="/sprints/report/<%=sprintData[i].id %>"><%=sprintData[i].sprintname %></a></li>
                             <% } %>
-                            <% if (sprintData.length == 5) { %>
-                            <li><a href="/sprints/project/<%=projectData.id %>">... View All</a></li>
+                            <% if (sprintData.length > 0) { %>
+                            <li><a href="/sprints/project/<%=sprintData[0].project.id %>">... View All</a></li>
                             <% } %>
                             <% } %>
                         </ul>

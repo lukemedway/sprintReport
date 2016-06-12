@@ -37,9 +37,17 @@ module.exports = {
 
      
      // Relationship to sprint
-     // One-to-many: project can have many sprints
+     // One-to-many: Project can have many sprints
      sprint: {
        collection: 'sprint',
+       via: 'project'
+     },
+     
+     
+     // Relationshpip to dependency
+     // One-to-many: Project can have many dependencies
+     dependency: {
+       collection: 'dependency',
        via: 'project'
      }
   }

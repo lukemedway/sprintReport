@@ -22,10 +22,10 @@ module.exports = {
        defaultsTo: false
      },
      sprintdatefrom: {
-       type: 'date'
+       type: 'datetime'
      },
      sprintdateto: {
-       type: 'date'
+       type: 'datetime'
      },
      sprintvelocity: {
        type: 'float',
@@ -35,12 +35,17 @@ module.exports = {
        type: 'float',
        defaultsTo: 0
      },
+     sprintvelocityavg: {
+       type: 'float',
+       defaultsTo: 0
+     },
      sprintcompletion: {
        type: 'float',
        defaultsTo: 0
      },
      sprintnotes: {
-       type: 'text'
+       type: 'text',
+       defaultsTo: ''
      },     
      sprintissetup: {
        type: 'boolean',

@@ -1,12 +1,31 @@
+<%
+
+    function formatDate(date) {
+        if(typeof date !== 'undefined') {
+            var dateFormatted = ('0' + date.getDate()).slice(-2) + '/'+ ('0' + (date.getMonth()+1)).slice(-2) + '/' + date.getFullYear();
+            return dateFormatted;
+        }
+    }
+
+%>
+
                     
+                 
+                 
                     <div class="col-md-12">
+                        <div class="progress" style="height: 10px;">
+                            <div class="progress-bar" data-toggle="tooltip" title="<%=reportData[0].sprintcompletion%>% Project Completion Overall" role="progressbar" aria-valuenow="<%=reportData[0].sprintcompletion%>" aria-valuemin="0" aria-valuemax="100" style="width: <%=reportData[0].sprintcompletion%>%;">
+                                <span class="sr-only"><%=reportData[0].sprintcompletion%>% Complete</span>
+                            </div>
+                        </div>
+                        <div style="height: 10px;"></div>
                         <div class="card">
                             <div class="header">
                                 <h4 class="title"><%=reportData[0].sprintname %> - Sprint Report</h4>
-                                <p class="category">10/05/16 - 30/05/16</p>
+                                <p class="category"><%=formatDate(reportData[0].sprintdatefrom) %> - <%=formatDate(reportData[0].sprintdateto)%></p>
                                 <div class="pull-right">
                                     <a href="" class="btn btn-primary">View Public Report</a>
-                                    <a href="" class="btn btn-primary btn-fill">Edit Sprint</a>
+                                    <a href="/sprints/edit/<%=reportData[0].id%>" class="btn btn-primary btn-fill">Edit Sprint Data</a>
                                 </div>
                             </div>
                             <div class="content content-full-width">
@@ -24,24 +43,20 @@
                                 
                                 <div class="tab-content">
                                     <div id="overview" class="tab-pane active">
-
-                                          <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <div class="card">
                                                 <div class="header">
-                                                    <h4 class="title">Sprint Observations</h4>
-                                                    <p class="category">Sprint Notes</p>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <h4 class="title">Sprint Observations</h4>
+                                                            <p class="category">Sprint Notes</p>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div class="content no-content">
+                                                <div class="clearfix"></div>
+                                                <div class="content sprint-notes <%=(reportData[0].sprintnotes.length == 0) ? 'no-data' : '' %>">
                                                     
-                                                <p>
-                                                    Story Points moved into the done column in this sprint equated to 37.75. 
-                                                    The reason for this was due to blockers within the checkout which has prevented progress. 
-                                                    Blockers included, Apple Pay, product catalogue, waiting for Javelin to provide detail in relation to the API and gift cards.
-                                                </p>
-
-                                                <p>With the above noted, we have completed as much as we can in all areas and while we were not able
-                                                     to move many stories into the done column in this sprint, they are not far 
-                                                     from completion once dependancies are provided.</p>
+                                                    <p><%=reportData[0].sprintnotes %></p>                                                    
                                                     
                                                 </div>
                                             </div>
@@ -51,37 +66,61 @@
                                         
                                         
                                         
-                                            <div class="col-md-6">
-                                                <div class="card">
-                                                    <div class="header">
-                                                        <h4 class="title">Overall Velocity</h4>
-                                                        <p class="category">Velocity Report</p>
-                                                    </div>
-                                                    <div class="content">
-                                                        
-                                                        
-                                                        <!-- CHARTIST GRAPH GOES HERE -->
-                                                        
-                                                        
-                                                         <div class="footer">
-                                                            <div class="legend">
-                                                                <i class="fa fa-circle text-info"></i>Velocity [Sprint 5]
-                                                                <i class="fa fa-circle text-danger"></i> Target Velocity
-                                                                <i class="fa fa-circle text-warning"></i> Average Velocity [All Sprints]
-                                                            </div>
+                                        <div class="col-md-8">
+                                            <div class="card">
+                                                <div class="header">
+                                                    <h4 class="title">Overall Velocity</h4>
+                                                    <p class="category">Velocity Report</p>
+                                                </div>
+                                                <div class="content">
+                                                    <!-- CHARTIST GRAPH -->
+                                                    <div class="vel-chart ct-chart"></div>
+                                                    <!-- END CHARTIST GRAPH -->
+                                                    <div class="footer">
+                                                        <div class="legend">
+                                                            <i class="fa fa-circle text-info"></i>Velocity
+                                                            <i class="fa fa-circle text-danger"></i> Target Velocity
+                                                            <i class="fa fa-circle text-warning"></i> Average Velocity
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div>
                                             
                                             
                                             
                                          <div class="col-md-12">
                                             <div class="card">
                                                 <div class="header">
-                                                    <h4 class="title">Dependencies affecting this sprint</h4>
-                                                    <p class="category">Most Urgent Dependencies (Blockers Only)</p>
+                                                    <div class="row">
+                                                        <div class="col-md-8">
+                                                            <h4 class="title">Dependencies affecting this sprint</h4>
+                                                            <p class="category">Most Urgent Dependencies (Blockers Only)</p>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <a href="" class="btn btn-fill btn-primary pull-right">Edit</a>  
+                                                            <a href="" class="btn btn-primary pull-right" style="margin-right: 5px;">Full List</a>          
+                                                        </div>
+                                                    </div>
+                                                        
                                                 </div>
+                                                
+                                                <div class="content table-responsive table-full-width">
+                                                    <table id="dependencies-shortlist-bootstrap-table" class="table table-hover table-striped">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="col-md-3" data-field="dependencyref" data-sortable="true">Ref</th>
+                                                                <th class="col-md-3" data-field="dependencypriority" data-sortable="true">Priority</th>
+                                                                <th class="col-md-3" data-field="dependencydesc" data-sortable="true">Description</th>
+                                                                <th class="col-md-3 td-actions text-right">Affected Stories</th>
+                                                            </tr>
+                                                        </thead>
+                                                    </table>
+                                                </div>
+                                                
+                                                
+                                                
+                                                
                                                 <div class="content table-responsive table-full-width">
                                                     <table class="table table-hover table-striped">
                                                         <thead>
@@ -126,6 +165,7 @@
                                                         </tbody>
                                                     </table>
                                                 </div>
+                                                
                                             </div>
                                         </div>
                                             

@@ -1,9 +1,30 @@
 
+<%
+
+    function formatDate(date) {
+        if(typeof date !== 'undefined') {
+            var dateFormatted = ('0' + date.getDate()).slice(-2) + '/'+ ('0' + (date.getMonth()+1)).slice(-2) + '/' + date.getFullYear();
+            return dateFormatted;
+        }
+    }
+
+    var sprintVelocities = '', arrSV = [];
+    for(i=0; i<sprints.length; i++) {
+        sprintVelocities += sprints[i].sprintvelocity + ',';
+        arrSV.push(sprints[i].sprintvelocity);
+    }
+    
+    sprintVelocities = sprintVelocities.substring(0, sprintVelocities.length -1);
+        
+    
+%>
+
+
     <div class="col-md-8">
         <div class="card">
             <div class="header">
                 <h4 class="title"><%=reportData[0].sprintname %> - Report Setup</h4>
-                <p class="category">Initial Configuration</p>
+                <p class="category">Sprint Configuration</p>
             </div>
             <div class="content">
 
@@ -18,19 +39,40 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="control-label">Sprint Start Date <star>*</star></label>
-                                    <input type="text" required="required" class="form-control datetimepicker" id="sprintdatefrom" name="sprintdatefrom" />
+                                    <input type="text" required="required" class="form-control datetimepicker" id="sprintdatefrom" name="sprintdatefrom" value="<%=formatDate(reportData[0].sprintdatefrom)%>" />
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="control-label">Sprint End Date <star>*</star></label>
-                                    <input type="text" required="required" class="form-control datetimepicker" id="sprintdateto" name="sprintdateto" />
+                                    <input type="text" required="required" class="form-control datetimepicker" id="sprintdateto" name="sprintdateto" value="<%=formatDate(reportData[0].sprintdateto)%>" />
                                 </div>
                             </div>
                         </div>
+                        
                         <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label">Sprint Velocity <star>*</star></label>
+                                    <input class="form-control" required="required" aria-required="true" type="text" placeholder="Sprint Velocity" value="<%= reportData[0].sprintvelocity%>" id="sprintvelocity" name="sprintvelocity" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label">Target Velocity <star>*</star></label>
+                                    <input class="form-control" required="required" aria-required="true" type="text" placeholder="Sprint Target" value="<%= reportData[0].sprintvelocitytarget%>" id="sprintvelocitytarget" name="sprintvelocitytarget" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label">Completion %</label>
+                                    <input class="form-control" data-toggle="tooltip" title="Overall project completion" type="text" placeholder="Percent Complete" value="<%= reportData[0].sprintcompletion%>" id="sprintcompletion" name="sprintcompletion" />
+                                </div>
+                            </div>
+                        </div>
                             
-
+                        
+                        <div class="row">
                             <div class="col-md-10">
                                 <div class="form-group">
                                     <label class="control-label">Public URL</label>
@@ -48,53 +90,39 @@
                         </div>
                         
                         <div class="row">
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label class="control-label">Sprint Velocity <star>*</star></label>
-                                    <input class="form-control" required="required" aria-required="true" type="text" placeholder="Sprint Velocity" value="<%= reportData[0].sprintvelocity%>" id="sprintvelocity" name="sprintvelocity" />
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label class="control-label">Sprint Target <star>*</star></label>
-                                    <input class="form-control" required="required" aria-required="true" type="text" placeholder="Sprint Target" value="<%= reportData[0].sprinttarget%>" id="sprintvelocitytarget" name="sprintvelocitytarget" />
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label class="control-label">Average Velocity</label>
-                                    <input class="form-control" type="text" placeholder="Sprint Veloctiy" value="" id="" name="" />
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label class="control-label">Completion %</label>
-                                    <input class="form-control" data-toggle="tooltip" title="Overall project completion" type="text" placeholder="Percent Complete" value="<%= reportData[0].sprintcompletion%>" id="sprintcompletion" name="sprintcompletion" />
-                                </div>
-                            </div>
-                        </div>
-                            
-                        
-                        <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label class="loading">Sprint Observations</label>
-                                    <textarea class="form-control" rows="10" id="sprintnotes" name="sprintnotes"></textarea>
+                                    <textarea class="form-control" rows="10" id="sprintnotes" name="sprintnotes"><%=reportData[0].sprintnotes%></textarea>
                                 </div>
                             </div>
+                        </div>
+                        <div class="row">
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <% if(reportData[0].sprintissetup) { %>
+                                        <a href="/sprints/report/<%=reportData[0].id%>" id="cancel" class="btn btn-secondary form-control">Cancel</a>
+                                        <% } %>
+                                    </div>
+                                </div>
+                                <div class="col-md-8"></div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <% if(reportData[0].sprintissetup) { %>
+                                        <button type="submit" id="submit" class="btn btn-primary btn-fill form-control">Save</button>
+                                        <% } else { %>
+                                        <button type="submit" id="submit" class="btn btn-primary btn-fill form-control">Continue</button>
+                                        <% } %>
+                                    </div>
+                                </div>
                         </div>
                         <div class="row">
                             <div class="col-md-2">
                                 <div class="form-group">
-                                    <button type="submit" id="submit" class="btn btn-primary btn-fill form-control">Continue</button>
-                                </div>
-                            </div>
-                            <div class="col-md-1">
-                                <div class="form-group">
-                                    <input type="reset" id="cancel" class="btn btn-secondary btn-fill form-control hidden" value="Cancel" />
                                     <input type="hidden" id="sprintid" value="<%=reportData[0].id%>" name="sprintid" />
                                     <input type="hidden" id="sprintissetup" name="sprintissetup" value="true" />
                                     <input type="hidden" id="sprintpublicurl" name="sprintpublicurl" value="<%=reportData[0].sprintpublicurl%>" />
+                                    <input type="hidden" id="sprintvelocityavg" name="sprintvelocityavg" value="<%=sprintVelocities%>" />
                                 </div>
                             </div>
                         </div>
@@ -105,25 +133,34 @@
     <div class="col-md-4">
         <div class="card">
             <div class="header">
-                <h4 class="title">Previous Sprints</h4>
-                <p class="category">Perfomance Comparison</p>
+                <h4 class="title">Compare Previous Sprints</h4>
+                <p class="category">Performance Comparison</p>
             </div>
             <div class="content table-responsive table-full-width">
                 <table class="table table-hover table-striped">
                     <thead>
                         <tr>
-                        <th>Sprint</th>
-                        <th class="text-align">Velocity</th>
-                        <th class="text-align">Target</th>
-                        <th class="text-align">Complete</th>
-                    </tr></thead>
-                    <tbody>
-                        <tr>
-                            <td>Sprint 1</td>
-                            <td class="text-center">98</td>
-                            <td class="text-center">120</td>
-                            <td class="text-center">10%</td>
+                            <th>Sprint</th>
+                            <th class="text-center">Velocity</th>
+                            <th class="text-center">Target</th>
+                            <th class="text-center">Complete</th>
                         </tr>
+                    </thead>
+                    <tbody>
+                        <% 
+                            for(i=0; i<sprints.length; i++) { 
+                               // if(sprints[i].id !== reportData[0].id) { 
+                        %>
+                        <tr>
+                            <td><%=sprints[i].sprintname%></td>
+                            <td class="text-center"><%=sprints[i].sprintvelocity%></td>
+                            <td class="text-center"><%=sprints[i].sprintvelocitytarget%></td>
+                            <td class="text-center"><%=sprints[i].sprintcompletion%>%</td>
+                        </tr>
+                        <% 
+                               // } // End If
+                            } // End For
+                        %>
                     </tbody>
                 </table>
             </div>

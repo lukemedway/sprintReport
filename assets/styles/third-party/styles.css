@@ -103,6 +103,20 @@ animation: box 3s ease 0s 1 !important;
     bottom: 10px;
 }
 
-.content .no-content {
-    min-height: 250px;
+
+.sprint-notes {
+    height: 385px;
+    overflow: auto;
+}
+
+.sprint-notes p {
+    white-space: pre-wrap;
+}
+
+.vel-chart .ct-bar {
+    stroke-width: 60px
+}
+
+#dependencies-shortlist-bootstrap-table .no-records-found {
+    height: 150px;
 }
