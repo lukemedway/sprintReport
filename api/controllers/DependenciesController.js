@@ -14,6 +14,14 @@ var DependenciesController = {
     // *******************************************************************   
 
     index: function(req, res, next) {
+
+        var arrScripts = [ "dependencies.js" ];
+        res.view('dependencies/index', {
+            scripts: arrScripts
+        });
+    },
+
+    edit: function(req, res, next ) {
         res.view();
     },
     

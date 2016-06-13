@@ -1,1 +1,93 @@
-Dependencies
+
+<div class="col-md-12">
+    <div class="card" id="add-control">
+        <div class="header">
+            <h4 class="title">Dependencies</h4>
+            <p class="category">Add/Modify Dependency</p>
+        </div>
+        <div class="content">
+            <form id="dependencies-form">
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label class="loading">Priority *</label>
+                            <select class="form-control" required="required" name="dependencypriority">
+                                <option name="Blocker">Blocker</option>
+                                <option name="Critical">Critical</option>
+                                <option name="Major">Major</option>
+                                <option name="None">None</option>
+                                <option name="Trivial">Trivial</option>
+                                <option name="Low">Low</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label class="loading">Status</label>
+                            <select name="dependencystatus" class="form-control">
+                                <option name="Open">Open</option>
+                                <option name="In Progress">In Progress</option>
+                                <option name="Done">Done</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label class="loading">Assignee</label>
+                            <input type="text" class="form-control" name="dependencyassignee" />
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="loading">Description</label>
+                            <textarea type="text" name="dependencydesc" class="form-control"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <label>&nbsp;</label>
+                            <input type="submit" id="submit" class="btn btn-primary btn-fill form-control" value="Add" />
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <label>&nbsp;</label>
+                            <input type="reset" id="cancel" class="btn btn-secondary btn-fill form-control hidden" value="Cancel" />
+                            <input type="hidden" id="sprintid" value="" name="sprintid" />
+                            <input type="hidden" id="projectid" value="" name="projectid" />
+                            <input type="hidden" id="sprintpublicurl" value="" name="sprintpublicurl" />
+                        </div>
+                    </div>
+                   
+                </div>
+            </form>
+        </div>
+    </div>
+</div>  
+
+
+<div class="col-md-12">
+    <div class="card">
+        <div class="content table-responsive table-full-width">
+            <table id="dependencies-bootstrap-table" class="table table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th class="col-md-3" data-field="dependencyref" data-sortable="true" data-formatter="formatLink">Ref</th>
+                        <th class="col-md-3" data-field="dependencypriority" data-sortable="true" data-formatter="formatDate">Priority</th>
+                        <th class="col-md-3" data-field="dependencydesc" data-sortable="true" data-formatter="formatLink">Description</th>
+                        <th class="col-md-3" data-field="dependencyassignee" data-sortable="true" data-formatter="formatLink">Assignee</th>
+                        <th class="col-md-3" data-field="dependencystatus" data-sortable="true" data-formatter="formatLink">Status</th>
+                        <th class="col-md-3 td-actions text-right" data-field="actions" data-events="operateEvents" data-formatter="operateFormatter">Actions</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
