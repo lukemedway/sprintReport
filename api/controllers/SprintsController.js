@@ -153,14 +153,18 @@ var SprintsController = {
         var arrSV = sprintVelocities.split(',');
         if(arrSV.length > 1) {
             
+            // Cast all string values to Number so we apply math logic
             for(i=0; i<arrSV.length; i++) { arrSV[i] = Number(arrSV[i]) };
             
+            // Determine the average based on all sprints up to current sprint
             var sum = arrSV.reduce(function(total, num) { return total + num }, 0);
             var avg = sum / arrSV.length;
             avg = Number(avg).toFixed(1);
             
-            console.dir(avg);
+            // console.dir(avg);
         } else {
+            // If there is only a single sprint in the project 
+            // the average is velocity of this sprint.
             avg = Number(req.param('sprintvelocity'));
         }
                 

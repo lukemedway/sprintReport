@@ -10,7 +10,7 @@
                 <div class="row">
                     <div class="col-md-2">
                         <div class="form-group">
-                            <label class="loading">Priority *</label>
+                            <label class="loading">Priority <star>*</star></label>
                             <select class="form-control" required="required" name="dependencypriority">
                                 <option name="Blocker">Blocker</option>
                                 <option name="Critical">Critical</option>
@@ -24,7 +24,7 @@
 
                     <div class="col-md-2">
                         <div class="form-group">
-                            <label class="loading">Status</label>
+                            <label class="loading">Status <star>*</star></label>
                             <select name="dependencystatus" class="form-control">
                                 <option name="Open">Open</option>
                                 <option name="In Progress">In Progress</option>
@@ -35,24 +35,25 @@
 
                     <div class="col-md-2">
                         <div class="form-group">
-                            <label class="loading">Assignee</label>
+                            <label class="loading">Assignee <star>*</star></label>
                             <input type="text" class="form-control" name="dependencyassignee" />
                         </div>
                     </div>
-
                 </div>
                 <div class="row">
-
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="loading">Description</label>
-                            <textarea type="text" name="dependencydesc" class="form-control"></textarea>
+                            <label class="loading">Description <star>*</star></label>
+                            <textarea type="text" name="dependencydesc" class="form-control" rows="2"></textarea>
                         </div>
                     </div>
+                </div>
+                
+     
+                <div class="row">
 
-                    <div class="col-md-1">
+                    <div class="col-md-2">
                         <div class="form-group">
-                            <label>&nbsp;</label>
                             <input type="submit" id="submit" class="btn btn-primary btn-fill form-control" value="Add" />
                         </div>
                     </div>

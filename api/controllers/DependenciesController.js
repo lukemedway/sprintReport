@@ -16,7 +16,7 @@ var DependenciesController = {
     index: function(req, res, next) {
 
         var arrScripts = [ "dependencies.js" ];
-        res.view('dependencies/index', {
+        res.view({
             scripts: arrScripts
         });
     },
@@ -44,6 +44,7 @@ var DependenciesController = {
             if(!dependencyData) return next(err);
             
             // BELOW NEEDS REWRITE - INCREMENTAL COUNTER SHOULD BE IMPLEMENTED AS PART OF MODEL.
+            // AUTO-INCREMENT FIELDS ARE NOT SUPPORTED BY SAILS / MONGODB - CHEERS! :thumbsup:
 
             DependenciesController.getLastInsertedCollectionByProject(res, dependencyData.project, function(lastDependencyData) {     
                 var dependencyref = lastDependencyData[0].dependencyref + 1;
