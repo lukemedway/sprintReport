@@ -99,6 +99,11 @@ var SprintsController = {
     edit: function(req, res, next) {
         SprintsController.setupreport(req, res, next);
     },
+
+    test: function(req, res, next) {
+        // console.log();
+        res.send(200);
+    },
         
 
     // *******************************************************************
