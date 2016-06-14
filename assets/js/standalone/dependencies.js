@@ -75,7 +75,6 @@
             var path = window.location.pathname;
             var arrPath = path.split("/");
             var sprintId = arrPath[arrPath.length - 1];
-            //console.dir(projectId);
             
 
             $table.bootstrapTable({

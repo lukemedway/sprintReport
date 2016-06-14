@@ -63,6 +63,14 @@
                         </ul>
                     </div>
                 </li>
+                <% if (sprintData) { %>
+                <li>
+                    <a href="/dependencies/<%=sprintData[0].project.id%>">
+                        <i class="pe-7s-display1"></i>
+                        <p>Manage Dependencies</p>
+                    </a>
+                </li>
+                <% } %>
                 <li class="active previous">
                     <a href="/projects/">
                         <i class="pe-7s-folder"></i>

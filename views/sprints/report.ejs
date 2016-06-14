@@ -1,7 +1,7 @@
 <%
 
     function formatDate(date) {
-        if(typeof date !== 'undefined') {
+        if(typeof date !== 'undefined' && date !== null) {
             var dateFormatted = ('0' + date.getDate()).slice(-2) + '/'+ ('0' + (date.getMonth()+1)).slice(-2) + '/' + date.getFullYear();
             return dateFormatted;
         }
@@ -98,7 +98,7 @@
                                                             <p class="category">Most Urgent Dependencies (Blockers Only)</p>
                                                         </div>
                                                         <div class="col-md-4">
-                                                            <a href="" class="btn btn-fill btn-primary pull-right">Edit</a>  
+                                                            <a href="/dependencies/<%=reportData[0].id %>" class="btn btn-fill btn-primary pull-right">Edit</a>  
                                                             <a href="" class="btn btn-primary pull-right" style="margin-right: 5px;">Full List</a>          
                                                         </div>
                                                     </div>

@@ -33,6 +33,16 @@ module.exports = {
       model: 'project'
     }
     
-  }
+  },
+
+    // Add auto increment value for "number" before create a document
+    beforeCreate: function (values, cb) {
+        // add seq number, use
+        Sequence.next("dependency", function(err, num) {
+            if (err) return cb(err);
+            values.dependencyref = num;
+            cb();
+        });
+    }
 };
 
