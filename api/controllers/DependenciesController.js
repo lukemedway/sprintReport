@@ -5,6 +5,9 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
+var Project = require('./ProjectsController');
+var Sprint = require('./SprintsController');
+
 var DependenciesController = {
 
     // *******************************************************************
@@ -14,10 +17,30 @@ var DependenciesController = {
     // *******************************************************************   
 
     index: function(req, res, next) {
-        
-        var arrScripts = [ "dependencies.js" ];
-        res.view({
-            scripts: arrScripts
+        Project.getProjectByRef(req.param('id'), {
+            success: function(projectData) {
+                Sprint.getLastXSprintsByProjectRef(req.param('id'), 5, false, {
+                    success: function(sprintData) {
+                        var arrScripts = [ "dependencies.js" ];
+                        res.view({
+                            title: projectData.name + ' DEPENDENCIES',
+                            scripts: arrScripts,
+                            sprintData: sprintData
+                        });
+                    },
+                    error: function(err) {
+                        console.log('Error with retrieving sprints ' + err);
+                        res.send(304, err);
+                    }
+                });
+            },
+            error: function(err) {
+                console.log('Error with the Project.getProjectByRef Method: ' + err);
+                res.send(304, err);
+            },
+            notFound: function(err) {
+                res.badRequest('A project does not exist with the provided indentifier');
+            }
         });
     },
 

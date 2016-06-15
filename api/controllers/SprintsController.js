@@ -211,7 +211,7 @@ var SprintsController = {
     },
     
     delete: function(req, res, next) {
-        Sprint.update( { 'id': req.param('id') }, { 'sprintdeleted': true }).exec(function deletedSprint(err, sprint) {
+        Sprint.update( { 'id': req.param('sprintid') }, { 'sprintdeleted': true }).exec(function deletedSprint(err, sprint) {
             if(err) return next(err);
             if(!sprint) return res.badRequest('One or more expected parameters were missing in the requested resource',  { view: 'responses/badrequest', layout: 'responses/layout' });
             res.json(sprint);

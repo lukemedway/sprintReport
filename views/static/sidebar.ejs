@@ -64,9 +64,9 @@
                         </ul>
                     </div>
                 </li>
-                <% if (sprintData) { %>
+                <% if (req.param('id')) { %>
                 <li>
-                    <a href="/dependencies/">
+                    <a href="/<%=req.param('id')%>/dependencies/">
                         <i class="pe-7s-display1"></i>
                         <p>Manage Dependencies</p>
                     </a>
