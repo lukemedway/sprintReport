@@ -25,7 +25,7 @@
                                 <p class="category"><%=formatDate(reportData[0].sprintdatefrom) %> - <%=formatDate(reportData[0].sprintdateto)%></p>
                                 <div class="pull-right">
                                     <a href="" class="btn btn-primary">View Public Report</a>
-                                    <a href="/sprints/edit/<%=reportData[0].id%>" class="btn btn-primary btn-fill">Edit Sprint Data</a>
+                                    <a href="/<%=req.param('id')%>/sprints/edit/<%=reportData[0].id%>" class="btn btn-primary btn-fill">Edit Sprint Data</a>
                                 </div>
                             </div>
                             <div class="content content-full-width">

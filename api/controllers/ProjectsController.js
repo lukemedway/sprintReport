@@ -38,7 +38,7 @@ module.exports = {
 
     update: function(req, res, next) {
         if(typeof req.param('id') !== 'undefined' && typeof req.param('name') !== 'undefined') {
-            Project.update({ 'id': req.param('id')}, req.params.all()).exec(function updatedProject(err, project) {
+            Project.update({ jiraprojectref: req.param('id')}, req.params.all()).exec(function updatedProject(err, project) {
                 if(err) return next(err);
                 if(!project) return res.badRequest('One or more expected parameters were missing in the requested resource',  { view: 'responses/badrequest', layout: 'responses/layout' } );
                 res.json(project);
@@ -49,7 +49,7 @@ module.exports = {
     }, 
 
     delete: function(req, res, next) {
-        Project.update({ 'id': req.param('id')}, { 'deleted': true }).exec(function deletedProject(err, project) {
+        Project.update({ jiraprojectref: req.param('id')}, { 'deleted': true }).exec(function deletedProject(err, project) {
             if(err) return next(err);
             if(!project) return res.badRequest('One or more expected parameters were missing in the requested resource',  { view: 'responses/badrequest', layout: 'responses/layout' });
             res.send(200);
@@ -68,7 +68,7 @@ module.exports = {
         Project.find()
         .sort({ 'createdAt': -1 })
         .where({ 'deleted': false })
-        .exec(function foundProjects(err, projects){
+        .exec(function foundProjects(err, projects) {
             if(err) return next(err);
             if(!projects) return next(err);
             res.json(projects);
@@ -81,6 +81,14 @@ module.exports = {
             if(!project) return next.notFound('Could not find record');
             return next.success(project);
         });   
+    },
+
+    getProjectByRef: function(jiraprojectref, next) {
+        Project.findOne({ jiraprojectref: jiraprojectref }).exec(function foundProject(err, project) {
+            if(err) return next.error(err);
+            if(!project) return next.notFound('Could not find record');
+            return next.success(project);
+        })
     },
     
     getProjectSprintsByProjectId: function(id, next) {

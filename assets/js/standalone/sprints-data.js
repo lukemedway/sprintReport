@@ -13,7 +13,10 @@
         }
         
         function formatLink(value, row, index) {
-            return [ "<a href='/sprints/report/" + row.id + "'>" + value + "</a>" ].join('');
+            var path = window.location.pathname;
+            var arrPath = path.split("/");
+            var projectId = arrPath[1];
+            return [ "<a href='/" + projectId + "/sprints/report/" + row.id + "'>" + value + "</a>" ].join('');
         }
         
         function formatDate(value, row, index) {
@@ -74,8 +77,7 @@
             
             var path = window.location.pathname;
             var arrPath = path.split("/");
-            var projectId = arrPath[arrPath.length - 1];
-            //console.dir(projectId);
+            var projectId = arrPath[1];
             
 
             $table.bootstrapTable({
@@ -90,7 +92,7 @@
                 pageSize: 10,
                 pageList: [10,25,50,100],
                 ordering: true,
-                url: '/sprints/getSprints/' + projectId,
+                url: '/' + projectId + '/sprints/getSprints/',
                 dataType: 'json',
                 sidePagination: 'client',
                 queryParams: false,

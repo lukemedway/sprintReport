@@ -13,12 +13,14 @@
         }
         
         function formatLink(value, row, index) {
-            return [ "<a href='/sprints/project/" + row.id + "'>" + value + "</a>" ].join('');
+            return [ "<a href='/" + row.jiraprojectref + "/sprints/'>" + value + "</a>" ].join('');
         }
         
         function resetForm() {
             $("#cancel").addClass('hidden');
             $("#submit").val('Add');
+            $("#name").val('');
+            $("#jiraprojectref").val('');
             $("#id").val('');
         }
 
@@ -41,13 +43,13 @@
                     $('#jiraprojectref').val(row.jiraprojectref);
                     $('#submit').val('Save');
                     $('#cancel').removeClass('hidden');
-                    $('#id').val(row.id);
+                    $('#id').val(row.jiraprojectref);
                     
                     setTimeout(function() { $('#add-control').removeClass('box') }, 2000);
                 },
                 'click .remove': function(e, value, row, index) {             
                     $.ajax({
-                        url: '/projects/delete/' + row.id,
+                        url: '/projects/delete/' + row.jiraprojectref,
                         method: 'PUT',
                         success: function(data) {
                             $table.bootstrapTable('refresh');
@@ -87,7 +89,7 @@
                     columns: 'fa fa-columns',
                     detailOpen: 'fa fa-plus-circle',
                     detailClose: 'fa fa-minus-circle'
-                },
+                }
 
             });
 
@@ -117,7 +119,7 @@
                     data: formData,
                     success: function(data) {
                         $table.bootstrapTable('refresh');
-                        resetForm();    
+                        resetForm();
                     },
                     error: function(err) {
                         console.dir(err);

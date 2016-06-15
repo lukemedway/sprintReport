@@ -1,14 +1,15 @@
 
+
+var path = window.location.pathname;
+var arrPath = path.split("/");
+var sprintId = arrPath[arrPath.length - 1];
+var projectId = arrPath[1];
+
+
 $().ready(function(){
-    
-    var path = window.location.pathname;
-    var arrPath = path.split("/");
-    var projectId = arrPath[arrPath.length - 1];
-    
-    console.dir(projectId);
-    
+        
     $.ajax({
-        url: '/sprints/getSprintsBySprintJson/' + projectId,
+        url: '/' + projectId + '/sprints/getSprintsBySprintJson/' + sprintId,
         method: 'GET',
         dataType: 'json',
         contentType: "application/json",
@@ -65,7 +66,7 @@ $().ready(function(){
                 ['screen and (max-width: 640px)', {
                     axisX: {
                         labelInterpolationFnc: function (value, index) {
-                            return index+1;
+                            return index + 1;
                         }
                     }
                 }]

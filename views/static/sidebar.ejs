@@ -53,11 +53,12 @@
                                 max = sprintData.length;
                             }
                             
-                            for(i=0; i<max; i++) { %>
-                            <li><a href="/sprints/report/<%=sprintData[i].id %>"><%=sprintData[i].sprintname %></a></li>
+                            for(i=0; i<max; i++) { 
+                            %>
+                            <li><a href="/<%=req.param('id')%>/sprints/report/<%=sprintData[i].id %>"><%=sprintData[i].sprintname%></a></li>
                             <% } %>
                             <% if (sprintData.length > 0) { %>
-                            <li><a href="/sprints/project/<%=sprintData[0].project.id %>">... View All</a></li>
+                            <li><a href="/<%=req.param('id')%>/sprints/">... View All</a></li>
                             <% } %>
                             <% } %>
                         </ul>
@@ -65,7 +66,7 @@
                 </li>
                 <% if (sprintData) { %>
                 <li>
-                    <a href="/dependencies/<%=sprintData[0].project.id%>">
+                    <a href="/dependencies/">
                         <i class="pe-7s-display1"></i>
                         <p>Manage Dependencies</p>
                     </a>

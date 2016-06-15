@@ -8,6 +8,7 @@
 module.exports = {
 
   attributes: {
+     autoPK: false,
      name: {
        type: 'string',
        required: true,
@@ -15,6 +16,7 @@ module.exports = {
      },
      jiraprojectref: {
        type: 'string',
+       primaryKey: true,
        defaultsTo: '',
        unique: true
      },

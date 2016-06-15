@@ -28,7 +28,7 @@
             </div>
             <div class="content">
 
-                    <form id="sprint-form" method="POST" action="/sprints/setupcomplete/">
+                    <form id="sprint-form" method="POST" action="/<%=req.param('id')%>/sprints/setupcomplete/">
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
@@ -101,7 +101,7 @@
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <% if(reportData[0].sprintissetup) { %>
-                                        <a href="/sprints/report/<%=reportData[0].id%>" id="cancel" class="btn btn-secondary form-control">Cancel</a>
+                                        <a href="/<%=req.param('id')%>/sprints/report/<%=reportData[0].id%>" id="cancel" class="btn btn-secondary form-control">Cancel</a>
                                         <% } %>
                                     </div>
                                 </div>

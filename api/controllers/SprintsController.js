@@ -16,12 +16,13 @@ var SprintsController = {
     // *******************************************************************   
     
     index: function(req, res, next) {
-        Project.getProjectById(req.param('id'), {
+        Project.getProjectByRef(req.param('id'), {
             success: function(projectData) {
-                SprintsController.getLastXSprintsByProject(req.param('id'), 5, false, {
+                SprintsController.getLastXSprintsByProjectRef(req.param('id'), 5, false, {
                     success: function(sprintData) {
 
                         var scripts = ['sprints-data.js'];
+                        
                         res.view({
                             title: projectData.name,
                             scripts: scripts,
@@ -47,12 +48,12 @@ var SprintsController = {
     },
     
     report: function(req, res, next) {
-        Sprint.find({ id: req.param('id') }).populate('project').exec(function foundSprint(err, reportData) {
+        Sprint.find({ id: req.param('sprintid') }).populate('project').exec(function foundSprint(err, reportData) {
             if(err) return next(err);
             if(!reportData) return next(err);
             if(reportData.length == 0) return next(err);
             if(reportData[0].sprintissetup == false) { return SprintsController.setupreport(req, res, next); }
-            SprintsController.getLastXSprintsByProject(reportData[0].project.id, 5, false, {
+            SprintsController.getLastXSprintsByProjectRef(reportData[0].project.jiraprojectref, 5, false, {
                 success: function(menuData) {
                     var scripts = ['sprintreport.js', 'chart.js'];
                     res.view('sprints/report', {
@@ -71,25 +72,33 @@ var SprintsController = {
     },
     
     setupreport: function(req, res, next) {
-        Sprint.find({ id: req.param('id') }).populate('project').exec(function foundSprint(err, reportData) {
+        Sprint.find({ id: req.param('sprintid') }).populate('project').exec(function foundSprint(err, reportData) {
             if(err) return next(err);
             if(!reportData) return next(err);
             if(reportData.length == 0) return next(err);
-            Sprint.find({ project: reportData[0].project.id })
+
+            Sprint.find({ project: reportData[0].project.jiraprojectref })
             .populate('project')
             .sort({ 'createdAt': -1 })
             .where({ createdAt: { '<=': reportData[0].createdAt }, 'sprintdeleted': false })
             .exec(function foundSprints(err, sprints) {
                 if(err) return next(err);
                 if(!sprints) return next(err);
-                var scripts = ['sprintreport.js'];
-                res.view('sprints/setup', {
-                    title: 'REPORT SETUP',
-                    scripts: scripts,
-                    reportData: reportData,
-                    sprints: sprints,
-                    sprintData: sprints
-                });
+                Sprint.find({ project: reportData[0].project.jiraprojectref })
+                .sort({ 'createdAt': -1 })
+                .where({ sprintdeleted: false })
+                .exec(function foundFullSprints(err, menuData){
+                    var scripts = ['sprintreport.js'];
+                    res.view('sprints/setup', {
+                        title: 'REPORT SETUP',
+                        scripts: scripts,
+                        reportData: reportData,
+                        sprints: sprints,
+                        sprintData: menuData
+                    });
+                })
+
+                
                 
             }); 
 
@@ -102,7 +111,8 @@ var SprintsController = {
 
     test: function(req, res, next) {
         // console.log();
-        res.send(200);
+        // res.send(200);
+        res.view("HALLO");
     },
         
 
@@ -187,7 +197,7 @@ var SprintsController = {
         })
         .exec(function updatedSprintSetup(err, sprint) {
             if(err) return next(err);
-            res.redirect('/sprints/report/' + req.param('sprintid'));
+            res.redirect('/' + req.param('id') + '/sprints/report/' + req.param('sprintid'));
         });
 
     },
@@ -216,6 +226,7 @@ var SprintsController = {
     
     getSprints: function(req, res, next) {
         Sprint.find({ project: req.param('id') })
+        .populate('project')
         .sort({ 'createdAt': -1 })
         .where({ 'sprintdeleted': false })
         .exec(function foundSprints(err, sprints) {
@@ -225,9 +236,9 @@ var SprintsController = {
         });       
     },
     
-    getLastXSprintsByProject: function(projectid, x, all, next) {
-        if (all) {
-            Sprint.find( { project: projectid } )
+    getLastXSprintsByProjectRef: function(jiraprojectref, x, all, next) {
+        if(all) {
+            Sprint.find({ project: jiraprojectref })
             .populate('project')
             .sort({ 'createdAt': -1 })
             .where({ 'sprintdeleted': false })
@@ -238,7 +249,7 @@ var SprintsController = {
                 return next.success(sprints);
             });
         } else {
-            Sprint.find( { project: projectid }, { select: ['id', 'sprintname', 'sprintissetup'] } )
+            Sprint.find( { project: jiraprojectref }, { select: ['id', 'sprintname', 'sprintissetup'] } )
             .populate('project')
             .sort({ 'createdAt': -1 })
             .where({ 'sprintdeleted': false })
@@ -270,20 +281,30 @@ var SprintsController = {
     },
 
     getSprintsBySprintJson: function(req, res, next) {
-        Sprint.find({ id: req.param('id') })
+        Sprint.find({ id: req.param('sprintid') })
         .populate('project')
         .exec(function foundSprint(err, sprintData) {
             if(err) return next(err);
             if(!sprintData) return next(err);
             if(sprintData.length == 0) return next(err);
             Sprint.find({ createdAt: { '<=': sprintData[0].createdAt } })
-            .where( { project: sprintData[0].project.id, sprintdeleted: false } )
+            .where( { project: sprintData[0].project.jiraprojectref, sprintdeleted: false } )
             .exec(function foundSprintsByProject(err, sprints) {
                if(err) return next(err);
                if(!sprints) return next(err);
                res.json(sprints); 
             });
         });
+    },
+
+    getAllSprintsByProjectRefJson: function(projectref, next) {
+        Sprint.find()
+        .where({ jiraprojectref: projectref, sprintdeleted: false })
+        .exec(function foundSprints(err, sprints){
+            if(err) return next(err);
+            if(!sprints) return next(err);
+            res.json(sprints);
+        })
     }
   
 };

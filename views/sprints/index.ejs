@@ -26,7 +26,7 @@
                             <label>&nbsp;</label>
                             <input type="reset" id="cancel" class="btn btn-secondary btn-fill form-control hidden" value="Cancel" />
                             <input type="hidden" id="sprintid" value="" name="sprintid" />
-                            <input type="hidden" id="projectid" value="<%= projectData.id %>" name="projectid" />
+                            <input type="hidden" id="projectid" value="<%= req.param('id') %>" name="projectid" />
                             <input type="hidden" id="sprintpublicurl" value="" name="sprintpublicurl" />
                         </div>
                     </div>
