@@ -17,7 +17,7 @@ module.exports = {
      jiraprojectref: {
        type: 'string',
        primaryKey: true,
-       defaultsTo: '',
+       required: true,
        unique: true
      },
      complete: {

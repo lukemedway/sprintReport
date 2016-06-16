@@ -6,7 +6,7 @@
             <p class="category">Add/Modify Dependency</p>
         </div>
         <div class="content">
-            <form id="dependencies-form">
+            <form id="dependency-form">
                 <div class="row">
                     <div class="col-md-2">
                         <div class="form-group">
@@ -22,7 +22,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label class="loading">Status <star>*</star></label>
                             <select name="dependencystatus" class="form-control">
@@ -33,21 +33,58 @@
                         </div>
                     </div>
 
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label class="loading">Assignee <star>*</star></label>
                             <input type="text" class="form-control" name="dependencyassignee" />
                         </div>
                     </div>
                 </div>
+
+
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-8">
                         <div class="form-group">
                             <label class="loading">Description <star>*</star></label>
                             <textarea type="text" name="dependencydesc" class="form-control" rows="2"></textarea>
                         </div>
                     </div>
                 </div>
+
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label class="loading">Add Stories</label>
+                            <div id="tags1466059008665_tagsinput" class="tagsinput  tag-red tag-fill" style="height: 100%;">
+                                <span class="tag">
+                                    <span>Design &amp; UI&nbsp;&nbsp;</span>
+                                    <a class="tagsinput-remove-link"></a>
+                                </span>
+                                <span class="tag">
+                                    <span>Inspiration&nbsp;&nbsp;</span>
+                                    <a class="tagsinput-remove-link"></a>
+                                </span>
+                                <span class="tag">
+                                    <span>Business&nbsp;&nbsp;</span>
+                                    <a class="tagsinput-remove-link"></a>
+                                </span>
+                                <span class="tag">
+                                    <span>Lifestyle&nbsp;&nbsp;</span>
+                                    <a class="tagsinput-remove-link"></a>
+                                </span>
+                                <span class="tag">
+                                    <span>tesssdsdsd&nbsp;&nbsp;</span>
+                                    <a class="tagsinput-remove-link"></a>    
+                                </span>
+                                <div class="tagsinput-add-container" id="tags1466059008665_addTag">
+                                    <div class="tagsinput-add"></div>
+                                    <input id="tags1466059008665_tag" value="" data-default="" style="color: rgb(102, 102, 102); width: 89px;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 
      
                 <div class="row">
@@ -61,9 +98,7 @@
                         <div class="form-group">
                             <label>&nbsp;</label>
                             <input type="reset" id="cancel" class="btn btn-secondary btn-fill form-control hidden" value="Cancel" />
-                            <input type="hidden" id="sprintid" value="" name="sprintid" />
-                            <input type="hidden" id="projectid" value="" name="projectid" />
-                            <input type="hidden" id="sprintpublicurl" value="" name="sprintpublicurl" />
+                            <input type="hidden" id="jiraprojectref" value="<%=req.param('id')%>" name="jiraprojectref" />
                         </div>
                     </div>
                    
@@ -80,12 +115,12 @@
             <table id="dependencies-bootstrap-table" class="table table-hover table-striped">
                 <thead>
                     <tr>
-                        <th class="col-md-3" data-field="dependencyref" data-sortable="true" data-formatter="formatLink">Ref</th>
-                        <th class="col-md-3" data-field="dependencypriority" data-sortable="true" data-formatter="formatDate">Priority</th>
-                        <th class="col-md-3" data-field="dependencydesc" data-sortable="true" data-formatter="formatLink">Description</th>
-                        <th class="col-md-3" data-field="dependencyassignee" data-sortable="true" data-formatter="formatLink">Assignee</th>
-                        <th class="col-md-3" data-field="dependencystatus" data-sortable="true" data-formatter="formatLink">Status</th>
-                        <th class="col-md-3 td-actions text-right" data-field="actions" data-events="operateEvents" data-formatter="operateFormatter">Actions</th>
+                        <th class="col-md-1" data-field="dependencyref" data-sortable="true">Ref</th>
+                        <th class="col-md-1" data-field="dependencypriority" data-sortable="true">Priority</th>
+                        <th class="col-md-7" data-field="dependencydesc" data-sortable="true">Description</th>
+                        <th class="col-md-2" data-field="dependencyassignee" data-sortable="true">Assignee</th>
+                        <th class="col-md-2" data-field="dependencystatus" data-sortable="true">Status</th>
+                        <th class="col-md-2 td-actions text-right" data-field="actions" data-events="operateEvents" data-formatter="operateFormatter">Actions</th>
                     </tr>
                 </thead>
             </table>

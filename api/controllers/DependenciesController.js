@@ -61,28 +61,31 @@ var DependenciesController = {
             dependencydesc: req.param('dependencydesc'),
             dependencyassignee: req.param('dependencyassignee'),
             dependencystatus: req.param('dependencystatus'),
-            project: req.param('project')
+            project: req.param('id')
         }).exec(function createdDependency(err, dependencyData) {
             if(err) return next(err);
             if(!dependencyData) return next(err);
+            res.json(dependencyData);
             
             // BELOW NEEDS REWRITE - INCREMENTAL COUNTER SHOULD BE IMPLEMENTED AS PART OF MODEL.
             // AUTO-INCREMENT FIELDS ARE NOT SUPPORTED BY SAILS / MONGODB - CHEERS! :thumbsup:
+            
 
-            DependenciesController.getLastInsertedCollectionByProject(res, dependencyData.project, function(lastDependencyData) {     
-                var dependencyref = lastDependencyData[0].dependencyref + 1;
 
-                Dependency.update({
-                    id: dependencyData.id
-                },
-                {
-                    dependencyref: dependencyref
-                })
-                .exec(function updatedDependency(err, dependencyDataUpdated) {
-                    if(err) next(err);
-                    res.json(dependencyDataUpdated);
-                })  
-            });
+            // DependenciesController.getLastInsertedCollectionByProject(res, dependencyData.project, function(lastDependencyData) {     
+            //     var dependencyref = lastDependencyData[0].dependencyref + 1;
+
+            //     Dependency.update({
+            //         id: dependencyData.id
+            //     },
+            //     {
+            //         dependencyref: dependencyref
+            //     })
+            //     .exec(function updatedDependency(err, dependencyDataUpdated) {
+            //         if(err) next(err);
+            //         res.json(dependencyDataUpdated);
+            //     })  
+            // });
              
         });
     },
@@ -104,6 +107,16 @@ var DependenciesController = {
             res.json(dependencyLastCollection);
             // return next(dependencyLastCollection);
         });
+    },
+
+    getDependenciesByProjectRefJson: function(req, res, next) {
+        Dependency.find({ 'project': req.param('id') })
+        .sort({ createdAt:-1 })
+        .where({ dependencydeleted: false })
+        .exec(function foundDependencies(err, dependenciesData) {
+            if(err) return next(err);
+            res.json(dependenciesData);
+        })
     },
 
 

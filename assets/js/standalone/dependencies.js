@@ -74,7 +74,7 @@
             
             var path = window.location.pathname;
             var arrPath = path.split("/");
-            var sprintId = arrPath[arrPath.length - 1];
+            var projectId = arrPath[1];
             
 
             $table.bootstrapTable({
@@ -89,7 +89,7 @@
                 pageSize: 10,
                 pageList: [10,25,50,100],
                 ordering: true,
-                url: '/dependencies/getDependenciesBySprintJson/' + sprintId,
+                url: '/' + projectId + '/dependencies/getDependencies',
                 dataType: 'json',
                 sidePagination: 'client',
                 queryParams: false,
@@ -117,19 +117,19 @@
             });
             
             // Handle the data for POST and PUT requests to the server.
-            $('#sprintform').on('submit', function(e) {
+            $('#dependency-form').on('submit', function(e) {
                 e.preventDefault();
                 var url, method, formData = $(this).serializeArray();
                 
-                if($('#projectid').val() !== '' && $('#projectid').val() !== 'undefined') {
-                    url = '/sprints/create/';
-                    method = 'POST';
-                }
             
-                if ($('#sprintid').val() !== '' && $('#sprintid').val() !== 'undefined') {
-                    url = '/sprints/update/';
-                    method = "PUT";
-                }
+                url = '/' + projectId + '/dependencies/create';
+                method = 'POST';
+
+            
+                // if ($('#sprintid').val() !== '' && $('#sprintid').val() !== 'undefined') {
+                //     url = '/' + projectId + '/dependencies/update';
+                //     method = "PUT";
+                // }
                     
                 $.ajax({
                     url: url,

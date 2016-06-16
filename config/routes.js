@@ -53,7 +53,10 @@ module.exports.routes = {
   '/reports/report/:id':                              { controller: "ReportsController",  action: "report" },
   '/jira/getstory/:id' :                              { controller: "JiraController",     action: "getstory" },
   '/stories/:id' :                                    { controller: "StoriesController",  action: "index" },
+
   '/:id/dependencies' :                               { controller: "DependenciesController", action: "index" },
+  '/:id/dependencies/create':                         { controller: "DependenciesController", action: "create" },
+  '/:id/dependencies/getDependencies':                { controller: "DependenciesController", action: "getDependenciesByProjectRefJson" },
 
   
   '/:id/sprints/':                                    { controller: "SprintsController", action: "index" },
