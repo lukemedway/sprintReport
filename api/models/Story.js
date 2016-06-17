@@ -8,8 +8,11 @@
 module.exports = {
 
   attributes: {
-      storyjiraid: {
-        type: 'string'
+      autoPK: false,
+      storyjiraref: {
+        type: 'string',
+        required: true,
+        unique: true
       },
       storydesc: {
         type: 'text',

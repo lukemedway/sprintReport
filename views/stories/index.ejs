@@ -48,12 +48,10 @@
             <table id="bootstrap-table" class="table table-hover table-striped">
                 <thead>
                     <tr>
-                        <th class="hidden" data-field="id">ID</th>
-                        <th class="col-md-3" data-field="name" data-sortable="true" data-formatter="formatLink">Project Name</th>
-                        <th class="col-md-2" data-field="jiraprojectref" data-sortable="true">Project REF (JIRA)</th>
-                        <th class="col-md-2" data-field="complete" data-sortable="true">Approx % Complete</th>
-                        <th class="col-md-2" data-field="velocitytgt" data-sortable="true">Target Velocity</th>
-                        <th class="col-md-2" data-field="velocityavg" data-sortable="true">Average Velocity</th>
+                        <th class="bs-checkbox" style="width: 30px"></th>
+                        <th class="col-md-2" data-field="storyjiraref">REF</th>
+                        <th class="col-md-3" data-field="storydesc" data-sortable="true" data-formatter="formatLink">Story Description</th>
+                        <th class="col-md-2" data-field="storystatus" data-sortable="true">Status</th>
                         <th class="col-md-3 td-actions text-right" data-field="actions" data-events="operateEvents" data-formatter="operateFormatter">Actions</th>
                     </tr>
                 </thead>

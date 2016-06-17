@@ -38,13 +38,14 @@
             
             
             <ul class="nav">
-                <% if(req.path !== '/projects' && req.path !== '/projects/') { %>
-                <li class="active">
-                    <a href="#componentsExamples" id="componentLink" data-toggle="collapse" aria-expanded="false" class="collapsed">
+                <%
+                if(req.path !== '/projects' && req.path !== '/projects/') { %>
+                <li <% if(typeof sprintMenuActive !== 'undefined') { %>class="active"<% } %>>
+                    <a href="#menu-sprints" id="componentLink" data-toggle="collapse" aria-expanded="false" class="collapsed">
                         <i class="pe-7s-display1"></i>
                         <p>Sprint Reports <b class="caret"></b></p>
                     </a>
-                    <div class="collapse out" id="componentsExamples" aria-expanded="false">
+                    <div class="collapse out" id="menu-sprints" aria-expanded="false">
                         <ul class="nav">
                             <% if (typeof sprintData !== 'undefined') { %>
                             <% 
@@ -65,10 +66,16 @@
                     </div>
                 </li>
                 <% if (req.param('id')) { %>
-                <li>
+                <li <% if(typeof storyMenuActive !== 'undefined'){ %>class="active"<% } %>>
+                    <a href="/<%=req.param('id')%>/stories/">
+                        <i class="pe-7s-notebook"></i>
+                        <p>Project Stories</p>
+                    </a>
+                </li>
+                <li <% if(typeof dependencyMenuActive !== 'undefined'){ %>class="active"<% } %>>
                     <a href="/<%=req.param('id')%>/dependencies/">
-                        <i class="pe-7s-display1"></i>
-                        <p>Manage Dependencies</p>
+                        <i class="pe-7s-plugin"></i>
+                        <p>Project Dependencies</p>
                     </a>
                 </li>
                 <% } %>

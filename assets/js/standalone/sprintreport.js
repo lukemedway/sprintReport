@@ -7,12 +7,12 @@ $().ready(function(){
         $('#componentLink').attr('aria-expanded', 'true');
         $('#componentLink').removeClass('collapsed');
         setTimeout(function() {
-            $('#componentsExamples').attr('aria-expanded', 'true');
-            $('#componentsExamples').removeClass('collapse');
-            $('#componentsExamples').addClass('collapsing');
-            $('#componentsExamples').removeClass('collapsing');
-            $('#componentsExamples').addClass('collapse');
-            $('#componentsExamples').addClass('in');
+            $('#menu-sprints').attr('aria-expanded', 'true');
+            $('#menu-sprints').removeClass('collapse');
+            $('#menu-sprints').addClass('collapsing');
+            $('#menu-sprints').removeClass('collapsing');
+            $('#menu-sprints').addClass('collapse');
+            $('#menu-sprints').addClass('in');
         }, 200 );
     }, 200);
 

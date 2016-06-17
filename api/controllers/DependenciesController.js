@@ -25,7 +25,8 @@ var DependenciesController = {
                         res.view({
                             title: projectData.name + ' DEPENDENCIES',
                             scripts: arrScripts,
-                            sprintData: sprintData
+                            sprintData: sprintData,
+                            dependencyMenuActive: true
                         });
                     },
                     error: function(err) {
@@ -65,28 +66,7 @@ var DependenciesController = {
         }).exec(function createdDependency(err, dependencyData) {
             if(err) return next(err);
             if(!dependencyData) return next(err);
-            res.json(dependencyData);
-            
-            // BELOW NEEDS REWRITE - INCREMENTAL COUNTER SHOULD BE IMPLEMENTED AS PART OF MODEL.
-            // AUTO-INCREMENT FIELDS ARE NOT SUPPORTED BY SAILS / MONGODB - CHEERS! :thumbsup:
-            
-
-
-            // DependenciesController.getLastInsertedCollectionByProject(res, dependencyData.project, function(lastDependencyData) {     
-            //     var dependencyref = lastDependencyData[0].dependencyref + 1;
-
-            //     Dependency.update({
-            //         id: dependencyData.id
-            //     },
-            //     {
-            //         dependencyref: dependencyref
-            //     })
-            //     .exec(function updatedDependency(err, dependencyDataUpdated) {
-            //         if(err) next(err);
-            //         res.json(dependencyDataUpdated);
-            //     })  
-            // });
-             
+            res.json(dependencyData);             
         });
     },
     

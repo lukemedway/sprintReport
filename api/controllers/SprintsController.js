@@ -27,7 +27,8 @@ var SprintsController = {
                             title: projectData.name,
                             scripts: scripts,
                             projectData: projectData,
-                            sprintData: sprintData
+                            sprintData: sprintData,
+                            sprintMenuActive: true
                         });
                     },
                     error: function(err){
@@ -60,7 +61,8 @@ var SprintsController = {
                         title: reportData[0].project.name + " REPORT",
                         scripts: scripts,
                         sprintData: menuData,
-                        reportData: reportData
+                        reportData: reportData,
+                        sprintMenuActive: true
                     });
                 },
                 error: function(err){
@@ -94,7 +96,8 @@ var SprintsController = {
                         scripts: scripts,
                         reportData: reportData,
                         sprints: sprints,
-                        sprintData: menuData
+                        sprintData: menuData,
+                        sprintMenuActive: true
                     });
                 })
 
