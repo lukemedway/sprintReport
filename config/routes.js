@@ -49,10 +49,7 @@ module.exports.routes = {
   '/sprints/project/:id':                             { controller: "SprintsController",  action: "index" },
   '/sprints/setupreport/:id' :                        { controller: 'SprintsController',  action: 'setupreport' },
   '/sprints/getSprintsByProjectJson/:id' :            { controller: 'SprintsController',  action: 'getSprintsByProjectJson' },
-  '/reports/client/:id':                              { controller: "ReportsController",  action: "client" }, 
-  '/reports/report/:id':                              { controller: "ReportsController",  action: "report" },
   '/jira/getstory/:id' :                              { controller: "JiraController",     action: "getstory" },
-  '/:id/stories/' :                                   { controller: "StoriesController",  action: "index" },
 
 
 
@@ -62,11 +59,12 @@ module.exports.routes = {
 
   
   '/:id/sprints/':                                    { controller: "SprintsController", action: "index" },
-  '/:id/sprints/edit/:sprintid' :                     { controller: "SprintsController",  action: "edit" },
+  '/:id/sprints/edit/:sprintid' :                     { controller: "SprintsController", action: "edit" },
   '/:id/sprints/getSprints/':                         { controller: "SprintsController", action: "getSprints" },
   '/:id/sprints/report/:sprintid':                    { controller: "SprintsController", action: "report" },
   '/:id/sprints/setupcomplete':                       { controller: "SprintsController", action: "setupcomplete" },
-  '/:id/sprints/getSprintsBySprintJson/:sprintid' :   { controller: 'SprintsController',  action: 'getSprintsBySprintJson' },
+  '/:id/sprints/getSprintsBySprintJson/:sprintid' :   { controller: 'SprintsController', action: 'getSprintsBySprintJson' },
+  '/:id/sprints/report/:sprintid/stories' :           { controller: "SprintsController", action: "setupsprintstories" },
   
   // CRUD ACTIONS VIA AJAX
   '/projects/delete/:id':                             { controller: "ProjectsController", action: "delete" },

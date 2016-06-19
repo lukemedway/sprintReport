@@ -6,9 +6,8 @@
  */
 
 module.exports = {
-
+  autoPK: false,
   attributes: {
-     autoPK: false,
      name: {
        type: 'string',
        required: true,

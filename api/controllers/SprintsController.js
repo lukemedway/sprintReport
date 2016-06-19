@@ -99,12 +99,39 @@ var SprintsController = {
                         sprintData: menuData,
                         sprintMenuActive: true
                     });
-                })
-
-                
-                
+                });   
             }); 
+        });
+    },
+    
+    setupsprintstories: function(req, res, next) {
+        Sprint.find({ id: req.param('sprintid') }).populate('project').exec(function foundSprint(err, reportData) {
+            if(err) return next(err);
+            if(!reportData) return next(err);
+            if(reportData.length == 0) return next(err);
 
+            Sprint.find({ project: reportData[0].project.jiraprojectref })
+            .populate('project')
+            .sort({ 'createdAt': -1 })
+            .where({ createdAt: { '<=': reportData[0].createdAt }, 'sprintdeleted': false })
+            .exec(function foundSprints(err, sprints) {
+                if(err) return next(err);
+                if(!sprints) return next(err);
+                Sprint.find({ project: reportData[0].project.jiraprojectref })
+                .sort({ 'createdAt': -1 })
+                .where({ sprintdeleted: false })
+                .exec(function foundFullSprints(err, menuData){
+                    var scripts = ['sprintreport.js'];
+                    res.view('sprints/stories', {
+                        title: 'SETUP STORIES',
+                        scripts: scripts,
+                        reportData: reportData,
+                        sprints: sprints,
+                        sprintData: menuData,
+                        sprintMenuActive: true
+                    });
+                });   
+            }); 
         });
     },
 
@@ -203,6 +230,10 @@ var SprintsController = {
             res.redirect('/' + req.param('id') + '/sprints/report/' + req.param('sprintid'));
         });
 
+    },
+    
+    storycomplete: function(req, res, next) {
+          
     },
     
     update: function(req, res, next) {

@@ -6,13 +6,13 @@
  */
 
 module.exports = {
-
+  autoPK: false,
   attributes: {
-      autoPK: false,
       storyjiraref: {
         type: 'string',
         required: true,
-        unique: true
+        unique: true,
+        primaryKey: true
       },
       storydesc: {
         type: 'text',
