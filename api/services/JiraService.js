@@ -36,18 +36,12 @@ module.exports = {
             headers: { "Authorization": "Basic " + authKey }
         };
     
-        https.request(options, function(response) {
+        var req = https.request(options, function(response) {
             var responseData = '';
             response.setEncoding('utf8');
 
             response.on('data', function(chunk){
                 responseData += chunk;
-            });
-
-            response.once('error', function(err){
-                // Some error handling here, e.g.:
-                cb.error(err);
-                res.serverError(err);
             });
 
 
@@ -61,7 +55,16 @@ module.exports = {
                 }
             }); 
 
-        }).end()
+        })
+        
+        req.end();
+
+        req.on('error', function(err){
+            // console.log(err);
+            // Some error handling here, e.g.:
+            cb.error(err);
+        });
+        
     }
     
 }
