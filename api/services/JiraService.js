@@ -35,7 +35,7 @@ module.exports = {
             method : method,
             headers: { "Authorization": "Basic " + authKey }
         };
-        
+    
         https.request(options, function(response) {
             var responseData = '';
             response.setEncoding('utf8');
@@ -49,6 +49,7 @@ module.exports = {
                 cb.error(err);
                 res.serverError(err);
             });
+
 
             response.on('end', function(){
                 try {

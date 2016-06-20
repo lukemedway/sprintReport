@@ -1,1 +1,70 @@
-hello
+<div class="col-md-12">
+  <div class="card" id="add-control">
+    <div class="header">
+      <h4 class="title">Sprint Commitment Story List</h4>
+      <p class="category">List of stories intended to be completed for this sprint</p>
+    </div>
+    <div class="content">
+      <form id="commitment">
+        <div class="row">
+          <div class="col-md-2">
+            <div class="form-group">
+              <span id="storylist">
+                <label class="loading">Story&nbsp;ID</label>
+                <input class="typeahead form-control" type="text" placeholder="JIRA ID" id="storyid" />
+              </span> 
+            </div>
+          </div>
+          <div class="col-md-1">
+            <div class="form-group">
+              <label>Priority</label>
+              <input type="text" class="form-control" id="storypriority" placeholder="Priority" />
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Summary</label>
+              <input type="text" class="form-control" id="storysummary" placeholder="Summary" />
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group">
+              <label>Status</label>
+              <input type="text" class="form-control" id="storystatus" placeholder="Status" />
+            </div>
+          </div>
+          <div class="col-md-1">
+            <div class="form-group">
+              <label>&nbsp;</label>
+              <input type="button" class="btn btn-primary btn-fill form-control" value="Add" />
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+
+  <div class="card">
+    <table id="bootstrap-table" class="table table-striped">
+      <thead>
+        <tr>
+          <th class="col-md-1" data-field="state" data-checkbox="true"></th>
+          <th class="col-md-1" data-field="storyid" data-sortable="true">Story ID</th>
+          <th class="col-md-1" data-field="priority" data-sortable="true">Priority</th>
+          <th class="col-md-8" data-field="summary">Summary</th>
+          <th class="col-md-2" data-field="status" data-sortable="true">Status</th>     
+          <th data-field="actions" class="td-actions text-right" data-events="operateEvents" data-formatter="operateFormatter">Actions</th>                         
+        </tr>
+      </thead>
+    </table>
+  </div><!--  end card  -->
+</div>
+
+
+
+
+
+
+
+
