@@ -121,7 +121,7 @@ var SprintsController = {
                 .sort({ 'createdAt': -1 })
                 .where({ sprintdeleted: false })
                 .exec(function foundFullSprints(err, menuData){
-                    var scripts = ["sprint-dependencies.js", "data-table.js"];
+                    var scripts = ["sprint-stories.js"];
                     res.view('sprints/stories', {
                         title: 'SETUP SPRINT STORIES',
                         scripts: scripts,
