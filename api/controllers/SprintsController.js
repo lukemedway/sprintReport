@@ -245,12 +245,13 @@ var SprintsController = {
     },
     
     delete: function(req, res, next) {
-        Sprint.update( { 'id': req.param('sprintid') }, { 'sprintdeleted': true }).exec(function deletedSprint(err, sprint) {
+        Sprint.update({ 'id': req.param('sprintid') }, { 'sprintdeleted': true }).exec(function deletedSprint(err, sprint) {
             if(err) return next(err);
             if(!sprint) return res.badRequest('One or more expected parameters were missing in the requested resource',  { view: 'responses/badrequest', layout: 'responses/layout' });
             res.json(sprint);
         });
     }, 
+
     
     // *******************************************************************
     
@@ -258,6 +259,21 @@ var SprintsController = {
     
     // *******************************************************************      
     
+    // {host}/rest/agile/latest/board/176/sprint
+    getJiraSprintsByName: function(req, res, next) {
+        var sprintname = req.param('sprintname');
+        var projectjiraref = req.param('id');
+        JiraService.getJIRAStoriesByProjectKeySprintName(projectjiraref, sprintname, {
+            success: function(jiraData) {
+                res.json(jiraData);
+            },
+            error: function(err) {
+                res.send(500, err);
+            }
+        });
+    },
+
+
     getSprints: function(req, res, next) {
         Sprint.find({ project: req.param('id') })
         .populate('project')

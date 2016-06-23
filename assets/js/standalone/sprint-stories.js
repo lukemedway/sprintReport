@@ -78,61 +78,73 @@
             var path = window.location.pathname;
             var arrPath = path.split("/");
             var projectId = arrPath[1];
+            var storyurl = '';
             
+            $('#sprint-commitment').on('submit', function(e) {
+                e.preventDefault();
+                storyurl = ('/' + projectId + '/getJiraSprintsByStoryName/' + $('#sprintname').val());
+                console.log(storyurl);
 
-            $table.bootstrapTable({
-                toolbar: ".toolbar",
-                clickToSelect: false,
-                showRefresh: true,
-                search: true,
-                showToggle: true,
-                showColumns: true,
-                pagination: true,
-                searchAlign: 'left',
-                pageSize: 10,
-                pageList: [10,25,50,100],
-                ordering: true,
-                url: '',
-                dataType: 'json',
-                sidePagination: 'client',
-                queryParams: false,
-                ShowingRows: function(pageFrom, pageTo, totalRows){
-                    //do nothing here, we don't want to show the text "showing x of y from..."
-                },
-                formatRecordsPerPage: function(pageNumber){
-                    return pageNumber + " rows visible";
-                },
-                icons: {
-                    refresh: 'fa fa-refresh',
-                    toggle: 'fa fa-th-list',
-                    columns: 'fa fa-columns',
-                    detailOpen: 'fa fa-plus-circle',
-                    detailClose: 'fa fa-minus-circle'
-                },
+
+                $table.bootstrapTable({
+                    toolbar: ".toolbar",
+                    clickToSelect: false,
+                    showRefresh: true,
+                    search: true,
+                    showToggle: true,
+                    showColumns: true,
+                    pagination: true,
+                    searchAlign: 'left',
+                    pageSize: 10,
+                    pageList: [10,25,50,100],
+                    ordering: true,
+                    url: storyurl,
+                    dataType: 'json',
+                    sidePagination: 'client',
+                    queryParams: false,
+                    ShowingRows: function(pageFrom, pageTo, totalRows){
+                        //do nothing here, we don't want to show the text "showing x of y from..."
+                    },
+                    formatRecordsPerPage: function(pageNumber){
+                        return pageNumber + " rows visible";
+                    },
+                    icons: {
+                        refresh: 'fa fa-refresh',
+                        toggle: 'fa fa-th-list',
+                        columns: 'fa fa-columns',
+                        detailOpen: 'fa fa-plus-circle',
+                        detailClose: 'fa fa-minus-circle'
+                    },
+                    
+                });
+
 
             });
-
             //activate the tooltips after the data table is initialized
             $('[rel="tooltip"]').tooltip();
 
-            $(window).resize(function () {
+            $(window).resize(function() {
                 $table.bootstrapTable('resetView');
             });
             
             // Handle the data for POST and PUT requests to the server.
-            $('#sprintform').on('submit', function(e) {
+            $('#sprint-commitment').on('submit', function(e) {
                 e.preventDefault();
                 var url, method, formData = $(this).serializeArray();
                 
-                if($('#projectid').val() !== '' && $('#projectid').val() !== 'undefined') {
-                    url = '/sprints/create/';
-                    method = 'POST';
-                }
+                
+
+                // if($('#projectid').val() !== '' && $('#projectid').val() !== 'undefined') {
+                //     url = '/sprints/create/';
+                //     method = 'POST';
+                // }
             
-                if ($('#sprintid').val() !== '' && $('#sprintid').val() !== 'undefined') {
-                    url = '/sprints/update/';
-                    method = "PUT";
-                }
+                // if ($('#sprintid').val() !== '' && $('#sprintid').val() !== 'undefined') {
+                //     url = '/sprints/update/';
+                //     method = "PUT";
+                // }
+
+                
                     
                 $.ajax({
                     url: url,

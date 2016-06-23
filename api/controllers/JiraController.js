@@ -15,9 +15,9 @@ module.exports = {
                res.send(200, data);
            },
            error: function(err) {
-               console.log('ERROR: getStoriesByProjectKey Service Method CB.');
+               console.log('ERROR: getStoriesByProjectKey Service Method CB');
            }
-        });  
+        });
     },
     
     getstory: function(req, res) {
@@ -55,7 +55,7 @@ module.exports = {
                res.view('jiratest3', { scripts: arrScripts });
            },
            error: function(err) {
-               console.log('ERROR: getStoriesByProjectKey Service Method CB.');
+               console.log('ERROR: getStoriesByProjectKey Service Method CB');
            }
         });
     }

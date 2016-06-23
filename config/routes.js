@@ -52,12 +52,11 @@ module.exports.routes = {
   '/jira/getstory/:id' :                              { controller: "JiraController",     action: "getstory" },
 
 
-
   '/:id/dependencies' :                               { controller: "DependenciesController", action: "index" },
   '/:id/dependencies/create':                         { controller: "DependenciesController", action: "create" },
   '/:id/dependencies/getDependencies':                { controller: "DependenciesController", action: "getDependenciesByProjectRefJson" },
 
-  
+
   '/:id/sprints/':                                    { controller: "SprintsController", action: "index" },
   '/:id/sprints/edit/:sprintid' :                     { controller: "SprintsController", action: "edit" },
   '/:id/sprints/getSprints/':                         { controller: "SprintsController", action: "getSprints" },
@@ -65,11 +64,12 @@ module.exports.routes = {
   '/:id/sprints/setupcomplete':                       { controller: "SprintsController", action: "setupcomplete" },
   '/:id/sprints/getSprintsBySprintJson/:sprintid' :   { controller: 'SprintsController', action: 'getSprintsBySprintJson' },
   '/:id/sprints/report/:sprintid/stories' :           { controller: "SprintsController", action: "setupsprintstories" },
+  '/:id/getJiraSprintsByName/:sprintname' :           { controller: "SprintsController", action: "getJiraSprintsByName" },
   
+
   // CRUD ACTIONS VIA AJAX
   '/projects/delete/:id':                             { controller: "ProjectsController", action: "delete" },
   '/sprints/delete/:sprintid':                        { controller: "SprintsController",  action: "delete" }
-  
   
   
   // DEBUG LINE
