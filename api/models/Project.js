@@ -31,6 +31,9 @@ module.exports = {
        type: 'float',
        defaultsTo: 0
      },
+     projectboardid: {
+       type: 'integer'
+     },
      deleted: {
        type: 'boolean',
        defaultsTo: false

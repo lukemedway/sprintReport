@@ -4,6 +4,14 @@
 
 module.exports = {
     
+    // Endpoint for getting the Board ID - required for retrieving sprints:
+    // /rest/agile/latest/board/?name=topshop
+    
+    
+    // Endpoint for retrieving sprints based on Board ID:
+    // /rest/agile/latest/board/176/sprint
+    
+    
     getJIRAStoryByKey: function(storyKey, next) {
         var endpoint = "/rest/api/2/search?jql=key=" + storyKey;
         return this.doRequest(endpoint, "GET", next);
