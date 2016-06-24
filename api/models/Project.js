@@ -31,7 +31,7 @@ module.exports = {
        type: 'float',
        defaultsTo: 0
      },
-     projectboardid: {
+     projectjiraboard: {
        type: 'integer'
      },
      deleted: {

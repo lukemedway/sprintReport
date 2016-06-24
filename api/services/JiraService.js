@@ -4,29 +4,58 @@
 
 module.exports = {
     
-    // Endpoint for getting the Board ID - required for retrieving sprints:
-    // /rest/agile/latest/board/?name=topshop
+    // Endpoint for fetching the Board ID - required for fetching sprints:
+    // /rest/agile/latest/board/?name=oasis
     
+    getJIRABoards: function(projectName, next) {
+        var endpoint = '';
+        if(projectName.length == 0) {
+            endpoint = "/rest/agile/latest/board/?maxResults=1000";
+        } else {
+            // Get the first word of the project name to use in board name
+            var projectNameParts = projectName.split(" ");
+            var projectName = projectNameParts[0];            
+            endpoint = "/rest/agile/latest/board/?name=" + projectName;
+        }
+        return this.doRequest(endpoint, "GET", next);
+    },
     
-    // Endpoint for retrieving sprints based on Board ID:
+    // Endpoint for fetching sprints based on Board ID:
     // /rest/agile/latest/board/176/sprint
     
+    getJIRASprints: function(boardId, next) {
+        var endpoints = "/rest/agile/latest/board/" + boardId + "/sprint/";
+        return this.doRequest(endpoint, "GET", next);
+    },
+    
+    // Endpoint for fetching an issue by key
+    // /rest/api/search?jql=key=OAS-1
     
     getJIRAStoryByKey: function(storyKey, next) {
         var endpoint = "/rest/api/2/search?jql=key=" + storyKey;
         return this.doRequest(endpoint, "GET", next);
     },
     
+    // Endpoint for fetching stories by key
+    // /rest/api/2/search?jql=project=OAS AND issuetype=story
+    
     getJIRAStoriesByProjectKey: function(projectKey, next) {
         var endpoint = "/rest/api/2/search?jql=project=" + projectKey + "%20AND%20issuetype=story&maxResults=9999&fields=key,summary,priority,status";
         return this.doRequest(endpoint, "GET", next);
     },
 
+    // Endpoint for fetching Stories by Project Key and SprintName
+    // /rest/api/2/search?jql=project=OAS AND sprint=Oasis Sprint 1 AND issuetype=story
+    
     getJIRAStoriesByProjectKeySprintName: function(projectKey, sprintName, next) {
         var endpoints = "/rest/api/2/search?jql=project=" + projectKey + "%20AND%20sprint='" + sprintName + "'%20AND%20issuetype=story&maxResults=9999&fields=key,summaray,priority,status";
         return this.doRequest(endpoints, "GET", next);
     },
     
+    
+    // Method for conducting the fetch.
+    // Returns data from based on the endpoint provided if successful
+    // Returns an error if cannot establish a connection or there is another problem
     
     doRequest: function(endpoint, method, next) {
 

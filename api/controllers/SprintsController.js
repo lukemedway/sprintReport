@@ -260,6 +260,19 @@ var SprintsController = {
     // *******************************************************************      
     
     // {host}/rest/agile/latest/board/176/sprint
+    
+    fetchjiraboards: function(req, res, next) {
+        JiraService.getJIRABoards(req.param('projectname'), {
+            success: function(boardData) {
+                res.json(boardData);
+            },
+            error: function(err) {
+                res.send(500, err);
+            }
+        })
+    },
+        
+    
     getJiraSprintsByName: function(req, res, next) {
         var sprintname = req.param('sprintname');
         var projectjiraref = req.param('id');
