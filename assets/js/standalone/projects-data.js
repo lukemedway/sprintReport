@@ -101,22 +101,23 @@
             });
             
             
-            $('#projectname').on('focusout', function(e) {
-               if($('#projectname').val().length > 0) {
-                   $.ajax({ 
-                      url: '/',
-                      method: 'GET',
-                      data: 'projectname=' + $('#projectname').val(),
-                      success: function(data) {
-                         $.each(data, function(key, value) {
-                             $('projectjiraboard').append('<option value=' + key + '>' + value + '</option>');
-                         });
-                      },
-                      error: function(err) {
-                          console.log('Could not fetch the request data');
-                      }
-                   });
-               } 
+            $('#name').on('focusout', function(e) {
+                if($('#name').val().length > 0) {
+                    alert($('#name').val());
+                    $.ajax({ 
+                        url: '/fetchjiraboards',
+                        method: 'GET',
+                        data: 'projectname=' + $('#name').val(),
+                        success: function(data) {
+                            $.each(data, function(key, value) {
+                                $('#projectjiraboard').append('<option value=' + key + '>' + value + '</option>');
+                            });
+                        },
+                        error: function(err) {
+                            console.log('Could not fetch the request data');
+                        }
+                    });
+                } 
             });
             
             // Handle the data for POST and PUT requests to the server.
