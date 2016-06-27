@@ -4,6 +4,13 @@
 
 module.exports = {
     
+    
+    // For most endpoints, there are a number of parameters that can be set as follows:
+    // @maxResults = integer (max 1000)
+    // @fields = string (comma delimeted string of field names, no spaces)
+    
+    //************************//
+    
     // Endpoint for fetching the Board ID - required for fetching sprints:
     // /rest/agile/latest/board/?name=oasis
     
@@ -27,6 +34,9 @@ module.exports = {
         var endpoint = "/rest/agile/latest/board/" + boardId + "/sprint/";
         return this.doRequest(endpoint, "GET", next);
     },
+
+    // Endpoint for retrieving stories by sprint
+    // /rest/api/2/search?jql=sprint=580 AND issuetype=story
 
     getJIRAStoriesBySprint: function(sprintId, next) {
         var endpoint = "/rest/api/2/search?jql=sprint=" + sprintId + "%20AND%20issuetype=story&maxResults=9999" //& fields=key,summary,priority,status";

@@ -46,6 +46,13 @@ module.exports = {
             if(!stories) next(err);
             res.json(stories);
         });
+    },
+    
+    getStoryCountBySprint: function(sprintId, next) {
+        Story.count({ id: sprintId }).exec(function foundStories(err, stories) {
+            if(err) return next.error(err);
+            return next.success(stories);
+        });
     }
 
     

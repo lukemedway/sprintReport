@@ -5,7 +5,7 @@
             if($('#name').val().length > 0) {
                 $('#name').addClass('loading');
                 $.ajax({ 
-                    url: '/fetchjiraboards/',
+                    url: '/jira/fetchjiraboards/',
                     method: 'GET',
                     data: 'name=' + $('#name').val(),
                     success: function(data) {

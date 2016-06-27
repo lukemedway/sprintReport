@@ -6,6 +6,7 @@
  */
 
 var Project = require('./ProjectsController');
+var Story = require('./StoriesController');
 
 var SprintsController = {
 	
@@ -104,7 +105,22 @@ var SprintsController = {
         });
     },
     
-    setupsprintstories: function(req, res, next) {
+    setupsprintstories: function(req, res, next) {       
+        Story.getStoryCountBySprint(req.param('sprintid'), {
+            success: function(stories) {
+                if(stories == 0) {
+                    SprintsController.initialstorysetup(req, res, next);
+                } else {
+                    SprintsController.iterativestorysetup(req, res, next);
+                }
+            },
+            error: function(err) {
+                res.send(500, err);
+            }
+        });
+    },
+    
+    initialstorysetup: function(req, res, next) {
         Sprint.find({ id: req.param('sprintid') }).populate('project').exec(function foundSprint(err, reportData) {
             if(err) return next(err);
             if(!reportData) return next(err);
@@ -117,17 +133,19 @@ var SprintsController = {
             .exec(function foundSprints(err, sprints) {
                 if(err) return next(err);
                 if(!sprints) return next(err);
+                
                 Sprint.find({ project: reportData[0].project.jiraprojectref })
                 .sort({ 'createdAt': -1 })
                 .where({ sprintdeleted: false })
                 .exec(function foundFullSprints(err, menuData){
                     if(err) return next(err);
-                    if(!menuData) return('No Menu Data');
+                    if(!menuData) return next('No Menu Data');
+                    
                     JiraService.getJIRASprints(reportData[0].project.projectjiraboard, {
                         success: function(jiraSprints) {
                             var scripts = ["sprint-stories.js"];
                             res.view('sprints/stories', {
-                                title: 'SETUP SPRINT STORIES',
+                                title: 'SETUP ' + reportData[0].project.name + ' SPRINT STORIES',
                                 scripts: scripts,
                                 reportData: reportData,
                                 sprints: sprints,
@@ -137,13 +155,18 @@ var SprintsController = {
                             });
                         },
                         error: function(err) {
-                            res.send(500, 'Could not contact JIRA, please try again later.');
+                            res.send(500, 'Could not contact JIRA, please check your connection or try again later.');
                         }
                     });
                 });   
             }); 
         });
     },
+    
+    iterativestorysetup: function(req, res, next) {
+        res.send(200, "Hello World");
+    },
+    
 
     edit: function(req, res, next) {
         SprintsController.setupreport(req, res, next);
@@ -152,7 +175,7 @@ var SprintsController = {
     test: function(req, res, next) {
         // console.log();
         // res.send(200);
-        res.view("HALLO");
+        // res.view("HALLO");
     },
         
 
@@ -268,33 +291,7 @@ var SprintsController = {
     // DATA METHODS
     
     // *******************************************************************      
-    
-    
-    
-    fetchjiraboards: function(req, res, next) {
-        JiraService.getJIRABoards(req.param('name'), {
-            success: function(boardData) {
-                res.json(boardData);
-            },
-            error: function(err) {
-                res.send(500, err);
-            }
-        })
-    },
-
-    // {host}/rest/agile/latest/board/176/sprint
-
-    fetchjirastoriesbysprint: function(req, res, next) {
-        JiraService.getJIRAStoriesBySprint(req.param('sprintid'), {
-            success: function(stories) {
-                res.json(stories.issues);
-            },
-            error: function(err) {
-                res.send(500, err);
-            }
-        })
-    },
-        
+           
     
     getJiraSprintsByName: function(req, res, next) {
         var sprintname = req.param('sprintname');

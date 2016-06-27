@@ -45,18 +45,20 @@ module.exports.routes = {
   ***************************************************************************/
   
   
+  // ****************************************************
   // Hard coded routes, used primarily for the prototype
-  '/sprints/project/:id':                             { controller: "SprintsController",  action: "index" },
-  '/sprints/setupreport/:id' :                        { controller: 'SprintsController',  action: 'setupreport' },
-  '/sprints/getSprintsByProjectJson/:id' :            { controller: 'SprintsController',  action: 'getSprintsByProjectJson' },
-  '/jira/getstory/:id' :                              { controller: "JiraController",     action: "getstory" },
+  // ****************************************************
 
-
+  // DependenciesController Routes
   '/:id/dependencies' :                               { controller: "DependenciesController", action: "index" },
   '/:id/dependencies/create':                         { controller: "DependenciesController", action: "create" },
   '/:id/dependencies/getDependencies':                { controller: "DependenciesController", action: "getDependenciesByProjectRefJson" },
 
 
+  // SprintsController Routes
+  '/sprints/project/:id':                             { controller: "SprintsController", action: "index" },
+  '/sprints/setupreport/:id' :                        { controller: 'SprintsController', action: 'setupreport' },
+  '/sprints/getSprintsByProjectJson/:id' :            { controller: 'SprintsController', action: 'getSprintsByProjectJson' },
   '/:id/sprints/':                                    { controller: "SprintsController", action: "index" },
   '/:id/sprints/edit/:sprintid' :                     { controller: "SprintsController", action: "edit" },
   '/:id/sprints/getSprints/':                         { controller: "SprintsController", action: "getSprints" },
@@ -65,8 +67,13 @@ module.exports.routes = {
   '/:id/sprints/getSprintsBySprintJson/:sprintid' :   { controller: 'SprintsController', action: 'getSprintsBySprintJson' },
   '/:id/sprints/report/:sprintid/stories':            { controller: "SprintsController", action: "setupsprintstories" },
   '/:id/fetchsprintsbyname':                          { controller: "SprintsController", action: "getJiraSprintsByName" },
-  '/fetchjiraboards/':                                { controller: "SprintsController", action: "fetchjiraboards" },
-  '/fetchjirastoriesbysprint/:sprintid':              { controller: "SprintsController", action: "fetchjirastoriesbysprint" },
+  
+  
+  // JIRA Routes
+  '/jira/fetchjiraboards/':                           { controller: "JiraController", action: "fetchjiraboards" },
+  '/jira/fetchjirastoriesbysprint/:sprintid':         { controller: "JiraController", action: "fetchjirastoriesbysprint" },
+  '/:id/jira/getstory/:id' :                          { controller: "JiraController", action: "getstory" },
+  '/:id/jira/getkeys':                                { controller: "JiraController", action: "getkeys" },
   
 
   // CRUD ACTIONS VIA AJAX
