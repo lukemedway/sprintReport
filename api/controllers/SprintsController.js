@@ -121,14 +121,24 @@ var SprintsController = {
                 .sort({ 'createdAt': -1 })
                 .where({ sprintdeleted: false })
                 .exec(function foundFullSprints(err, menuData){
-                    var scripts = ["sprint-stories.js"];
-                    res.view('sprints/stories', {
-                        title: 'SETUP SPRINT STORIES',
-                        scripts: scripts,
-                        reportData: reportData,
-                        sprints: sprints,
-                        sprintData: menuData,
-                        sprintMenuActive: true
+                    if(err) return next(err);
+                    if(!menuData) return('No Menu Data');
+                    JiraService.getJIRASprints(reportData[0].project.projectjiraboard, {
+                        success: function(jiraSprints) {
+                            var scripts = ["sprint-stories.js"];
+                            res.view('sprints/stories', {
+                                title: 'SETUP SPRINT STORIES',
+                                scripts: scripts,
+                                reportData: reportData,
+                                sprints: sprints,
+                                sprintData: menuData,
+                                jiraSprints: jiraSprints,
+                                sprintMenuActive: true
+                            });
+                        },
+                        error: function(err) {
+                            res.send(500, 'Could not contact JIRA, please try again later.');
+                        }
                     });
                 });   
             }); 
@@ -259,12 +269,25 @@ var SprintsController = {
     
     // *******************************************************************      
     
-    // {host}/rest/agile/latest/board/176/sprint
+    
     
     fetchjiraboards: function(req, res, next) {
-        JiraService.getJIRABoards(req.param('projectname'), {
+        JiraService.getJIRABoards(req.param('name'), {
             success: function(boardData) {
                 res.json(boardData);
+            },
+            error: function(err) {
+                res.send(500, err);
+            }
+        })
+    },
+
+    // {host}/rest/agile/latest/board/176/sprint
+
+    fetchjirastoriesbysprint: function(req, res, next) {
+        JiraService.getJIRAStoriesBySprint(req.param('sprintid'), {
+            success: function(stories) {
+                res.json(stories.issues);
             },
             error: function(err) {
                 res.send(500, err);

@@ -1,5 +1,38 @@
         var $table = $('#bootstrap-table');
         
+        
+        function fetchJiraBoards(selected) {    
+            if($('#name').val().length > 0) {
+                $('#name').addClass('loading');
+                $.ajax({ 
+                    url: '/fetchjiraboards/',
+                    method: 'GET',
+                    data: 'name=' + $('#name').val(),
+                    success: function(data) {
+                        if(data.values.length > 0) {
+                            $('#projectjiraboard').html('');
+                            $('#projectjiraboard').append('<option value="">Please Select</option>');
+                            $.each(data.values, function(key, value) {
+                                if(selected == value.id) {
+                                    $('#projectjiraboard').append('<option value=' + value.id + ' selected="selected">' + value.name + '</option>');
+                                } else {
+                                    $('#projectjiraboard').append('<option value=' + value.id + '>' + value.name + '</option>');
+                                }
+                            });
+                        } else {
+                            $('#projectjiraboard').html('');
+                            $('#projectjiraboard').append('<option value="">' + 'No JIRA Board Found' + '</option>');
+                        }
+                        $('#name').removeClass('loading');
+                    },
+                    error: function(err) {
+                        console.log('Could not fetch the request data');
+                        $('#name').removeClass('loading');
+                    }
+                });
+            }
+        }
+        
         // Called from data-formatter attribute in th
         function operateFormatter(value, row, index) {
             return [
@@ -11,17 +44,21 @@
                 '</a>'
             ].join('');
         }
+
+
+
         
         function formatLink(value, row, index) {
             return [ "<a href='/" + row.jiraprojectref + "/sprints/'>" + value + "</a>" ].join('');
         }
         
         function resetForm() {
-            $("#cancel").addClass('hidden');
-            $("#submit").val('Add');
-            $("#name").val('');
-            $("#jiraprojectref").val('');
-            $("#id").val('');
+            $('#cancel').addClass('hidden');
+            $('#submit').val('Add');
+            $('#name').val('');
+            $('#jiraprojectref').val('');
+            $('#id').val('');
+            $('#projectjiraboard').html('<option value="">Please Select</option>');
         }
 
         $().ready(function(){
@@ -40,10 +77,13 @@
                     $('#add-control').addClass('box');
 
                     $('#name').val(row.name);
+                    fetchJiraBoards(row.projectjiraboard);
                     $('#jiraprojectref').val(row.jiraprojectref);
                     $('#submit').val('Save');
                     $('#cancel').removeClass('hidden');
                     $('#id').val(row.jiraprojectref);
+
+                    $('#projectjiraboarddesc').val(row.projectjiraboarddesc);
                     
                     setTimeout(function() { $('#add-control').removeClass('box') }, 2000);
                 },
@@ -100,24 +140,14 @@
                 $table.bootstrapTable('resetView');
             });
             
-            
             $('#name').on('focusout', function(e) {
-                if($('#name').val().length > 0) {
-                    alert($('#name').val());
-                    $.ajax({ 
-                        url: '/fetchjiraboards',
-                        method: 'GET',
-                        data: 'projectname=' + $('#name').val(),
-                        success: function(data) {
-                            $.each(data, function(key, value) {
-                                $('#projectjiraboard').append('<option value=' + key + '>' + value + '</option>');
-                            });
-                        },
-                        error: function(err) {
-                            console.log('Could not fetch the request data');
-                        }
-                    });
-                } 
+                e.preventDefault();
+                fetchJiraBoards();
+            });
+
+            $('#projectjiraboard').on('change', function(e) {
+                e.preventDefault();
+                $('#projectjiraboarddesc').val($('#projectjiraboard option:selected').text());
             });
             
             // Handle the data for POST and PUT requests to the server.

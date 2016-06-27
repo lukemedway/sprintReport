@@ -34,6 +34,9 @@ module.exports = {
      projectjiraboard: {
        type: 'integer'
      },
+     projectjiraboarddesc: {
+       type: 'string'
+     },
      deleted: {
        type: 'boolean',
        defaultsTo: false

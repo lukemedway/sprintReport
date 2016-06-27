@@ -1,5 +1,20 @@
         var $table = $('#sprintstories-bootstrap-table');
         
+        // JSON Data Formatting controls
+        // Return the values from the JSON data objects
+        function statusFormatter(value, row) {
+            return row.fields.status.name;
+        }
+
+        function summaryFormatter(value, row) {
+            return row.fields.summary;
+        }
+
+        function priorityFormatter(value, row) {
+            return row.fields.priority.name;
+        }
+        // End JSON data formatting
+
         // Called from data-formatter attribute in th
         function operateFormatter(value, row, index) {
             return [
@@ -36,6 +51,9 @@
         }
 
         $().ready(function(){
+
+
+            
 
             $('#sprintform').validate();
             $("#sprintpublicurl").val('http://' + window.location.host + '/');
@@ -112,14 +130,6 @@
                 },
                 
             });
-
-            $('#sprint-commitment').on('submit', function(e) {
-                e.preventDefault();
-                storyurl = ('/' + projectId + '/getJiraSprintsByStoryName/' + encodeURI($('#sprintname').val());
-                console.log(storyurl);
-                
-                $table.bootstrapTable('refresh', { url: storyurl } );
-            });
             
             
             //activate the tooltips after the data table is initialized
@@ -129,38 +139,51 @@
                 $table.bootstrapTable('resetView');
             });
             
-            // Handle the data for POST and PUT requests to the server.
-            $('#sprint-commitment').on('submit', function(e) {
+
+            // Handle the submission, to retrieve the stories based on the selected sprint.
+            var bootstrapurl = '';
+            $('#sprint-commitment').on('submit', function(e){
                 e.preventDefault();
-                var url, method, formData = $(this).serializeArray();
+                $(".main-panel").animate({
+                    scrollTop: $("#sprintstories-bootstrap-table").offset().top
+                }, 300);
+                bootstrapurl = '/fetchjirastoriesbysprint/' + $('#jirasprint').val();
+                $table.bootstrapTable('refresh', { url: bootstrapurl });
+            });
+
+
+            // // Handle the data for POST and PUT requests to the server.
+            // $('#sprint-commitment').on('submit', function(e) {
+            //     e.preventDefault();
+            //     var url, method, formData = $(this).serializeArray();
                 
                 
 
-                // if($('#projectid').val() !== '' && $('#projectid').val() !== 'undefined') {
-                //     url = '/sprints/create/';
-                //     method = 'POST';
-                // }
+            //     // if($('#projectid').val() !== '' && $('#projectid').val() !== 'undefined') {
+            //     //     url = '/sprints/create/';
+            //     //     method = 'POST';
+            //     // }
             
-                // if ($('#sprintid').val() !== '' && $('#sprintid').val() !== 'undefined') {
-                //     url = '/sprints/update/';
-                //     method = "PUT";
-                // }
+            //     // if ($('#sprintid').val() !== '' && $('#sprintid').val() !== 'undefined') {
+            //     //     url = '/sprints/update/';
+            //     //     method = "PUT";
+            //     // }
 
                 
                     
-                $.ajax({
-                    url: url,
-                    method: method,
-                    data: formData,
-                    success: function(data) {
-                        $table.bootstrapTable('refresh');
-                        resetForm();    
-                    },
-                    error: function(err) {
-                        console.dir(err);
-                    }
-                });
+            //     $.ajax({
+            //         url: url,
+            //         method: method,
+            //         data: formData,
+            //         success: function(data) {
+            //             $table.bootstrapTable('refresh');
+            //             resetForm();    
+            //         },
+            //         error: function(err) {
+            //             console.dir(err);
+            //         }
+            //     });
                                 
-            });
+            // });
 
-        });
+        }); // End of DOM ready

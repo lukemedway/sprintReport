@@ -1,7 +1,7 @@
 <div class="col-md-12">
   <div class="card" id="add-control">
     <div class="header">
-      <h4 class="title">Sprint Commitment Story List</h4>
+      <h4 class="title"><%=reportData[0].project.name + " - " + reportData[0].sprintname %> Commitment Story List</h4>
       <p class="category">List of stories intended to be completed for this sprint</p>
     </div>
     <div class="content">
@@ -10,7 +10,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4 class="panel-title">
-                        <a data-target="#collapseOne" href="#" data-toggle="collapse" class="collapsed" aria-expanded="false">
+                        <a data-target="#collapseOne" href="#" data-toggle="collapse" aria-expanded="true">
                             Populate from Jira Sprint
                             
                             <b class="caret"></b>
@@ -23,14 +23,19 @@
                           <div class="row">
                             <div class="col-md-4">
                               <div class="form-group">
-                                <label>Sprint Name (JIRA)</label>
-                                <input type="text" class="form-control" id="sprintname" placeholder="Sprint Name (JIRA)" />
+                                <label>Select Sprint</label>
+                                <select class="form-control" name="jirasprint" id="jirasprint"><option value="">Please Select</option>
+                                  <% for(i=0; i<jiraSprints.values.length; i++) { %>
+                                    <option value="<%=jiraSprints.values[i].id%>"><%=jiraSprints.values[i].name%></option>
+                                  <% } %>
+                                </select>
                               </div>
                             </div>
                             <div class="col-md-2">
                               <div class="form-group">
                                 <label>&nbsp;</label>
                                 <input type="submit" class="btn btn-primary btn-fill form-control" value="Populate" />
+                                <input type="hidden" name="projectjiraboard" value="<%=reportData[0].project.projectjiraboard %>" />
                               </div>
                             </div>
                           </div>
@@ -107,14 +112,19 @@
       <thead>
         <tr>
           <th class="col-md-1" data-field="state" data-checkbox="true"></th>
-          <th class="col-md-1" data-field="storyid" data-sortable="true">Story ID</th>
-          <th class="col-md-1" data-field="priority" data-sortable="true">Priority</th>
-          <th class="col-md-8" data-field="summary">Summary</th>
-          <th class="col-md-2" data-field="status" data-sortable="true">Status</th>     
+          <th class="col-md-1" data-field="key" data-sortable="true">Story ID</th>
+          <th class="col-md-1" data-field="priority" data-formatter="priorityFormatter" data-sortable="true">Priority</th>
+          <th class="col-md-8" data-field="summary" data-formatter="summaryFormatter">Summary</th>
+          <th class="col-md-2" data-field="status" data-formatter="statusFormatter" data-sortable="true">Status</th>     
           <th data-field="actions" class="td-actions text-right" data-events="operateEvents" data-formatter="operateFormatter">Actions</th>                         
         </tr>
       </thead>
     </table>
+
+    <div class="footer">
+      <input type="submit" class="btn btn-fill btn-primary pull-right" value="Save to Sprint" />
+    </div>
+    <div class="clearfix"></div>
   </div><!--  end card  -->
 </div>
 

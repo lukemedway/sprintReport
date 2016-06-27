@@ -14,7 +14,7 @@ module.exports = {
         } else {
             // Get the first word of the project name to use in board name
             var projectNameParts = projectName.split(" ");
-            var projectName = projectNameParts[0];            
+            var projectName = projectNameParts[0];         
             endpoint = "/rest/agile/latest/board/?name=" + projectName;
         }
         return this.doRequest(endpoint, "GET", next);
@@ -24,7 +24,12 @@ module.exports = {
     // /rest/agile/latest/board/176/sprint
     
     getJIRASprints: function(boardId, next) {
-        var endpoints = "/rest/agile/latest/board/" + boardId + "/sprint/";
+        var endpoint = "/rest/agile/latest/board/" + boardId + "/sprint/";
+        return this.doRequest(endpoint, "GET", next);
+    },
+
+    getJIRAStoriesBySprint: function(sprintId, next) {
+        var endpoint = "/rest/api/2/search?jql=sprint=" + sprintId + "%20AND%20issuetype=story&maxResults=9999" //& fields=key,summary,priority,status";
         return this.doRequest(endpoint, "GET", next);
     },
     

@@ -65,7 +65,8 @@ module.exports.routes = {
   '/:id/sprints/getSprintsBySprintJson/:sprintid' :   { controller: 'SprintsController', action: 'getSprintsBySprintJson' },
   '/:id/sprints/report/:sprintid/stories':            { controller: "SprintsController", action: "setupsprintstories" },
   '/:id/fetchsprintsbyname':                          { controller: "SprintsController", action: "getJiraSprintsByName" },
-  '/fetchjiraboards':                                 { controller: "SprintsController", action: "getJIRABoards" },
+  '/fetchjiraboards/':                                { controller: "SprintsController", action: "fetchjiraboards" },
+  '/fetchjirastoriesbysprint/:sprintid':              { controller: "SprintsController", action: "fetchjirastoriesbysprint" },
   
 
   // CRUD ACTIONS VIA AJAX

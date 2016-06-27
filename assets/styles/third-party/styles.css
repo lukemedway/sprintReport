@@ -7,6 +7,10 @@
     transition: none;
 }
 
+select.form-control.loading {
+    background-position: right 15px top 6px;
+}
+
 .form-control.loading.tt-hint {
     background: none !important;
 }
@@ -119,4 +123,9 @@ animation: box 3s ease 0s 1 !important;
 
 #dependencies-shortlist-bootstrap-table .no-records-found {
     height: 150px;
+}
+
+.tooltip {
+    position: fixed;
+    z-index: 4000;
 }
