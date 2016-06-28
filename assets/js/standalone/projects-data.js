@@ -14,14 +14,14 @@
                             $('#projectjiraboard').append('<option value="">Please Select</option>');
                             $.each(data.values, function(key, value) {
                                 if(selected == value.id) {
-                                    $('#projectjiraboard').append('<option value=' + value.id + ' selected="selected">' + value.name + '</option>');
+                                    $('#projectjiraboard').append('<option value=' + value.id + ' selected="selected">' + value.name + '</option>').selectpicker('refresh');
                                 } else {
-                                    $('#projectjiraboard').append('<option value=' + value.id + '>' + value.name + '</option>');
+                                    $('#projectjiraboard').append('<option value=' + value.id + '>' + value.name + '</option>').selectpicker('refresh');
                                 }
                             });
                         } else {
                             $('#projectjiraboard').html('');
-                            $('#projectjiraboard').append('<option value="">' + 'No JIRA Board Found' + '</option>');
+                            $('#projectjiraboard').append('<option value="">' + 'No JIRA Board Found' + '</option>').selectpicker('refresh');
                         }
                         $('#name').removeClass('loading');
                     },
@@ -58,7 +58,7 @@
             $('#name').val('');
             $('#jiraprojectref').val('');
             $('#id').val('');
-            $('#projectjiraboard').html('<option value="">Please Select</option>');
+            $('#projectjiraboard').html('<option value="">Please Select</option>').selectpicker('refresh');
         }
 
         $().ready(function(){

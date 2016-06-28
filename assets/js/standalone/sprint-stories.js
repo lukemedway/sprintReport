@@ -55,6 +55,19 @@
             return [ dateFormatted ].join('');
         }
 
+        function formFormatter(value, row, index) {
+            var key = row.key;
+            var priority = row.fields.priority.name;
+            var summary = row.fields.summary;
+            var status = row.fields.status.name;
+            return [
+                '<input type="hidden" value="' + key + '" name="storyjiraref" />',
+                '<input type="hidden" value="' + priority + '" name="storypriority" />',
+                '<input type="hidden" value="' + summary + '" name="storydesc" />',
+                '<input type="hidden" value="' + status + '" name="storystatus" />'
+            ].join('');
+        }
+
 
         
         function resetForm() {
@@ -156,17 +169,20 @@
                 }, 300);
                 var bootstrapurl = '';
                 bootstrapurl = '/jira/fetchjirastoriesbysprint/' + $('#jirasprint').val();
-                $table.bootstrapTable('refresh', { url: bootstrapurl }).on('onPostBody', alert("hello"));
-                // $table.bootstrapTable({
-                //     onLoadSuccess: function(data) {
-                //         alert(table.bootstrapTable('getOptions').totalRows);
-                //         if($table.bootstrapTable('getOptions').totalRows > 0) { $('#deletestories').removeClass('hidden'); }
-                //     }
-                // });
+                $table.bootstrapTable('refresh', { url: bootstrapurl });
+                $('#deletestories').removeClass('hidden');
             });
-            
-            
+
+            $('#addstory').on('submit', function(e) {
+                e.preventDefault();
+                $table.bootstrapTable('insertRow', {
+                    storyid: $('#storyid').val(),
+                    storydesc: $('#storydesc').val()
+                });
+            });
+
             $('#deletestories').on('click', function(e){
+                e.preventDefault();
                 var selections = $table.bootstrapTable('getSelections');
                 var keys = $.map(selections, function(row) {
                     return row.key;

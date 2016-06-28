@@ -42,6 +42,7 @@ var jsFilesToInject = [
   'js/third-party/bootstrap-typeahead.js',
   'js/third-party/bootstrap-table.js',
   'js/third-party/bootstrap-datetimepicker.js',
+  'js/third-party/bootstrap-selectpicker.js',
 
 
   // All of the rest of your client-side js files

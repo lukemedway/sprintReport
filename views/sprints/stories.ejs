@@ -6,105 +6,33 @@
     </div>
     <div class="content">
 
-        <div class="panel-group" id="accordion">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4 class="panel-title">
-                        <a data-target="#collapseOne" href="#" data-toggle="collapse" aria-expanded="true">
-                            Populate from Jira Sprint
-                            
-                            <b class="caret"></b>
-                        </a>
-                    </h4>
-                </div>
-                <div id="collapseOne" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                    <div class="panel-body">
-                        <form id="sprint-commitment">
-                          <div class="row">
-                            <div class="col-md-4">
-                              <div class="form-group">
-                                <label>Select Sprint</label>
-                                <select class="form-control" name="jirasprint" id="jirasprint"><option value="">Please Select</option>
-                                  <% for(i=0; i<jiraSprints.values.length; i++) { %>
-                                    <option value="<%=jiraSprints.values[i].id%>"><%=jiraSprints.values[i].name%></option>
-                                  <% } %>
-                                </select>
-                              </div>
-                            </div>
-                            <div class="col-md-2">
-                              <div class="form-group">
-                                <label>&nbsp;</label>
-                                <input type="submit" class="btn btn-primary btn-fill form-control" value="Populate" />
-                                <input type="hidden" name="projectjiraboard" value="<%=reportData[0].project.projectjiraboard %>" />
-                              </div>
-                            </div>
-                          </div>
-                          
-
-
-                        </form>
-                    </div>
-                </div>
+      <form id="sprint-commitment">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="form-group">
+              
+              <label>Select Sprint</label>
+              <select class="selectpicker" data-title="Please Select" data-style="btn-default btn-block" data-menu-style="dropdown-blue" name="jirasprint" id="jirasprint">  
+                <% for(i=0; i<jiraSprints.values.length; i++) { %>
+                  <option value="<%=jiraSprints.values[i].id%>"><%=jiraSprints.values[i].name%></option>
+                <% } %>
+              </select>
             </div>
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4 class="panel-title">
-                        <a data-target="#collapseTwo" href="#" data-toggle="collapse" class="collapsed" aria-expanded="false">
-                            Add Individual Story
-                            
-                            <b class="caret"></b>
-                        </a>
-                    </h4>
-                </div>
-                <div id="collapseTwo" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                    <div class="panel-body">
-
-                      <form id="commitment">
-                        <div class="row">
-                          <div class="col-md-2">
-                            <div class="form-group">
-                              <span id="storylist">
-                                <label class="loading">Story&nbsp;ID</label>
-                                <input class="typeahead form-control" type="text" placeholder="JIRA ID" id="storyid" />
-                              </span> 
-                            </div>
-                          </div>
-                          <div class="col-md-1">
-                            <div class="form-group">
-                              <label>Priority</label>
-                              <input type="text" class="form-control" id="storypriority" placeholder="Priority" />
-                            </div>
-                          </div>
-                          <div class="col-md-6">
-                            <div class="form-group">
-                              <label>Summary</label>
-                              <input type="text" class="form-control" id="storysummary" placeholder="Summary" />
-                            </div>
-                          </div>
-                          <div class="col-md-2">
-                            <div class="form-group">
-                              <label>Status</label>
-                              <input type="text" class="form-control" id="storystatus" placeholder="Status" />
-                            </div>
-                          </div>
-                          <div class="col-md-1">
-                            <div class="form-group">
-                              <label>&nbsp;</label>
-                              <input type="button" class="btn btn-primary btn-fill form-control" value="Add" />
-                            </div>
-                          </div>
-                        </div>
-                      </form>
-                    </div>
-                </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group">
+              <label>&nbsp;</label>
+              <input type="submit" class="btn btn-primary btn-fill form-control" value="Populate" />
+              <input type="hidden" name="projectjiraboard" value="<%=reportData[0].project.projectjiraboard %>" />
             </div>
-                
+          </div>
         </div>
+      </form>
 
     </div>
   </div>
   
-  <form id="final-sprint-commitment">
+  <form id="final-sprint-commitment" method="POST" action="/<%=req.param('id')%>/sprints/report/<%=req.param('sprintid')%>/storycomplete">
 
     <div class="card">
       <div class="toolbar">
@@ -119,29 +47,19 @@
             <th class="col-md-8" data-field="summary" data-formatter="summaryFormatter">Summary</th>
             <th class="col-md-2" data-field="status" data-formatter="statusFormatter" data-sortable="true">Status</th>     
             <th class="td-actions text-right" data-field="actions" data-events="operateEvents" data-formatter="operateFormatter">Actions</th>
-            <th class="hidden"></th>
+            <th class="hidden" data-formatter="formFormatter"></th>
           </tr>
         </thead>
       </table>
       <br />
-      <div class="col-md-1 pull-right">
+      <div class="col-md-2 pull-right">
         <div class="form-group">
-          <input type="submit" class="btn btn-fill btn-primary form-control" value="Commit" />        
+          <input type="submit" class="btn btn-fill btn-primary form-control" value="Commit" />     
         </div>
       </div>
       <div class="clearfix"></div>
     </div><!--  end card  -->
     
-
   </form>
   
-  
 </div>
-
-
-
-
-
-
-
-

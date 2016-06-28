@@ -18,6 +18,9 @@ module.exports = {
         type: 'text',
         required: true
       },
+      storypriority: {
+        type: 'string'
+      },
       storystatus: {
         type: 'string'
       },

@@ -162,6 +162,9 @@ var SprintsController = {
             }); 
         });
     },
+
+
+
     
     iterativestorysetup: function(req, res, next) {
         res.send(200, "Hello World");
@@ -264,9 +267,13 @@ var SprintsController = {
         });
 
     },
+
     
     storycomplete: function(req, res, next) {
-          
+        
+        Story.create({
+            storyjiraref: req.param()
+        });
     },
     
     update: function(req, res, next) {
