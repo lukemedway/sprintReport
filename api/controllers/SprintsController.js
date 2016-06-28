@@ -270,10 +270,43 @@ var SprintsController = {
 
     
     storycomplete: function(req, res, next) {
+        var async = require('async');
+        var arrStoryJiraRefs = req.param('storyjiraref');
+        var arrStoryPriorities = req.param('storypriority');
+        var arrStoryDesc = req.param('storydesc');
+        var arrStoryStatus = req.param('storystatus');
         
-        Story.create({
-            storyjiraref: req.param()
-        });
+        // DB object to pass into the create function
+        var arrData = [];
+
+        console.log('index count: ' + arrStoryJiraRefs.length);
+        res.send(200);
+        
+        //  Check that all arrays have equal length
+        (   arrStoryJiraRefs.length == arrStoryPriorities.length &&
+            arrStoryJiraRefs.length == arrStoryDesc.length &&
+            arrStoryJiraRefs.length == arrStoryStatus.length
+        ) ? blnContinue = true : blnContinue = false;
+        
+        if(arrStoryJiraRefs.length > 0 && blnContinue) {
+            for(i=0; i<arrStoryJiraRefs.length; i++) {
+                arrData.push({ 
+                    storyjiraref: arrStoryJiraRefs[i],
+                    storydesc: arrStoryDesc[i],
+                    storypriority: arrStoryPriorities[i],
+                    storystatus: arrStoryStatus[i],
+                    storypoints: 0,
+                    storyiscommitment: true,
+                    sprintparents: req.param('sprintid')
+                });
+            }
+
+            
+            res.send(200);
+        } else {
+            res.send(500, 'Mismatch in array bounds');
+        }
+        console.dir(arrData);
     },
     
     update: function(req, res, next) {

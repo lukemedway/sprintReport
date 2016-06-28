@@ -15,7 +15,10 @@
             }, 200 );
         }, 200);  
         
-        // Open the Populate from JIRA option
+        
+        // ********************************
+        // TABLE FORMATTING FUNCTIONS
+        // ********************************
         
         
         // JSON Data Formatting controls
@@ -69,40 +72,14 @@
         }
 
 
-        
-        function resetForm() {
-            $("#cancel").addClass('hidden');
-            $("#submit").val('Add');
-            $("#sprintid").val('');
-            $('#sprintname').val('');
-            $("#sprintpublicurl").val('http://' + window.location.host + '/');
-        }
-
         $().ready(function(){
 
-            $('#sprintform').validate();
-            $("#sprintpublicurl").val('http://' + window.location.host + '/');
+            // ********************************
+            // TABLE CLICK EVENTS - DELETE
+            // ********************************
             
-            $("#cancel").click(function() {
-                resetForm();
-            });
-            
-            window.operateEvents = {
-                'click .edit': function (e, value, row, index) {
-                    $(".main-panel").animate({
-                        scrollTop: $(".container-fluid").offset().top
-                    }, 300);
-                    
-                    $('#add-control').addClass('box');
 
-                    $('#sprintname').val(row.sprintname);
-                    $('#submit').val('Save');
-                    $('#cancel').removeClass('hidden');
-                    $('#sprintid').val(row.id);
-                    $('#sprintpublicurl').val('');
-                    
-                    setTimeout(function() { $('#add-control').removeClass('box') }, 2000);
-                },
+            window.operateEvents = {
                 'click .remove': function (e, value, row, index) {
                     $table.bootstrapTable('remove', {
                         field: 'key',
@@ -111,6 +88,10 @@
                 }
             };
             
+            
+            // ********************************
+            // TABLE SETUP & PARAMETERS
+            // ********************************
             
             var path = window.location.pathname;
             var arrPath = path.split("/");
@@ -151,16 +132,23 @@
             });
             
             
-            //activate the tooltips after the data table is initialized
-            $('[rel="tooltip"]').tooltip();
-            $('[data-toggle="tooltip"]').tooltip();
-
             $(window).resize(function() {
                 $table.bootstrapTable('resetView');
             });
             
+            
+            // ********************************
+            // INITIALISE TOOLTIPS
+            // ********************************
 
-            // Handle the submission, to retrieve the stories based on the selected sprint.
+            $('[rel="tooltip"]').tooltip();
+            $('[data-toggle="tooltip"]').tooltip();
+
+            
+            // ********************************
+            // BUTTON SUBMISSION HANDLERS
+            // ********************************
+            
             
             $('#sprint-commitment').on('submit', function(e){
                 e.preventDefault();
@@ -173,13 +161,6 @@
                 $('#deletestories').removeClass('hidden');
             });
 
-            $('#addstory').on('submit', function(e) {
-                e.preventDefault();
-                $table.bootstrapTable('insertRow', {
-                    storyid: $('#storyid').val(),
-                    storydesc: $('#storydesc').val()
-                });
-            });
 
             $('#deletestories').on('click', function(e){
                 e.preventDefault();
@@ -195,10 +176,13 @@
                 if($table.bootstrapTable('getOptions').totalRows == 0) { $('#deletestories').addClass('hidden'); }
             });
 
+
             // *********************************************************
-            // TypeAhead Plug String Matcher - See below for implementation examples and docs:
+            // TYPEAHEAD PLUGIN SETUP
+            // TypeAhead Plugin String Matcher - See below for implementation examples and docs:
             // https://twitter.github.io/typeahead.js/examples/
             // *********************************************************
+            
 
             var substringMatcher = function(strs) {
                 return function findMatches(q, cb) {
@@ -222,11 +206,13 @@
                 };
             };
             
+            
             // *********************************************************
             // Run Ajax call to run the getkeys controller which returns JSON directly from JIRA Rest API
             // And sets the rest of the field data based on the selected Story ID
             // http://{baseURL}/jira/getkeys : returns JSON.
             // *********************************************************
+            
             
             $.ajax({
                 type: "GET",
@@ -288,40 +274,5 @@
             }
 
 
-
-
-            // // Handle the data for POST and PUT requests to the server.
-            // $('#sprint-commitment').on('submit', function(e) {
-            //     e.preventDefault();
-            //     var url, method, formData = $(this).serializeArray();
-                
-                
-
-            //     // if($('#projectid').val() !== '' && $('#projectid').val() !== 'undefined') {
-            //     //     url = '/sprints/create/';
-            //     //     method = 'POST';
-            //     // }
-            
-            //     // if ($('#sprintid').val() !== '' && $('#sprintid').val() !== 'undefined') {
-            //     //     url = '/sprints/update/';
-            //     //     method = "PUT";
-            //     // }
-
-                
-                    
-            //     $.ajax({
-            //         url: url,
-            //         method: method,
-            //         data: formData,
-            //         success: function(data) {
-            //             $table.bootstrapTable('refresh');
-            //             resetForm();    
-            //         },
-            //         error: function(err) {
-            //             console.dir(err);
-            //         }
-            //     });
-                                
-            // });
 
         }); // End of DOM ready
