@@ -275,12 +275,13 @@ var SprintsController = {
         var arrStoryPriorities = req.param('storypriority');
         var arrStoryDesc = req.param('storydesc');
         var arrStoryStatus = req.param('storystatus');
+        var blnContinue = false;
         
         // DB object to pass into the create function
         var arrData = [];
 
-        console.log('index count: ' + arrStoryJiraRefs.length);
-        res.send(200);
+        // console.log('index count: ' + arrStoryJiraRefs.length);
+        // res.send(200);
         
         //  Check that all arrays have equal length
         (   arrStoryJiraRefs.length == arrStoryPriorities.length &&
@@ -301,6 +302,16 @@ var SprintsController = {
                 });
             }
 
+            //console.log("Data: " + arrData);
+            
+            if(typeof arrData != 'undefined') {
+                if(arrData.length > 0) {
+                    Story.findOrCreate(arrData, arrData, function(stories) {
+                        res.json(stories);
+                    });
+                }
+            }
+
             // Story.findOrCreate(arrData, arrData).exec(function createdStories(err, stories) {
             //     if(err) return next(err);
             //     if(!stories) return next(err);
@@ -310,7 +321,7 @@ var SprintsController = {
         } else {
             
         }
-        console.dir(arrData);
+        // console.dir(arrData);
     },
     
     update: function(req, res, next) {
