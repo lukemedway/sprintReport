@@ -48,7 +48,38 @@ module.exports = {
         via: 'story'
       }
       
+  }, 
+
+
+  updateOrCreate: function(storyjiraref, storydesc, storypriority, storystatus, storypoints, storycomplete, storyiscommitment, storydeleted, sprintparents) {
+    return Story.update({ storyjiraref: storyjiraref }, 
+    { 
+      storydesc:          storydesc,
+      storypriority:      storypriority,
+      storystatus:        storystatus,
+      storypoints:        storypoints,
+      storycomplete:      storycomplete,
+      storyiscommitment:  storyiscommitment,
+      storydeleted:       storydeleted,
+      sprintparents:      sprintparents
+    })
+    .then(function(storyData) {
+      if(storyData.length === 0) {
+        // No records updated, UserAddress does not exist. Create.
+        return Story.create({ 
+          storyjiraref:       storyjiraref,
+          storydesc:          storydesc,
+          storypriority:      storypriority,
+          storystatus:        storystatus,
+          storypoints:        storypoints,
+          storycomplete:      storycomplete,
+          storyiscommitment:  storyiscommitment,
+          storydeleted:       storydeleted,
+          sprintparents:      sprintparents
+        });
+      }
+    });
   }
-  
+
 };
 

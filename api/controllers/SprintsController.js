@@ -301,10 +301,14 @@ var SprintsController = {
                 });
             }
 
+            // Story.findOrCreate(arrData, arrData).exec(function createdStories(err, stories) {
+            //     if(err) return next(err);
+            //     if(!stories) return next(err);
+            //     res.json(stories);
+            // });
             
-            res.send(200);
         } else {
-            res.send(500, 'Mismatch in array bounds');
+            
         }
         console.dir(arrData);
     },
