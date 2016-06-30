@@ -60,7 +60,7 @@ module.exports = {
 
      // Many-to-many relationship with stories
      // Many stories can belong to many sprints
-     story: {
+     stories: {
        collection: 'story',
        via: 'sprintparents',
        dominant: true

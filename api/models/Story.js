@@ -45,7 +45,7 @@ module.exports = {
       // Many stories may belong to many sprints
       sprintparents: {
         collection: 'sprint',
-        via: 'story'
+        via: 'stories'
       }
       
   }

@@ -58,7 +58,8 @@ module.exports = {
     },
 
     getStoriesBySprint: function(sprintid, next) {
-        Story.find({ sprintparents: sprintid }).exec(function foundStories(err, stories) {
+        // Story.find().populate("sprintparents", { where: { sprintparents: sprintid } }).exec(function foundStories(err, stories) {
+        Story.find({ sprintparents: sprintid }).populate("sprintparents").exec(function foundStories(err, stories) {
             if(err) return next.error(err);
             return next.success(stories);
         });
@@ -91,22 +92,20 @@ module.exports = {
                     var count = 0;
 
                     async.whilst(
-                        function () { return count < stories.length; },
-                        function (callback) {
-                            console.log("Stories: " + stories[count].storyjiraref);
+                        function() { return count < stories.length; },
+                        function(next) {
                             Story.findOne( { storyjiraref: stories[count].storyjiraref } )
                             .exec(function(err, storyData) {
-                                console.log("DATA: " + storyData);
                                 storyData.sprintparents.add(results[0][count]);
-                                storyData.save(function(err, saved) {
-                                    if (err) {
-                                        console.log("error: " + err);
+                                storyData.save(function(err) {
+                                    if(err) {
+                                        console.log("error" + err)
                                         count++;                     
-                                        callback(err, count);
+                                        next(err, count);
                                     } else {
-                                        console.log("saved: " + saved);
+                                        console.log(storyData);
                                         count++;                     
-                                        callback(null, count);
+                                        next(null, count);
                                     }
                                 });
                             });
@@ -117,36 +116,6 @@ module.exports = {
                         }
                     );
 
-
-                    // stories.forEach(function(storyItem) {
-                    //     // console.log(storyItem.storyjiraref);
-                    //     Story.findOne( { storyjiraref: storyItem.storyjiraref } )
-                    //     .exec(function(err, storyData) {
-                    //         storyData.sprintparents.add(results[0][i]);
-                    //         storyData.save(function(err, saved) {
-                    //             if (err) {
-                    //                 console.log(err);
-                    //             } else {
-                    //                 console.log(saved);
-                    //             }
-                    //         });                        
-                    //     });  
-                    // })
-
-                    // stories.forEach(function(data, i) {
-                    //     console.log("jiraref: " + data.storyjiraref);
-                    //     Story.findOne({ storyjiraref: data.storyjiraref })
-                    //     .then(function(aStory) {
-                    //         aStory.sprintparents.add(results[0][i]);
-                    //         aStory.save(function(err, saved) {
-                    //             if (err) {
-                    //                 // console.log(err);
-                    //             } else {
-                    //                 // console.log(saved);
-                    //             }
-                    //         });
-                    //     });
-                    // });
                     return next(stories);
                 }
             );
