@@ -86,21 +86,50 @@ module.exports = {
                     if(err) return next(err);
 
                     // console.log("story: " + stories[0].storyjiraref)
+                    console.log("No of stories: " + stories.length);
 
-                    stories.forEach(function(storyItem) {
-                        // console.log(storyItem.storyjiraref);
-                        Story.findOne( { storyjiraref: storyItem.storyjiraref } )
-                        .exec(function(err, storyData) {
-                            storyData.sprintparents.add(results[0][i]);
-                            storyData.save(function(err, saved) {
-                                if (err) {
-                                    console.log(err);
-                                } else {
-                                    console.log(saved);
-                                }
-                            });                        
-                        });  
-                    })
+                    var count = 0;
+
+                    async.whilst(
+                        function () { return count < stories.length; },
+                        function (callback) {
+                            console.log("Stories: " + stories[count].storyjiraref);
+                            Story.findOne( { storyjiraref: 'TSMAINT-113' } )
+                            .exec(function(err, storyData) {
+                                storyData.sprintparents.add(results[0][count]);
+                                storyData.save(function(err, saved) {
+                                    if (err) {count++;                     
+                                        callback(err, count);
+                                        console.log(err);
+                                    } else {
+                                        count++;                     
+                                        callback(null, count);
+                                        console.log(saved);
+                                    }
+                                });
+                            });
+                        },
+                        function (err, n) {
+                            // 5 seconds have passed, n = 5
+                            console.log(n + " records were udpated");
+                        }
+                    );
+
+
+                    // stories.forEach(function(storyItem) {
+                    //     // console.log(storyItem.storyjiraref);
+                    //     Story.findOne( { storyjiraref: storyItem.storyjiraref } )
+                    //     .exec(function(err, storyData) {
+                    //         storyData.sprintparents.add(results[0][i]);
+                    //         storyData.save(function(err, saved) {
+                    //             if (err) {
+                    //                 console.log(err);
+                    //             } else {
+                    //                 console.log(saved);
+                    //             }
+                    //         });                        
+                    //     });  
+                    // })
 
                     // stories.forEach(function(data, i) {
                     //     console.log("jiraref: " + data.storyjiraref);
