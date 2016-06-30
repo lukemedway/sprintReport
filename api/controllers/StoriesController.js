@@ -94,24 +94,26 @@ module.exports = {
                         function () { return count < stories.length; },
                         function (callback) {
                             console.log("Stories: " + stories[count].storyjiraref);
-                            Story.findOne( { storyjiraref: 'TSMAINT-113' } )
+                            Story.findOne( { storyjiraref: stories[count].storyjiraref } )
                             .exec(function(err, storyData) {
+                                console.log("DATA: " + storyData);
                                 storyData.sprintparents.add(results[0][count]);
                                 storyData.save(function(err, saved) {
-                                    if (err) {count++;                     
+                                    if (err) {
+                                        console.log("error: " + err);
+                                        count++;                     
                                         callback(err, count);
-                                        console.log(err);
                                     } else {
+                                        console.log("saved: " + saved);
                                         count++;                     
                                         callback(null, count);
-                                        console.log(saved);
                                     }
                                 });
                             });
                         },
                         function (err, n) {
                             // 5 seconds have passed, n = 5
-                            console.log(n + " records were udpated");
+                            console.log(n + " records were updated");
                         }
                     );
 
