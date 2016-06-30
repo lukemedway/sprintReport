@@ -68,6 +68,7 @@ module.exports.routes = {
   '/:id/sprints/report/:sprintid/stories':            { controller: "SprintsController", action: "setupsprintstories" },
   '/:id/fetchsprintsbyname':                          { controller: "SprintsController", action: "getJiraSprintsByName" },
   '/:id/sprints/report/:sprintid/storycomplete':      { controller: "SprintsController", action: "storycomplete" }, 
+  '/:id/sprints/report/:sprintid/sprintstories':      { controller: "SprintsController", action: "sprintstories"},
   
   
   // JIRA Routes

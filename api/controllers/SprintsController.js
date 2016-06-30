@@ -275,13 +275,13 @@ var SprintsController = {
         var arrStoryPriorities = req.param('storypriority');
         var arrStoryDesc = req.param('storydesc');
         var arrStoryStatus = req.param('storystatus');
-        var blnContinue = false;
         
         // DB object to pass into the create function
         var arrData = [];
 
-        // console.log('index count: ' + arrStoryJiraRefs.length);
-        // res.send(200);
+        //console.log('index count: ' + arrStoryJiraRefs.length);
+        //res.send(200);
+        //console.log("jirarefs: " + arrStoryJiraRefs);
         
         //  Check that all arrays have equal length
         (   arrStoryJiraRefs.length == arrStoryPriorities.length &&
@@ -302,15 +302,16 @@ var SprintsController = {
                 });
             }
 
-            //console.log("Data: " + arrData);
-            
-            if(typeof arrData != 'undefined') {
+            // console.log("arrData: " + typeof arrData);
+            if(arrData != 'undefined') {
                 if(arrData.length > 0) {
                     Story.findOrCreate(arrData, arrData, function(stories) {
                         res.json(stories);
                     });
                 }
             }
+
+            //Story.updateOrCreate(arrData)
 
             // Story.findOrCreate(arrData, arrData).exec(function createdStories(err, stories) {
             //     if(err) return next(err);
@@ -321,8 +322,20 @@ var SprintsController = {
         } else {
             
         }
-        // console.dir(arrData);
+        //console.dir(arrData);
     },
+
+    sprintstories: function(req, res, next) {
+        Story.getStoriesBySprint(req.param('sprintid'), {
+            success: function(stories) {
+                res.json(stories)
+            },
+            error: function(err) {
+                return next(err);
+            }
+        });
+    },
+
     
     update: function(req, res, next) {
         Sprint.update({ 'id': req.param('sprintid') }, { sprintname: req.param('sprintname') }).exec(function updatedSprint(err, sprint) {

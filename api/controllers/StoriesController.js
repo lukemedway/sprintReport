@@ -50,8 +50,15 @@ module.exports = {
         });
     },
     
-    getStoryCountBySprint: function(sprintId, next) {
-        Story.count({ id: sprintId }).exec(function foundStories(err, stories) {
+    getStoryCountBySprint: function(sprintid, next) {
+        Story.count({ id: sprintid }).exec(function foundStories(err, stories) {
+            if(err) return next.error(err);
+            return next.success(stories);
+        });
+    },
+
+    getStoriesBySprint: function(sprintid, next) {
+        Story.find({ sprintparents: sprintid }).exec(function foundStories(err, stories) {
             if(err) return next.error(err);
             return next.success(stories);
         });
@@ -65,16 +72,54 @@ module.exports = {
             
             // We have a list of stories
             // Need to update each story with the matching arrData (sprintparents)
+            var arrSprintParents = [];
+
+            async.series([
+                function(cb) {
+                    for(i=0; i<arrData.length;i++) {
+                        arrSprintParents.push(arrData[i].sprintparents);
+                    }
+                    cb(null, arrSprintParents);
+                }
+            ],
+                function(err, results) {
+                    if(err) return next(err);
+
+                    // console.log("story: " + stories[0].storyjiraref)
+
+                    stories.forEach(function(storyItem) {
+                        // console.log(storyItem.storyjiraref);
+                        Story.findOne( { storyjiraref: storyItem.storyjiraref } )
+                        .exec(function(err, storyData) {
+                            storyData.sprintparents.add(results[0][i]);
+                            storyData.save(function(err, saved) {
+                                if (err) {
+                                    console.log(err);
+                                } else {
+                                    console.log(saved);
+                                }
+                            });                        
+                        });  
+                    })
+
+                    // stories.forEach(function(data, i) {
+                    //     console.log("jiraref: " + data.storyjiraref);
+                    //     Story.findOne({ storyjiraref: data.storyjiraref })
+                    //     .then(function(aStory) {
+                    //         aStory.sprintparents.add(results[0][i]);
+                    //         aStory.save(function(err, saved) {
+                    //             if (err) {
+                    //                 // console.log(err);
+                    //             } else {
+                    //                 // console.log(saved);
+                    //             }
+                    //         });
+                    //     });
+                    // });
+                    return next(stories);
+                }
+            );
             
-            
-            
-            
-            // Apply the relevant associations
-            
-            // 
-            
-            next(stories);
-                
         });
     }
 
