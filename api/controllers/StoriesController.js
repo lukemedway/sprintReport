@@ -83,11 +83,11 @@ module.exports = {
                     cb(null, arrSprintParents);
                 }
             ],
-                function(err, results) {
+                function(err, sprintparentids) {
                     if(err) return next(err);
 
                     // console.log("story: " + stories[0].storyjiraref)
-                    console.log("No of stories: " + stories.length);
+                    // console.log("No of stories: " + stories.length);
 
                     var count = 0;
 
@@ -95,19 +95,26 @@ module.exports = {
                         function() { return count < stories.length; },
                         function(next) {
                             Story.findOne( { storyjiraref: stories[count].storyjiraref } )
+                            .where( { "sprintparents" : { '!' : sprintparentids[0][count] } } )
                             .exec(function(err, storyData) {
-                                storyData.sprintparents.add(results[0][count]);
-                                storyData.save(function(err) {
-                                    if(err) {
-                                        console.log("error" + err)
-                                        count++;                     
-                                        next(err, count);
-                                    } else {
-                                        console.log(storyData);
-                                        count++;                     
-                                        next(null, count);
-                                    }
-                                });
+                                if(err) {
+                                    count++;
+                                    next(err, count);
+                                } else {
+                                    if(!storyData) { count++; next(null, count); }
+                                    storyData.sprintparents.add(sprintparentids[0][count]);
+                                    storyData.save(function(err) {
+                                        if(err) {
+                                            console.log("error " + err);
+                                            count++;               
+                                            next(err, count);
+                                        } else {
+                                            console.log(storyData);
+                                            count++;                  
+                                            next(null, count);
+                                        }
+                                    });
+                                }
                             });
                         },
                         function (err, n) {
