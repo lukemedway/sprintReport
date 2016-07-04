@@ -52,7 +52,6 @@ var SprintsController = {
     report: function(req, res, next) {
         Sprint.find({ id: req.param('sprintid') })
         .populate('project')
-        .populate('stories')
         .exec(function foundSprint(err, reportData) {
             if(err) return next(err);
             if(!reportData) return next(err);
@@ -66,7 +65,6 @@ var SprintsController = {
                         scripts: scripts,
                         sprintData: menuData,
                         reportData: reportData,
-                        stories: reportData[0].stories,
                         sprintMenuActive: true
                     });
                 },
@@ -175,9 +173,9 @@ var SprintsController = {
     },
     
 
-    edit: function(req, res, next) {
-        SprintsController.setupreport(req, res, next);
-    },
+    // edit: function(req, res, next) {
+    //     SprintsController.setupreport(req, res, next);
+    // },
 
     test: function(req, res, next) {
         // console.log();
@@ -193,6 +191,7 @@ var SprintsController = {
     // *******************************************************************  
     
    create: function(req, res, next) {
+        
         var projectid = req.param('projectid');
         Sprint.create({ 
             sprintname: req.param('sprintname'),
@@ -215,7 +214,7 @@ var SprintsController = {
     },
 
     setupcomplete: function(req, res, next) {
-        
+               
         // *********************************************  
         // Processing Date Object - Forcing Format. 
         // *********************************************   
@@ -267,23 +266,23 @@ var SprintsController = {
         })
         .exec(function updatedSprintSetup(err, sprint) {
             if(err) return next(err);
-            res.redirect('/' + req.param('id') + '/sprints/report/' + req.param('sprintid') + "/stories");
+            if(req.param("edit") == "true") {
+                res.redirect('/' + req.param('id') + '/sprints/report/' + req.param('sprintid'));
+            } else {
+                res.redirect('/' + req.param('id') + '/sprints/report/' + req.param('sprintid') + "/stories");
+            }
         });
 
     },
 
     
     storycomplete: function(req, res, next) {
-
-        req.forEach(function(item, i){
-            console.log(item);
-        })
-
+              
         var arrStoryJiraRefs = req.param('storyjiraref');
         var arrStoryPriorities = req.param('storypriority');
         var arrStoryPoints = req.param('storypoints');
         var arrStoryDesc = req.param('storydesc');
-        var arrStoryStatus = req.param('storystatus');
+        var arrStoryStatus = req.param('storystatus');       
         
         // DB object to pass into the create function
         var arrData = [];
@@ -292,7 +291,7 @@ var SprintsController = {
         (   arrStoryJiraRefs.length == arrStoryPriorities.length &&
             arrStoryJiraRefs.length == arrStoryDesc.length &&
             arrStoryJiraRefs.length == arrStoryStatus.length &&
-            arrStoryJiraRefs.lengtn == arrStoryPoints.length
+            arrStoryJiraRefs.length == arrStoryPoints.length
         ) ? blnContinue = true : blnContinue = false;
         
         if(arrStoryJiraRefs.length > 0 && blnContinue) {

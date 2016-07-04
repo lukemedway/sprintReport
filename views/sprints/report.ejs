@@ -204,27 +204,16 @@
                                                     <p class="category">118.5 Story Points</p>
                                                 </div>
                                                 <div class="content table-responsive table-full-width">
-                                                    <table class="table table-hover table-striped">
+                                                    <table id="commitment-bootstrap-table" class="table table-hover table-striped">
                                                         <thead>
                                                             <tr>
-                                                            <th class="col-md-1">Story ID</th>
-                                                            <th>Story</th>
-                                                            <th class="col-md-2 hidden">Status</th>
-                                                            <th class="col-md-2">Points</th>
-                                                        </tr></thead>
-                                                        <tbody>
-                                                            <% for(i=0; i<stories.length; i++) { %>
-                                                            <tr>
-                                                                <td><%=stories[i].storyjiraref%></td>
-                                                                <td><%=stories[i].storydesc%></td>
-                                                                <td class="hidden"><%=stories[i].storystatus%></td>
-                                                                <td><%=stories[i].storypoints%></td>
+                                                                <th class="col-md-1" data-field="storyjiraref" data-sortable="true">Story ID</th>
+                                                                <th data-field="storydesc" data-sortable="true">Story</th>
+                                                                <th class="col-md-2 hidden"data-field="storystatus" data-sortable="true">Status</th>
+                                                                <th class="col-md-2" data-field="storypoints" data-sortable="true">Points</th>
                                                             </tr>
-                                                            <% } %>
-                                                            
-                                                        </tbody>
+                                                        </thead>
                                                     </table>
-                                                    
                                                 </div>
                                             </div>
                                         </div>

@@ -58,9 +58,9 @@ module.exports.routes = {
   // SprintsController Routes
   '/sprints/project/:id':                             { controller: "SprintsController", action: "index" },
   '/sprints/setupreport/:id' :                        { controller: 'SprintsController', action: 'setupreport' },
+  '/:id/sprints/edit/:sprintid' :                     { controller: "SprintsController", action: "setupreport", edit: true },
   '/sprints/getSprintsByProjectJson/:id' :            { controller: 'SprintsController', action: 'getSprintsByProjectJson' },
   '/:id/sprints/':                                    { controller: "SprintsController", action: "index" },
-  '/:id/sprints/edit/:sprintid' :                     { controller: "SprintsController", action: "edit" },
   '/:id/sprints/getSprints/':                         { controller: "SprintsController", action: "getSprints" },
   '/:id/sprints/report/:sprintid':                    { controller: "SprintsController", action: "report" },
   '/:id/sprints/setupcomplete':                       { controller: "SprintsController", action: "setupcomplete" },
@@ -69,6 +69,10 @@ module.exports.routes = {
   '/:id/fetchsprintsbyname':                          { controller: "SprintsController", action: "getJiraSprintsByName" },
   '/:id/sprints/report/:sprintid/storycomplete':      { controller: "SprintsController", action: "storycomplete" }, 
   '/:id/sprints/report/:sprintid/sprintstories':      { controller: "SprintsController", action: "sprintstories"},
+  
+  
+  // StoriesController Routes
+  '/:id/sprint/report/:sprintid/getstoriesbysprintid': { controller: "StoriesController", action: "getstoriesbysprintid" },
   
   
   // JIRA Routes

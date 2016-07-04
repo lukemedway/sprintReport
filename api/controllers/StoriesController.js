@@ -7,7 +7,7 @@
  
 var async = require('async');
 
-module.exports = {
+StoriesController = {
 
     // *******************************************************************
     
@@ -20,7 +20,23 @@ module.exports = {
         
         res.view('stories/index');
     },
-
+    
+    // *******************************************************************
+    
+    // JSON VIEW METHODS
+    
+    // *******************************************************************     
+    
+    getstoriesbysprintid: function(req, res, next) {
+        StoriesController.getStoriesBySprint(req.param('sprintid'), {
+            success: function(stories) {
+                res.json(stories);
+            },
+            error: function(err) {
+                res.badRequest(err);
+            }
+        });
+    },
 
     // *******************************************************************
     
@@ -63,6 +79,9 @@ module.exports = {
             return next.success(stories);
         });
     },
+    
+
+    
 
     findOrCreate: function(arrFind, arrData, sprintid, next) {
         Story.findOrCreate(arrFind, arrData)
@@ -89,3 +108,5 @@ module.exports = {
 
 };
 
+
+module.exports = StoriesController;

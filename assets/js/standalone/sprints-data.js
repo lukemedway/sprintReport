@@ -11,6 +11,10 @@
                 '</a>'
             ].join('');
         }
+
+        // ********************************
+        // TABLE FORMATTING FUNCTIONS
+        // ********************************
         
         function formatLink(value, row, index) {
             var path = window.location.pathname;
@@ -24,9 +28,7 @@
             var dateFormatted = ('0' + date.getDate()).slice(-2) + '/'+ ('0' + (date.getMonth()+1)).slice(-2) + '/' + date.getFullYear();
             return [ dateFormatted ].join('');
         }
-
-
-        
+  
         function resetForm() {
             $("#cancel").addClass('hidden');
             $("#submit").val('Add');
@@ -36,6 +38,10 @@
         }
 
         $().ready(function(){
+            
+            // ********************************
+            // VALIDATE FORM - INIT
+            // ********************************
 
             $('#sprintform').validate();
             $("#sprintpublicurl").val('http://' + window.location.host + '/');
@@ -43,6 +49,11 @@
             $("#cancel").click(function() {
                 resetForm();
             });
+            
+            // ********************************
+            // TABLE CLICK EVENTS
+            // ********************************
+            
             
             window.operateEvents = {
                 'click .edit': function (e, value, row, index) {
@@ -74,6 +85,9 @@
                 }
             };
             
+            // ********************************
+            // TABLE SETUP & PARAMETERS
+            // ********************************      
             
             var path = window.location.pathname;
             var arrPath = path.split("/");
@@ -111,13 +125,23 @@
                 },
 
             });
+            
 
+            
+       
+       
+            // ********************************
+            // INITIALISE TOOLTIPS
+            // ********************************     
+            
             //activate the tooltips after the data table is initialized
             $('[rel="tooltip"]').tooltip();
-
-            $(window).resize(function () {
-                $table.bootstrapTable('resetView');
-            });
+            
+            
+            // ********************************
+            // BUTTON SUBMISSION HANDLERS
+            // ********************************            
+            
             
             // Handle the data for POST and PUT requests to the server.
             $('#sprintform').on('submit', function(e) {

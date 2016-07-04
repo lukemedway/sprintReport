@@ -63,7 +63,8 @@
             var priority = row.fields.priority.name;
             var summary = row.fields.summary;
             var status = row.fields.status.name;
-            var points = row.fields.customfield_10004
+            var points = row.fields.customfield_10004;
+            if (points == null) { points = 0; }
             return [
                 '<input type="hidden" value="' + key + '" name="storyjiraref" />',
                 '<input type="hidden" value="' + priority + '" name="storypriority" />',
