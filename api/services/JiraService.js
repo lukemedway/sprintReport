@@ -55,7 +55,7 @@ module.exports = {
     // /rest/api/2/search?jql=project=OAS AND issuetype=story
     
     getJIRAStoriesByProjectKey: function(projectKey, next) {
-        var endpoint = "/rest/api/2/search?jql=project=" + projectKey + "%20AND%20issuetype=story&maxResults=9999&fields=key,summary,priority,status";
+        var endpoint = "/rest/api/2/search?jql=project=" + projectKey + "%20AND%20issuetype=story&maxResults=9999&fields=key,summary,priority,status,customfield_10004";
         return this.doRequest(endpoint, "GET", next);
     },
 

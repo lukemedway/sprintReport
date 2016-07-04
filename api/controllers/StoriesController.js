@@ -4,8 +4,7 @@
  * @description :: Server-side logic for managing stories
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
-
-
+ 
 var async = require('async');
 
 module.exports = {
@@ -64,73 +63,29 @@ module.exports = {
             return next.success(stories);
         });
     },
-    
-    findOrCreate: function(arrFind, arrData, next) {
+
+    findOrCreate: function(arrFind, arrData, sprintid, next) {
         Story.findOrCreate(arrFind, arrData)
-        .then(function(stories) {
-            // If no stories are found 
-            if(stories === undefined) { return next('Not found'); }
-            
-            // We have a list of stories
-            // Need to update each story with the matching arrData (sprintparents)
-            var arrSprintParents = [];
+        .then(function(storiesData) {
 
-            async.series([
-                function(cb) {
-                    for(i=0; i<arrData.length;i++) {
-                        arrSprintParents.push(arrData[i].sprintparents);
-                    }
-                    cb(null, arrSprintParents);
-                }
-            ],
-                function(err, sprintparentids) {
-                    if(err) return next(err);
+            storiesData.forEach(function(story, i) {
+                Story.findOne({ storyjiraref: story.storyjiraref })
+                .populate("sprintparents")
+                .then(function(story) {
+                    story.sprintparents.add(sprintid);
+                    story.save();
+                })
+                .catch(function(err) {
+                    if(err) return next.error(err);
+                });
+            });
 
-                    // console.log("story: " + stories[0].storyjiraref)
-                    // console.log("No of stories: " + stories.length);
-
-                    var count = 0;
-
-                    async.whilst(
-                        function() { return count < stories.length; },
-                        function(next) {
-                            Story.findOne( { storyjiraref: stories[count].storyjiraref } )
-                            .where( { "sprintparents" : { '!' : sprintparentids[0][count] } } )
-                            .exec(function(err, storyData) {
-                                if(err) {
-                                    count++;
-                                    next(err, count);
-                                } else {
-                                    if(!storyData) { count++; next(null, count); }
-                                    storyData.sprintparents.add(sprintparentids[0][count]);
-                                    storyData.save(function(err) {
-                                        if(err) {
-                                            console.log("error " + err);
-                                            count++;               
-                                            next(err, count);
-                                        } else {
-                                            console.log(storyData);
-                                            count++;                  
-                                            next(null, count);
-                                        }
-                                    });
-                                }
-                            });
-                        },
-                        function (err, n) {
-                            // 5 seconds have passed, n = 5
-                            console.log(n + " records were updated");
-                        }
-                    );
-
-                    return next(stories);
-                }
-            );
-            
+            return next.success(storiesData);
+        })
+        .catch(function(err) {
+            if(err) return next.error(err);
         });
     }
 
-    
-    
 };
 

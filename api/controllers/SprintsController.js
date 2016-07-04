@@ -6,7 +6,7 @@
  */
 
 var Project = require('./ProjectsController');
-var Story = require('./StoriesController');
+var StoriesController = require('./StoriesController');
 
 var SprintsController = {
 	
@@ -50,7 +50,10 @@ var SprintsController = {
     },
     
     report: function(req, res, next) {
-        Sprint.find({ id: req.param('sprintid') }).populate('project').exec(function foundSprint(err, reportData) {
+        Sprint.find({ id: req.param('sprintid') })
+        .populate('project')
+        .populate('stories')
+        .exec(function foundSprint(err, reportData) {
             if(err) return next(err);
             if(!reportData) return next(err);
             if(reportData.length == 0) return next(err);
@@ -63,6 +66,7 @@ var SprintsController = {
                         scripts: scripts,
                         sprintData: menuData,
                         reportData: reportData,
+                        stories: reportData[0].stories,
                         sprintMenuActive: true
                     });
                 },
@@ -106,7 +110,7 @@ var SprintsController = {
     },
     
     setupsprintstories: function(req, res, next) {       
-        Story.getStoryCountBySprint(req.param('sprintid'), {
+        StoriesController.getStoryCountBySprint(req.param('sprintid'), {
             success: function(stories) {
                 if(stories == 0) {
                     SprintsController.initialstorysetup(req, res, next);
@@ -263,30 +267,32 @@ var SprintsController = {
         })
         .exec(function updatedSprintSetup(err, sprint) {
             if(err) return next(err);
-            res.redirect('/' + req.param('id') + '/sprints/report/' + req.param('sprintid'));
+            res.redirect('/' + req.param('id') + '/sprints/report/' + req.param('sprintid') + "/stories");
         });
 
     },
 
     
     storycomplete: function(req, res, next) {
-        var async = require('async');
+
+        req.forEach(function(item, i){
+            console.log(item);
+        })
+
         var arrStoryJiraRefs = req.param('storyjiraref');
         var arrStoryPriorities = req.param('storypriority');
+        var arrStoryPoints = req.param('storypoints');
         var arrStoryDesc = req.param('storydesc');
         var arrStoryStatus = req.param('storystatus');
         
         // DB object to pass into the create function
         var arrData = [];
-
-        //console.log('index count: ' + arrStoryJiraRefs.length);
-        //res.send(200);
-        //console.log("jirarefs: " + arrStoryJiraRefs);
         
         //  Check that all arrays have equal length
         (   arrStoryJiraRefs.length == arrStoryPriorities.length &&
             arrStoryJiraRefs.length == arrStoryDesc.length &&
-            arrStoryJiraRefs.length == arrStoryStatus.length
+            arrStoryJiraRefs.length == arrStoryStatus.length &&
+            arrStoryJiraRefs.lengtn == arrStoryPoints.length
         ) ? blnContinue = true : blnContinue = false;
         
         if(arrStoryJiraRefs.length > 0 && blnContinue) {
@@ -296,7 +302,7 @@ var SprintsController = {
                     storydesc: arrStoryDesc[i],
                     storypriority: arrStoryPriorities[i],
                     storystatus: arrStoryStatus[i],
-                    storypoints: 0,
+                    storypoints: arrStoryPoints[i],
                     storyiscommitment: true,
                     sprintparents: req.param('sprintid')
                 });
@@ -305,28 +311,25 @@ var SprintsController = {
             // console.log("arrData: " + typeof arrData);
             if(arrData != 'undefined') {
                 if(arrData.length > 0) {
-                    Story.findOrCreate(arrData, arrData, function(stories) {
-                        res.json(stories);
+                    StoriesController.findOrCreate(arrData, arrData, req.param('sprintid'), {
+                        success: function(stories) {
+                            res.redirect('/' + req.param('id') + '/sprints/report/' + req.param('sprintid'));
+                        },
+                        error: function(err) {
+                            res.send(500, err);
+                        }
                     });
                 }
             }
-
-            //Story.updateOrCreate(arrData)
-
-            // Story.findOrCreate(arrData, arrData).exec(function createdStories(err, stories) {
-            //     if(err) return next(err);
-            //     if(!stories) return next(err);
-            //     res.json(stories);
-            // });
             
         } else {
-            
+            res.badRequest('Array length mismatch, please go back and retry.');
         }
         //console.dir(arrData);
     },
 
     sprintstories: function(req, res, next) {
-        Story.getStoriesBySprint(req.param('sprintid'), {
+        StoryController.getStoriesBySprint(req.param('sprintid'), {
             success: function(stories) {
                 res.json(stories)
             },

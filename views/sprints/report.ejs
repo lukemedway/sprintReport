@@ -7,6 +7,8 @@
         }
     }
 
+
+
 %>
 
                     
@@ -175,43 +177,19 @@
                                        <div class="col-md-12">
                                             <div class="card">
                                                 <div class="header">
-                                                    <h4 class="title">Sprint 5 Stories Complete</h4>
+                                                    <h4 class="title"><%=reportData[0].sprintname %> - Stories Complete</h4>
                                                     <p class="category text-success">118.5 Story Points &nbsp;<span class="pe-7s-like2"></span></p>
                                                 </div>
                                                 <div class="content table-responsive table-full-width">
                                                     <table class="table table-hover table-striped">
                                                         <thead>
                                                             <tr>
-                                                            <th>Story ID</th>
-                                                            <th>Story</th>
-                                                            <th>Status</th>
-                                                        </tr></thead>
+                                                                <th>Story ID</th>
+                                                                <th>Story</th>
+                                                                <th>Status</th>
+                                                            </tr>
+                                                        </thead>
                                                         <tbody>
-                                                            <tr>
-                                                                <td>OAS-81</td>
-                                                                <td>Checkout - As a member of staff i want the checkout to display the relevant delivery methods so that I can have my items delivered at special rates</td>
-                                                                <td>Done</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>OAS-81</td>
-                                                                <td>Checkout - As a member of staff i want the checkout to display the relevant delivery methods so that I can have my items delivered at special rates</td>
-                                                                <td>Done</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>OAS-81</td>
-                                                                <td>Checkout - As a member of staff i want the checkout to display the relevant delivery methods so that I can have my items delivered at special rates</td>
-                                                                <td>Done</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>OAS-81</td>
-                                                                <td>Checkout - As a member of staff i want the checkout to display the relevant delivery methods so that I can have my items delivered at special rates</td>
-                                                                <td>Done</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>OAS-81</td>
-                                                                <td>Checkout - As a member of staff i want the checkout to display the relevant delivery methods so that I can have my items delivered at special rates</td>
-                                                                <td>Done</td>
-                                                            </tr>
                                                         </tbody>
                                                     </table>
                                                     
@@ -222,43 +200,28 @@
                                         <div class="col-md-12">
                                             <div class="card">
                                                 <div class="header">
-                                                    <h4 class="title">Sprint 5 Commitment</h4>
+                                                    <h4 class="title"><%=reportData[0].sprintname %> - Commitment</h4>
                                                     <p class="category">118.5 Story Points</p>
                                                 </div>
                                                 <div class="content table-responsive table-full-width">
                                                     <table class="table table-hover table-striped">
                                                         <thead>
                                                             <tr>
-                                                            <th>Story ID</th>
+                                                            <th class="col-md-1">Story ID</th>
                                                             <th>Story</th>
-                                                            <th>Status</th>
+                                                            <th class="col-md-2 hidden">Status</th>
+                                                            <th class="col-md-2">Points</th>
                                                         </tr></thead>
                                                         <tbody>
+                                                            <% for(i=0; i<stories.length; i++) { %>
                                                             <tr>
-                                                                <td>OAS-81</td>
-                                                                <td>Checkout - As a member of staff i want the checkout to display the relevant delivery methods so that I can have my items delivered at special rates</td>
-                                                                <td>Done</td>
+                                                                <td><%=stories[i].storyjiraref%></td>
+                                                                <td><%=stories[i].storydesc%></td>
+                                                                <td class="hidden"><%=stories[i].storystatus%></td>
+                                                                <td><%=stories[i].storypoints%></td>
                                                             </tr>
-                                                            <tr>
-                                                                <td>OAS-81</td>
-                                                                <td>Checkout - As a member of staff i want the checkout to display the relevant delivery methods so that I can have my items delivered at special rates</td>
-                                                                <td>Done</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>OAS-81</td>
-                                                                <td>Checkout - As a member of staff i want the checkout to display the relevant delivery methods so that I can have my items delivered at special rates</td>
-                                                                <td>Done</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>OAS-81</td>
-                                                                <td>Checkout - As a member of staff i want the checkout to display the relevant delivery methods so that I can have my items delivered at special rates</td>
-                                                                <td>Done</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>OAS-81</td>
-                                                                <td>Checkout - As a member of staff i want the checkout to display the relevant delivery methods so that I can have my items delivered at special rates</td>
-                                                                <td>Done</td>
-                                                            </tr>
+                                                            <% } %>
+                                                            
                                                         </tbody>
                                                     </table>
                                                     

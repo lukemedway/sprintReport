@@ -63,11 +63,13 @@
             var priority = row.fields.priority.name;
             var summary = row.fields.summary;
             var status = row.fields.status.name;
+            var points = row.fields.customfield_10004
             return [
                 '<input type="hidden" value="' + key + '" name="storyjiraref" />',
                 '<input type="hidden" value="' + priority + '" name="storypriority" />',
                 '<input type="hidden" value="' + summary + '" name="storydesc" />',
-                '<input type="hidden" value="' + status + '" name="storystatus" />'
+                '<input type="hidden" value="' + status + '" name="storystatus" />',
+                '<input type="hidden" value="' + points + '" name="storypoints" />'
             ].join('');
         }
 
@@ -143,7 +145,6 @@
 
             $('[rel="tooltip"]').tooltip();
             $('[data-toggle="tooltip"]').tooltip();
-
             
             // ********************************
             // BUTTON SUBMISSION HANDLERS
@@ -159,6 +160,7 @@
                 bootstrapurl = '/jira/fetchjirastoriesbysprint/' + $('#jirasprint').val();
                 $table.bootstrapTable('refresh', { url: bootstrapurl });
                 $('#deletestories').removeClass('hidden');
+                $('#commitstories').removeClass('hidden');
             });
 
 
@@ -173,8 +175,20 @@
                     values: keys
                 });
                 // Hide remove button if empty
-                if($table.bootstrapTable('getOptions').totalRows == 0) { $('#deletestories').addClass('hidden'); }
+                if($table.bootstrapTable('getOptions').totalRows == 0) { 
+                    $('#deletestories').addClass('hidden'); 
+                    $('#commitstories').addClass('hidden'); 
+                }
             });
+
+            $('#final-sprint-commitment').on('submit', function(e) {
+                e.preventDefault();
+                if($table.bootstrapTable('getOptions').totalRows == 0) {
+                    // Handle error
+                } else {
+                    this.submit();
+                }
+            })
 
 
             // *********************************************************
