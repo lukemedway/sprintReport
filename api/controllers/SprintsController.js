@@ -77,7 +77,9 @@ var SprintsController = {
     },
     
     setupreport: function(req, res, next) {
-        Sprint.find({ id: req.param('sprintid') }).populate('project').exec(function foundSprint(err, reportData) {
+        Sprint.find({ id: req.param('sprintid') })
+        .populate('project')
+        .exec(function foundSprint(err, reportData) {
             if(err) return next(err);
             if(!reportData) return next(err);
             if(reportData.length == 0) return next(err);
@@ -123,7 +125,9 @@ var SprintsController = {
     },
     
     initialstorysetup: function(req, res, next) {
-        Sprint.find({ id: req.param('sprintid') }).populate('project').exec(function foundSprint(err, reportData) {
+        Sprint.find({ id: req.param('sprintid') })
+        .populate('project')
+        .exec(function foundSprint(err, reportData) {
             if(err) return next(err);
             if(!reportData) return next(err);
             if(reportData.length == 0) return next(err);
@@ -141,7 +145,7 @@ var SprintsController = {
                 .where({ sprintdeleted: false })
                 .exec(function foundFullSprints(err, menuData){
                     if(err) return next(err);
-                    if(!menuData) return next('No Menu Data');
+                    if(!menuData) return next();
                     
                     JiraService.getJIRASprints(reportData[0].project.projectjiraboard, {
                         success: function(jiraSprints) {
@@ -173,9 +177,6 @@ var SprintsController = {
     },
     
 
-    // edit: function(req, res, next) {
-    //     SprintsController.setupreport(req, res, next);
-    // },
 
     test: function(req, res, next) {
         // console.log();
@@ -183,6 +184,25 @@ var SprintsController = {
         // res.view("HALLO");
     },
         
+
+    // *******************************************************************
+    
+    // JSON VIEW METHODS
+    
+    // *******************************************************************  
+
+
+    getstoriesbysprintid: function(req, res, next) {
+        Sprint.find( { id: req.param('sprintid') } )
+        .populate('stories', { where: { storyiscommitment: true } } )
+        .then(function(sprint) {
+            res.json(sprint[0].stories);
+        })
+        .catch(function(err) {
+            res.send(500, err);
+        });
+    },
+
 
     // *******************************************************************
     
@@ -266,6 +286,7 @@ var SprintsController = {
         })
         .exec(function updatedSprintSetup(err, sprint) {
             if(err) return next(err);
+            // Edit param value comes from the router options
             if(req.param("edit") == "true") {
                 res.redirect('/' + req.param('id') + '/sprints/report/' + req.param('sprintid'));
             } else {
@@ -286,6 +307,7 @@ var SprintsController = {
         
         // DB object to pass into the create function
         var arrData = [];
+        var arrFind = [];
         
         //  Check that all arrays have equal length
         (   arrStoryJiraRefs.length == arrStoryPriorities.length &&
@@ -305,12 +327,12 @@ var SprintsController = {
                     storyiscommitment: true,
                     sprintparents: req.param('sprintid')
                 });
+                arrFind.push({ storyjiraref: arrStoryJiraRefs[i] });
             }
 
-            // console.log("arrData: " + typeof arrData);
             if(arrData != 'undefined') {
                 if(arrData.length > 0) {
-                    StoriesController.findOrCreate(arrData, arrData, req.param('sprintid'), {
+                    StoriesController.assignstories(arrFind, arrData, req.param('sprintid'), {
                         success: function(stories) {
                             res.redirect('/' + req.param('id') + '/sprints/report/' + req.param('sprintid'));
                         },
@@ -320,11 +342,9 @@ var SprintsController = {
                     });
                 }
             }
-            
         } else {
             res.badRequest('Array length mismatch, please go back and retry.');
         }
-        //console.dir(arrData);
     },
 
     sprintstories: function(req, res, next) {

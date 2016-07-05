@@ -66,7 +66,7 @@ $().ready(function(){
         pageSize: 25,
         pageList: [25,50,100],
         ordering: true,
-        url: '/' + projectId + '/sprint/report/' + sprintId + '/getstoriesbysprintid',
+        url: '/' + projectId + '/sprints/report/' + sprintId + '/getstoriesbysprintid',
         dataType: 'json',
         sidePagination: 'client',
         queryParams: false,

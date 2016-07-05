@@ -121,7 +121,8 @@ animation: box 3s ease 0s 1 !important;
     stroke-width: 60px
 }
 
-#dependencies-shortlist-bootstrap-table .no-records-found {
+#dependencies-shortlist-bootstrap-table .no-records-found,
+#commitment-bootstrap-table .no-records-found {
     height: 150px;
 }
 

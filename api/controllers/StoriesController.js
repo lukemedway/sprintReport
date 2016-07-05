@@ -30,6 +30,7 @@ StoriesController = {
     getstoriesbysprintid: function(req, res, next) {
         StoriesController.getStoriesBySprint(req.param('sprintid'), {
             success: function(stories) {
+                console.log(req.param('sprintid'));
                 res.json(stories);
             },
             error: function(err) {
@@ -83,7 +84,8 @@ StoriesController = {
 
     
 
-    findOrCreate: function(arrFind, arrData, sprintid, next) {
+    assignstories: function(arrFind, arrData, sprintid, next) {
+
         Story.findOrCreate(arrFind, arrData)
         .then(function(storiesData) {
 
