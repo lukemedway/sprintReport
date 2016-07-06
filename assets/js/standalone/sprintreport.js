@@ -1,6 +1,16 @@
 
 $().ready(function(){
     
+    function sumFormatter(data) {
+        alert("hello");
+        field = this.field;
+        console.dir(field);
+        return data.reduce(function(sum, row) { 
+            return sum + (+row[field]);
+        }, 0);
+    }
+    
+    
     var $table = $('#dependencies-shortlist-bootstrap-table');
     var $commitment = $('#commitment-bootstrap-table');
     
@@ -168,6 +178,8 @@ $().ready(function(){
     $("#sprintdateto").on("dp.change", function (e) {
         $('#sprintdateto').data("DateTimePicker").maxDate(e.date);
     });
+
+
 
 
 });

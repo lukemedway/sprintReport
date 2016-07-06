@@ -52,27 +52,43 @@ var SprintsController = {
     report: function(req, res, next) {
         Sprint.find({ id: req.param('sprintid') })
         .populate('project')
-        .exec(function foundSprint(err, reportData) {
-            if(err) return next(err);
+        .then(function(reportData) {
             if(!reportData) return next(err);
             if(reportData.length == 0) return next(err);
             if(reportData[0].sprintissetup == false) { return SprintsController.setupreport(req, res, next); }
             SprintsController.getLastXSprintsByProjectRef(reportData[0].project.jiraprojectref, 5, false, {
                 success: function(menuData) {
-                    var scripts = ['sprintreport.js', 'chart.js'];
-                    res.view('sprints/report', {
-                        title: reportData[0].project.name + " REPORT",
-                        scripts: scripts,
-                        sprintData: menuData,
-                        reportData: reportData,
-                        sprintMenuActive: true
-                    });
+                    
+                    SprintsController.getSprintCountByProject(req, res, { 
+                        success: function(count) {
+                            // If viewing the first sprint, a commitment list will not exist
+                            var blnShowCommitment = false;
+                            (count == 1) ? blnShowCommitment = false : blnShowCommitment = true;
+                                               
+                            var scripts = ['sprintreport.js', 'chart.js'];
+                            res.view('sprints/report', {
+                                title: reportData[0].project.name + " REPORT",
+                                scripts: scripts,
+                                sprintData: menuData,
+                                reportData: reportData,
+                                sprintMenuActive: true,
+                                showCommitment: blnShowCommitment
+                            });
+                        },
+                        error: function(err) {
+                            res.send(500, err);
+                        }
+                     });
+               
                 },
                 error: function(err){
                     console.log(err);
                     res.send(500, err);
                 }
             });
+        })
+        .catch(function(err) {
+            return next(err);
         });        
     },
     
@@ -95,7 +111,7 @@ var SprintsController = {
                 .sort({ 'createdAt': -1 })
                 .where({ sprintdeleted: false })
                 .exec(function foundFullSprints(err, menuData){
-                    var scripts = ['sprintreport.js'];
+                    var scripts = ['sprint-setup.js'];
                     res.view('sprints/setup', {
                         title: 'REPORT SETUP',
                         scripts: scripts,
@@ -210,7 +226,7 @@ var SprintsController = {
     
     // *******************************************************************  
     
-   create: function(req, res, next) {
+    create: function(req, res, next) {
         
         var projectid = req.param('projectid');
         Sprint.create({ 
@@ -395,7 +411,16 @@ var SprintsController = {
             }
         });
     },
-
+    
+    getSprintCountByProject: function(req, res, next) {
+        Sprint.count({ project: req.param('id') })
+        .then(function(sprintno) {
+            return next.success(sprintno);
+        })
+        .catch(function(err) {
+            return next.error(err);
+        })
+    },
 
     getSprints: function(req, res, next) {
         Sprint.find({ project: req.param('id') })
