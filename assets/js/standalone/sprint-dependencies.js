@@ -2,6 +2,10 @@
 /* Type ahead function call upon dom ready */ 
 $(function() {
     
+    var path = window.location.pathname;
+    var arrPath = path.split("/");
+    var projectId = arrPath[1];
+
 
     
     var substringMatcher = function(strs) {
@@ -34,13 +38,18 @@ $(function() {
     
     $.ajax({
         type: "GET",
-        url: "/jira/getkeys",
+        url: "/" + projectId + "/jira/getkeys",
         success: function(response){
             
             var objResponse = response;
             var arrIssues = objResponse.issues;
             var arrKeys = [];
-                            
+
+            if (typeof arrIssues != 'object') {
+                console.log("WARNING: No issues were returned from JIRA - Typeahead disabled.");
+                return false;
+            } 
+
             for (i=0; i<arrIssues.length; i++)
             {
                 arrKeys.push(arrIssues[i].key);
@@ -70,6 +79,9 @@ $(function() {
                     $('#commitment')[0].reset();
                 }
             });
+        },
+        error: function(err) {
+            console.log(err);
         }
     });
     

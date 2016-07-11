@@ -1,0 +1,71 @@
+<div class="col-md-12">
+  <div class="card" id="add-control">
+    <div class="header">
+      <h4 class="title"><%=reportData[0].project.name + " - " + reportData[0].sprintname %> Completed Story List</h4>
+      <p class="category">List of stories that were completed in this sprint.</p>
+    </div>
+    <div class="content">
+
+      <form id="sprint-commitment">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="form-group">
+              
+              <label>Select Sprint</label>
+              <select class="selectpicker" data-title="Please Select" data-style="btn-default btn-block" data-menu-style="dropdown-blue" name="jirasprint" id="jirasprint">  
+                <% for(i=0; i<jiraSprints.values.length; i++) { %>
+                  <option value="<%=jiraSprints.values[i].id%>"><%=jiraSprints.values[i].name%></option>
+                <% } %>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group">
+              <label>&nbsp;</label>
+              <input type="submit" class="btn btn-primary btn-fill form-control" value="Populate" />
+              <input type="hidden" name="projectjiraboard" value="<%=reportData[0].project.projectjiraboard %>" />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5">
+              <p class="text-info"><i class="fa fa-info-circle"></i> Note only stories marked as 'done' are visible.</p>
+            </div>
+        </div>
+      </form>
+
+    </div>
+  </div>
+  
+  <form id="final-sprint-commitment" method="POST" action="/<%=req.param('id')%>/sprints/report/<%=req.param('sprintid')%>/storiesdonecomplete">
+
+    <div class="card">
+      <div class="toolbar">
+        <button name="delete" class="btn btn-fill btn-danger hidden" id="deletestories"><i class="fa fa-remove"></i>Remove</button>
+      </div>
+      <table id="sprintstories-bootstrap-table" class="table table-striped">
+        <thead>
+          <tr>
+            <th class="col-md-1" data-field="state" data-checkbox="true"></th>
+            <th class="col-md-1" data-field="key" data-sortable="true">Story ID</th>
+            <th class="col-md-1" data-field="priority" data-formatter="priorityFormatter" data-sortable="true">Priority</th>
+            <th class="col-md-8" data-field="summary" data-formatter="summaryFormatter">Summary</th>
+            <th class="col-md-2" data-field="status" data-formatter="statusFormatter" data-sortable="true">Status</th>     
+            <th class="td-actions text-right" data-field="actions" data-events="operateEvents" data-formatter="operateFormatter">Actions</th>
+            <th class="hidden" data-formatter="formFormatter"></th>
+          </tr>
+        </thead>
+      </table>
+      <br />
+      <div class="col-md-2 pull-right">
+        <div class="form-group">
+          <input type="hidden" name="storycount" id="storycount" value="" />
+          <input type="submit" id="commitstories" class="btn btn-fill btn-primary form-control hidden" value="Commit" />
+        </div>
+      </div>
+      <div class="clearfix"></div>
+    </div><!--  end card  -->
+    
+  </form>
+  
+</div>

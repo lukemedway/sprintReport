@@ -5,8 +5,8 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
-var Project = require('./ProjectsController');
-var Sprint = require('./SprintsController');
+var ProjectsController = require('./ProjectsController');
+var SprintsController = require('./SprintsController');
 
 var DependenciesController = {
 
@@ -17,9 +17,9 @@ var DependenciesController = {
     // *******************************************************************   
 
     index: function(req, res, next) {
-        Project.getProjectByRef(req.param('id'), {
+        ProjectsController.getProjectByRef(req.param('id'), {
             success: function(projectData) {
-                Sprint.getLastXSprintsByProjectRef(req.param('id'), 5, false, {
+                SprintsController.getLastXSprintsByProjectRef(req.param('id'), 5, false, {
                     success: function(sprintData) {
                         var arrScripts = [ "dependencies.js" ];
                         res.view({
@@ -49,6 +49,11 @@ var DependenciesController = {
         res.view();
     },
     
+
+
+
+
+
     // *******************************************************************
     
     // CRUD METHODS
@@ -66,10 +71,66 @@ var DependenciesController = {
         }).exec(function createdDependency(err, dependencyData) {
             if(err) return next(err);
             if(!dependencyData) return next(err);
-            res.json(dependencyData);             
+            res.json(dependencyData);           
         });
     },
     
+
+    // *******************************************************************
+    
+    // JSON DATA METHODS
+    
+    // *******************************************************************
+
+
+    getAllStoriesByProject: function(req, res, next) {
+        Project.find( { jiraprojectref: req.param('id') } )
+        .where( { deleted: false } )
+        .populate('sprint', { where: { sprintdeleted: false } } )
+        .then(function(projectData) {
+
+            if(typeof projectData == "object") {
+
+                var sprints = projectData[0].sprint;
+                var stories = [];
+                var storyids = [];
+
+                sprints.forEach(function(sprint, i) {
+                    console.dir(i);
+                    Story.find()
+                    .populate("sprintparents", { where: { sprintparents: sprint.id } } )
+                    .then(function(storiesData) {
+                        console.log(storiesData.length);
+                        stories.push(storiesData);
+                        if(sprints.length == i+1) {
+                            res.json(stories);
+                        }
+                    })
+                    .catch(function(err) {
+
+                    })
+
+
+                });
+
+            }
+        })
+        .catch(function(err) {
+            res.json(err);
+        })
+    },
+
+
+    getStoriesBySprint: function(req, res, next) {
+        Story.find( { project: req.param('id') } )
+        .populate('project').
+        then(function(stories) {
+            res.json(stories);
+        })
+        .catch(function(err) {
+            res.badRequest("Could not locate project stories");
+        });
+    },
 
 
     // *******************************************************************

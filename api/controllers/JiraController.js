@@ -60,6 +60,18 @@ module.exports = {
         })
     },
     
+
+    // {host}/rest/agile/latest/board/176/sprint
+    fetchdonejirastoriesbysprint: function(req, res, next) {
+        JiraService.getDoneJIRAStoriesBySprint(req.param('sprintid'), {
+            success: function(stories) {
+                res.json(stories.issues);
+            },
+            error: function(err) {
+                res.send(500, err);
+            }
+        })
+    },
     
     // test2: function(req, res) {
     //    var data = JiraService.getJIRAStoryByKey("OAS-200", {
@@ -73,18 +85,18 @@ module.exports = {
     //    });
     // },
     
-    // test3: function(req, res) {
-    //     var data = JiraService.getJIRAStoriesByProjectKey("OAS", {
-    //        success: function(data) {
-    //            res.locals.requestData = data;
-    //            var arrScripts = [ "sprint-dependencies.js", "data-table.js" ];
-    //            res.view('jiratest3', { scripts: arrScripts });
-    //        },
-    //        error: function(err) {
-    //            console.log('ERROR: getStoriesByProjectKey Service Method CB');
-    //        }
-    //     });
-    // }
+    test3: function(req, res) {
+        var data = JiraService.getJIRAStoriesByProjectKey("OAS", {
+           success: function(data) {
+               res.locals.requestData = data;
+               var arrScripts = [ "sprint-dependencies.js", "data-table.js" ];
+               res.view('jiratest3', { scripts: arrScripts });
+           },
+           error: function(err) {
+               console.log('ERROR: getStoriesByProjectKey Service Method CB');
+           }
+        });
+    }
     
 }; 
 

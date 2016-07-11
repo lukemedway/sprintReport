@@ -40,7 +40,7 @@
             <ul class="nav">
                 <%
                 if(req.path !== '/projects' && req.path !== '/projects/') { %>
-                <li <% if(typeof sprintMenuActive !== 'undefined') { %>class="active"<% } %>>
+                    <li <% if(typeof sprintMenuActive !== 'undefined') { %>class="active"<% } %>>
                     <a href="#menu-sprints" id="componentLink" data-toggle="collapse" aria-expanded="false" class="collapsed">
                         <i class="pe-7s-display1"></i>
                         <p>Sprint Reports <b class="caret"></b></p>
@@ -65,13 +65,11 @@
                         </ul>
                     </div>
                 </li>
+
+                
                 <% if (req.param('id')) { %>
-                <li <% if(typeof storyMenuActive !== 'undefined'){ %>class="active"<% } %>>
-                    <a href="/<%=req.param('id')%>/stories/">
-                        <i class="pe-7s-notebook"></i>
-                        <p>Project Stories</p>
-                    </a>
-                </li>
+
+                
                 <li <% if(typeof dependencyMenuActive !== 'undefined'){ %>class="active"<% } %>>
                     <a href="/<%=req.param('id')%>/dependencies/">
                         <i class="pe-7s-plugin"></i>

@@ -43,6 +43,14 @@ module.exports = {
         return this.doRequest(endpoint, "GET", next);
     },
     
+    // Endpoint for retrieving DONE stories by sprint
+    // /rest/api/2/search?jql=sprint=580 AND issuetype=story
+
+    getDoneJIRAStoriesBySprint: function(sprintId, next) {
+        var endpoint = "/rest/api/2/search?jql=sprint=" + sprintId + "%20AND%20issuetype=story%20AND%20status=done&maxResults=9999" //& fields=key,summary,priority,status";
+        return this.doRequest(endpoint, "GET", next);
+    },
+    
     // Endpoint for fetching an issue by key
     // /rest/api/search?jql=key=OAS-1
     

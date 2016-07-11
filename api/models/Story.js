@@ -34,7 +34,7 @@ module.exports = {
       },
       storyiscommitment: {
         type: 'boolean',
-        defaultsTo: true
+        defaultsTo: false
       },
       storydeleted: {
         type: 'boolean',

@@ -1,18 +1,10 @@
 
 $().ready(function(){
     
-    function sumFormatter(data) {
-        alert("hello");
-        field = this.field;
-        console.dir(field);
-        return data.reduce(function(sum, row) { 
-            return sum + (+row[field]);
-        }, 0);
-    }
-    
     
     var $table = $('#dependencies-shortlist-bootstrap-table');
     var $commitment = $('#commitment-bootstrap-table');
+    var $complete = $('#complete-bootstrap-table');
     
     setTimeout(function() { 
         $('#componentLink').attr('aria-expanded', 'true');
@@ -62,7 +54,38 @@ $().ready(function(){
             detailClose: 'fa fa-minus-circle'
         },
     });
-    
+
+    $complete.bootstrapTable({
+        toolbar: ".toolbar",
+        clickToSelect: false,
+        showRefresh: false,
+        search: false,
+        showToggle: false,
+        showColumns: false,
+        pagination: true,
+        searchAlign: 'left',
+        pageSize: 25,
+        pageList: [25,50,100],
+        ordering: true,
+        url: '/' + projectId + '/sprints/report/' + sprintId + '/getdonestoriesbysprintid',
+        dataType: 'json',
+        sidePagination: 'client',
+        queryParams: false,
+        ShowingRows: function(pageFrom, pageTo, totalRows){
+            //do nothing here, we don't want to show the text "showing x of y from..."
+        },
+        formatRecordsPerPage: function(pageNumber){
+            return pageNumber + " rows visible";
+        },
+        icons: {
+            refresh: 'fa fa-refresh',
+            toggle: 'fa fa-th-list',
+            columns: 'fa fa-columns',
+            detailOpen: 'fa fa-plus-circle',
+            detailClose: 'fa fa-minus-circle'
+        },
+    })
+
     
     $commitment.bootstrapTable({
         toolbar: ".toolbar",
@@ -98,6 +121,7 @@ $().ready(function(){
     $(window).resize(function () {
         $table.bootstrapTable('resetView');
         $commitment.bootstrapTable('resetView');
+        $complete.bootstrapTable('resetView');
     });    
     
 
@@ -105,9 +129,6 @@ $().ready(function(){
     $('[rel="tooltip"]').tooltip();
     $('[data-toggle="tooltip"]').tooltip();
 
-    $(window).resize(function () {
-        $table.bootstrapTable('resetView');
-    });
 
                                     
     $('#sprint-form').validate({

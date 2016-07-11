@@ -53,33 +53,40 @@ module.exports.routes = {
   '/:id/dependencies' :                               { controller: "DependenciesController", action: "index" },
   '/:id/dependencies/create':                         { controller: "DependenciesController", action: "create" },
   '/:id/dependencies/getDependencies':                { controller: "DependenciesController", action: "getDependenciesByProjectRefJson" },
+  '/:id/dependencies/getAllStoriesByProject':         { controller: "DependenciesController", action: "getAllStoriesByProject" },
 
 
   // SprintsController Routes
-  '/sprints/project/:id':                             { controller: "SprintsController", action: "index" },
-  '/sprints/setupreport/:id' :                        { controller: 'SprintsController', action: 'setupreport' },
-  '/:id/sprints/edit/:sprintid' :                     { controller: "SprintsController", action: "setupreport", edit: true },
-  '/sprints/getSprintsByProjectJson/:id' :            { controller: 'SprintsController', action: 'getSprintsByProjectJson' },
-  '/:id/sprints/':                                    { controller: "SprintsController", action: "index" },
-  '/:id/sprints/getSprints/':                         { controller: "SprintsController", action: "getSprints" },
-  '/:id/sprints/report/:sprintid':                    { controller: "SprintsController", action: "report" },
-  '/:id/sprints/setupcomplete':                       { controller: "SprintsController", action: "setupcomplete" },
-  '/:id/sprints/getSprintsBySprintJson/:sprintid' :   { controller: 'SprintsController', action: 'getSprintsBySprintJson' },
-  '/:id/sprints/report/:sprintid/stories':            { controller: "SprintsController", action: "setupsprintstories" },
-  '/:id/fetchsprintsbyname':                          { controller: "SprintsController", action: "getJiraSprintsByName" },
-  '/:id/sprints/report/:sprintid/storycomplete':      { controller: "SprintsController", action: "storycomplete" }, 
-  '/:id/sprints/report/:sprintid/sprintstories':      { controller: "SprintsController", action: "sprintstories"},
+  '/sprints/project/:id':                               { controller: "SprintsController", action: "index" },
+  '/sprints/setupreport/:id' :                          { controller: 'SprintsController', action: 'setupreport' },
+  '/:id/sprints/edit/:sprintid' :                       { controller: "SprintsController", action: "setupreport", edit: true },
+  '/sprints/getSprintsByProjectJson/:id' :              { controller: 'SprintsController', action: 'getSprintsByProjectJson' },
+  '/:id/sprints/':                                      { controller: "SprintsController", action: "index" },
+  '/:id/sprints/getSprints/':                           { controller: "SprintsController", action: "getSprints" },
+  '/:id/sprints/report/:sprintid':                      { controller: "SprintsController", action: "report" },
+  '/:id/sprints/setupcomplete':                         { controller: "SprintsController", action: "setupcomplete" },
+  '/:id/sprints/getSprintsBySprintJson/:sprintid' :     { controller: 'SprintsController', action: 'getSprintsBySprintJson' },
+  '/:id/sprints/report/:sprintid/stories':              { controller: "SprintsController", action: "setupsprintstories" },
+  '/:id/fetchsprintsbyname':                            { controller: "SprintsController", action: "getJiraSprintsByName" },
+  '/:id/sprints/report/:sprintid/storycomplete':        { controller: "SprintsController", action: "storycomplete" }, 
+  '/:id/sprints/report/:sprintid/sprintstories':        { controller: "SprintsController", action: "sprintstories"},
+  '/:id/sprints/report/:sprintid/getstoriesbysprintid': { controller: "SprintsController", action: "getstoriesbysprintid" },
+  '/:id/sprints/report/:sprintid/getdonestoriesbysprintid': { controller: "SprintsController", action: "getdonestoriesbysprintid" },
+  '/:id/sprints/report/:sprintid/completestories':      { controller: "SprintsController", action: "completestories" },
+  '/:id/sprints/report/:sprintid/storiesdonecomplete':  { controller: "SprintsController", action: "storiesdonecomplete" },
+  
   
   
   // StoriesController Routes
-  '/:id/sprints/report/:sprintid/getstoriesbysprintid': { controller: "SprintsController", action: "getstoriesbysprintid" },
   
   
   // JIRA Routes
   '/jira/fetchjiraboards/':                           { controller: "JiraController", action: "fetchjiraboards" },
   '/jira/fetchjirastoriesbysprint/:sprintid':         { controller: "JiraController", action: "fetchjirastoriesbysprint" },
+  '/jira/fetchdonejirastoriesbysprint/:sprintid':     { controller: "JiraController", action: "fetchdonejirastoriesbysprint" },
   '/:id/jira/getstory/:id' :                          { controller: "JiraController", action: "getstory" },
   '/:id/jira/getkeys':                                { controller: "JiraController", action: "getkeys" },
+  '/:id/jira/test3':                                  { controller: "JiraController", action: "test3" },
   
 
   // CRUD ACTIONS VIA AJAX
