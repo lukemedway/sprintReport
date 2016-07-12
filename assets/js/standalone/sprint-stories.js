@@ -187,7 +187,11 @@
                 if($table.bootstrapTable('getOptions').totalRows == 0) {
                     // Handle error
                 } else {
-                    this.submit();
+                    alert(JSON.stringify($table.bootstrapTable('getData')))
+
+                    
+
+                    // this.submit();
                 }
             })
 
