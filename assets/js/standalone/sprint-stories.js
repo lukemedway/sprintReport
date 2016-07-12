@@ -187,11 +187,52 @@
                 if($table.bootstrapTable('getOptions').totalRows == 0) {
                     // Handle error
                 } else {
-                    alert(JSON.stringify($table.bootstrapTable('getData')))
-
+                    // Build the form in JQuery so that we can extract ALL data from the table and submit in a form
                     
-
-                    // this.submit();
+                    // Get Table Data
+                    var tblData = $table.bootstrapTable('getData');
+                    var data = [];
+                    
+                    
+                    // Set up form              
+                    var form = $('<form></form>');
+                    form.attr('method', 'post');
+                    form.attr('action', './storycomplete');
+                    
+                    // Get the values from each table row                 
+                    $.each(tblData, function(i, row) {
+                        
+                        // Extract the data and place inside rowData object
+                        var rowData = {
+                            'storyjiraref': row.key,
+                            'storydesc': row.fields.summary,
+                            'storypriority': row.fields.priority.name,
+                            'storystatus': row.fields.status.name,
+                            'storypoints': row.fields.customfield_10004
+                        }
+                        
+                        // Set hidden fields for each key value pair in the table row (i.e. storyjiraref, storydesc, storypriority etc)
+                        $.each(rowData, function(key, val) {
+                            var field = $('<input></input>');
+                            field.attr('type', 'hidden');
+                            field.attr('name', key);
+                            field.attr('value', val);
+                            form.append(field);
+                        });
+                        
+                         // for(prop in rowData) {
+                        //     var tmp = document.createElement("div");
+                        //     tmp.innerHTML = rowData[prop];
+                        //     rowData[prop] = tmp.textContent || tmp.innerText || "";
+                        // }
+                        
+                        // data.push(rowData);
+                    });
+                    
+                    $(document.body).append(form);
+                    //console.dir(form);
+                    form.submit();
+                    
                 }
             })
 
@@ -240,7 +281,9 @@
                     var objResponse = response;
                     var arrIssues = objResponse.issues;
                     var arrKeys = [];
-                                    
+                    
+                    if(typeof arrIssues != 'object') return false;
+                          
                     for (i=0; i<arrIssues.length; i++)
                     {
                         arrKeys.push(arrIssues[i].key);

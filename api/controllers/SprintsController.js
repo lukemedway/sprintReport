@@ -368,12 +368,12 @@ var SprintsController = {
 
     
     storycomplete: function(req, res, next) {
-              
+        
         var arrStoryJiraRefs = req.param('storyjiraref');
         var arrStoryPriorities = req.param('storypriority');
         var arrStoryPoints = req.param('storypoints');
         var arrStoryDesc = req.param('storydesc');
-        var arrStoryStatus = req.param('storystatus');       
+        var arrStoryStatus = req.param('storystatus');    
         
         // DB object to pass into the create function
         var arrData = [];
