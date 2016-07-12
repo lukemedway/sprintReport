@@ -37,7 +37,6 @@
     </div>
   </div>
   
-  <form id="final-sprint-commitment" method="POST" action="/<%=req.param('id')%>/sprints/report/<%=req.param('sprintid')%>/storiesdonecomplete">
 
     <div class="card">
       <div class="toolbar">
@@ -59,13 +58,11 @@
       <br />
       <div class="col-md-2 pull-right">
         <div class="form-group">
-          <input type="hidden" name="storycount" id="storycount" value="" />
-          <input type="submit" id="commitstories" class="btn btn-fill btn-primary form-control hidden" value="Commit" />
+          <button id="commitstories" class="btn btn-fill btn-primary form-control hidden"><i class="fa fa-check"></i>Commit</button>
         </div>
       </div>
       <div class="clearfix"></div>
     </div><!--  end card  -->
-    
-  </form>
+
   
 </div>

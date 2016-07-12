@@ -32,7 +32,7 @@
     </div>
   </div>
   
-  <form id="final-sprint-commitment" method="POST" action="/<%=req.param('id')%>/sprints/report/<%=req.param('sprintid')%>/storycomplete">
+
 
     <div class="card">
       <div class="toolbar">
@@ -47,20 +47,16 @@
             <th class="col-md-8" data-field="summary" data-formatter="summaryFormatter">Summary</th>
             <th class="col-md-2" data-field="status" data-formatter="statusFormatter" data-sortable="true">Status</th>     
             <th class="td-actions text-right" data-field="actions" data-events="operateEvents" data-formatter="operateFormatter">Actions</th>
-            <th class="hidden" data-formatter="formFormatter"></th>
           </tr>
         </thead>
       </table>
       <br />
       <div class="col-md-2 pull-right">
         <div class="form-group">
-          <input type="hidden" name="storycount" id="storycount" value="" />
-          <input type="submit" id="commitstories" class="btn btn-fill btn-primary form-control hidden" value="Commit" />
+          <button id="commitstories" class="btn btn-fill btn-primary form-control hidden"><i class="fa fa-check"></i>Commit</button>
         </div>
       </div>
       <div class="clearfix"></div>
     </div><!--  end card  -->
-    
-  </form>
   
 </div>

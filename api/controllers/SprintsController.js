@@ -64,6 +64,8 @@ var SprintsController = {
                             // If viewing the first sprint, a commitment list will not exist
                             var blnShowCommitment = false;
                             (count == 1) ? blnShowCommitment = false : blnShowCommitment = true;
+                            
+                            
                                                
                             var scripts = ['sprintreport.js', 'chart.js'];
                             res.view('sprints/report', {

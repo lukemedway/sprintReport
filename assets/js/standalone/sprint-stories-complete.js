@@ -58,21 +58,21 @@
             return [ dateFormatted ].join('');
         }
 
-        function formFormatter(value, row, index) {
-            var key = row.key;
-            var priority = row.fields.priority.name;
-            var summary = row.fields.summary;
-            var status = row.fields.status.name;
-            var points = row.fields.customfield_10004;
-            if (points == null) { points = 0; }
-            return [
-                '<input type="hidden" value="' + key + '" name="storyjiraref" />',
-                '<input type="hidden" value="' + priority + '" name="storypriority" />',
-                '<input type="hidden" value="' + summary + '" name="storydesc" />',
-                '<input type="hidden" value="' + status + '" name="storystatus" />',
-                '<input type="hidden" value="' + points + '" name="storypoints" />'
-            ].join('');
-        }
+        // function formFormatter(value, row, index) {
+        //     var key = row.key;
+        //     var priority = row.fields.priority.name;
+        //     var summary = row.fields.summary;
+        //     var status = row.fields.status.name;
+        //     var points = row.fields.customfield_10004;
+        //     if (points == null) { points = 0; }
+        //     return [
+        //         '<input type="hidden" value="' + key + '" name="storyjiraref" />',
+        //         '<input type="hidden" value="' + priority + '" name="storypriority" />',
+        //         '<input type="hidden" value="' + summary + '" name="storydesc" />',
+        //         '<input type="hidden" value="' + status + '" name="storystatus" />',
+        //         '<input type="hidden" value="' + points + '" name="storypoints" />'
+        //     ].join('');
+        // }
 
 
         $().ready(function(){
@@ -182,12 +182,49 @@
                 }
             });
 
-            $('#final-sprint-commitment').on('submit', function(e) {
-                e.preventDefault();
+            $('#commitstories').on('click', function(e) {
+                
                 if($table.bootstrapTable('getOptions').totalRows == 0) {
                     // Handle error
                 } else {
-                    this.submit();
+                    // Build the form in JQuery so that we can extract ALL data from the table and submit in a form
+                    // Get Table Data
+                    var tblData = $table.bootstrapTable('getData');
+                    var data = [];
+                    
+                    
+                    // Set up form              
+                    var form = $('<form></form>');
+                    form.attr('method', 'post');
+                    form.attr('action', './storiesdonecomplete');
+                    
+                    // Get the values from each table row                 
+                    $.each(tblData, function(i, row) {
+                                               
+                        // Extract the data and place inside rowData object
+                        var rowData = {
+                            'storyjiraref': row.key,
+                            'storydesc': row.fields.summary,
+                            'storypriority': row.fields.priority.name,
+                            'storystatus': row.fields.status.name,
+                            'storypoints': row.fields.customfield_10004
+                        }
+                        
+                        // Set hidden fields for each key value pair in the table row (i.e. storyjiraref, storydesc, storypriority etc)
+                        $.each(rowData, function(key, val) {
+                            var field = $('<input></input>');
+                            field.attr('type', 'hidden');
+                            field.attr('name', key);
+                            field.attr('value', val);
+                            form.append(field);
+                        });
+
+                    });
+                    
+                    // Append the form to the end of the document body & submit form.
+                    $(document.body).append(form);
+                    form.submit();
+                    
                 }
             })
 
