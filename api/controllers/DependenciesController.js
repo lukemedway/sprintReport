@@ -71,7 +71,37 @@ var DependenciesController = {
         }).exec(function createdDependency(err, dependencyData) {
             if(err) return next(err);
             if(!dependencyData) return next(err);
-            res.json(dependencyData);           
+            
+            // Get the story assignments
+            var arrStories = req.param('dependencystories');
+            arrStories = arrStories.split(',');
+            
+            console.dir(arrStories.length);
+            
+            if(typeof arrStories == 'object') {
+                arrStories.forEach(function(storyid, i) {
+                    // Find the relevant story
+                    Story.findOne({ storyjiraref: storyid.trim() })
+                    .populate('dependencies')
+                    .exec(function(err, storyData) {
+                        // Ignore any stories which are not real
+                        if(err) console.log('Could not locate story ref:', storyid);
+                        if(!storyData) console.log('Could not locate story ref:', storyid);
+                        
+                        // If story exists, assign it to dependency
+                        if(storyData) {
+                            storyData.dependencies.add(dependencyData.id);
+                            storyData.save();
+                        }
+                        
+                        if(arrStories.length == i+1) return res.json(dependencyData);
+                        
+                    })
+                });
+            } else {
+                return res.json(dependencyData);
+            }
+            
         });
     },
     
@@ -89,27 +119,26 @@ var DependenciesController = {
         .then(function(projectStories) {
 
             var storyData = [];
-
-            projectStories.forEach(function(story, i) {
-                storyData.push({ value: story.storyjiraref });
-                if(projectStories.length == i+1) {
-                    res.json(storyData);
+            if(typeof projectStories == 'object') {
+                if(projectStories.length > 0) {
+                    projectStories.forEach(function(story, i) {
+                        storyData.push({ value: story.storyjiraref });
+                        if(projectStories.length == i+1) {
+                            res.json(storyData);
+                        }
+                    });
+                } else {
+                    res.send(200);
                 }
-            });
-
+            } else {
+                // console.log('No Stories Found.');
+                res.send(200);
+            }
         })
         .catch(function(err) {
             res.json(err);
-        })
+        });
         
-        // Project.find( { jiraprojectref: req.param('id') } )
-        // .populate('story', { where: { deleted: false } } )
-        // .then(function(projectStories) {
-        //     res.json(projectStories);
-        // })
-        // .catch(function(err) {
-        //     res.json(err);
-        // })
     },
 
 
@@ -144,6 +173,7 @@ var DependenciesController = {
 
     getDependenciesByProjectRefJson: function(req, res, next) {
         Dependency.find({ 'project': req.param('id') })
+        .populate('stories')
         .sort({ createdAt:-1 })
         .where({ dependencydeleted: false })
         .exec(function foundDependencies(err, dependenciesData) {

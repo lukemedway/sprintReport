@@ -126,12 +126,12 @@ animation: box 3s ease 0s 1 !important;
 #complete-bootstrap-table .no-records-found {
     height: 150px;
 }
-
+/*
 .tooltip {
     position: fixed;
     z-index: 4000;
 }
-
+*/
 
 .btn.dropdown-toggle {
     border-color: #e3e3e3;

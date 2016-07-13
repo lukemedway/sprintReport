@@ -52,6 +52,13 @@ module.exports = {
       // Many stories can belong to a project
       project: {
         model: 'project'
+      },
+      
+      // Many-to-many relationship to dependency
+      // Many stories may belong to many dependencies
+      dependencies: {
+        collection: 'dependency',
+        via: 'stories'
       }
       
   }

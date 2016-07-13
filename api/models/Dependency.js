@@ -31,6 +31,14 @@ module.exports = {
     // One-to-many relationship with a project
     project: {
       model: 'project'
+    },
+    
+    // Relationship with Stories
+    // Many-to-many relationship 
+    // Dependencies can have many associated stories & Stories can have many associated dependencies
+    stories: { 
+      collection: 'story',
+      via: 'dependencies'
     }
     
   },

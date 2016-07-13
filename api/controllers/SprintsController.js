@@ -359,7 +359,7 @@ var SprintsController = {
         .exec(function updatedSprintSetup(err, sprint) {
             if(err) return next(err);
             // Edit param value comes from the router options
-            if(req.param("edit") == "true") {
+            if(req.param("edit") == true) {
                 res.redirect('/' + req.param('id') + '/sprints/report/' + req.param('sprintid'));
             } else {
                 res.redirect('/' + req.param('id') + '/sprints/report/' + req.param('sprintid') + "/stories");
@@ -375,7 +375,7 @@ var SprintsController = {
         var arrStoryPriorities = req.param('storypriority');
         var arrStoryPoints = req.param('storypoints');
         var arrStoryDesc = req.param('storydesc');
-        var arrStoryStatus = req.param('storystatus');    
+        var arrStoryStatus = req.param('storystatus');
         
         // DB object to pass into the create function
         var arrData = [];

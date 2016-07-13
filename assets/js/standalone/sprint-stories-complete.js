@@ -24,15 +24,15 @@
         // JSON Data Formatting controls
         // Return the values from the JSON data objects
         function statusFormatter(value, row) {
-            return row.fields.status.name;
+            return [ row.fields.status.name ].join('');
         }
 
         function summaryFormatter(value, row) {
-            return row.fields.summary;
+            return [ row.fields.summary ].join('');
         }
 
         function priorityFormatter(value, row) {
-            return row.fields.priority.name;
+            return [ row.fields.priority.name ].join('');
         }
         // End JSON data formatting
 

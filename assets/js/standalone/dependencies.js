@@ -7,7 +7,7 @@
             url: './getStoriesByProject',
             method: 'GET',
             success: function(data) {
-                console.dir(data);
+                // console.dir(data);
                 var engine = new Bloodhound({
                     local: data,
                     datumTokenizer: function(d) {
@@ -51,21 +51,34 @@
             var dateFormatted = ('0' + date.getDate()).slice(-2) + '/'+ ('0' + (date.getMonth()+1)).slice(-2) + '/' + date.getFullYear();
             return [ dateFormatted ].join('');
         }
+        
+        function formatStories(value, row) {
+            var arrStories = value;   
+            var strStories = '';
+            
+            if(typeof arrStories == 'object') {
+                arrStories.forEach(function(story, i) {
+                    strStories += '<a href="#" class="btn btn-danger btn-fill btn-xs" data-toggle="tooltip" title="' + story.storydesc + '">' + story.storyjiraref + '</a>&nbsp;';
+                });
+            }
+            return [ strStories ].join('');
+        }
 
 
         
         function resetForm() {
             $("#cancel").addClass('hidden');
             $("#submit").val('Add');
-            $("#sprintid").val('');
-            $('#sprintname').val('');
-            $("#sprintpublicurl").val('http://' + window.location.host + '/');
+            $('#dependency-form').trigger("reset");
+            $('#tokenfield-typeahead').tokenfield();
+            $('#tokenfield-typeahead').tokenfield('setTokens', '');
+            $('#dependencydesc').text('');
+            $('#dependencyid').val('');
         }
 
         $().ready(function(){
 
-            $('#sprintform').validate();
-            $("#sprintpublicurl").val('http://' + window.location.host + '/');
+            $('#dependency-form').validate();
             
             $("#cancel").click(function() {
                 resetForm();
@@ -78,12 +91,32 @@
                     }, 300);
                     
                     $('#add-control').addClass('box');
-
-                    $('#sprintname').val(row.sprintname);
+                    
+                    $('#dependencypriority.selectpicker').selectpicker('val', row.dependencypriority);
+                    $('#dependencystatus.selectpicker').selectpicker('val', row.dependencystatus);
+                    $('#dependencyassignee').val(row.dependencyassignee);
+                    $('#dependencydesc').text(row.dependencydesc);
+                    
+                    
+                    var arrStories = row.stories;
+                    var arrStoryRef = [];
+                    
+                    // Must init tokenfield before calling any of it's methods
+                    $('#tokenfield-typeahead').tokenfield();
+                    $('#tokenfield-typeahead').tokenfield('setTokens', '');
+                    
+                    arrStories.forEach(function(story, i) { 
+                       arrStoryRef.push(story.storyjiraref);
+                       if(arrStories.length == i+1) {
+                           $('#tokenfield-typeahead').tokenfield('setTokens', arrStoryRef);
+                        }
+                    });
+                    
+                    $('#dependencyid').val(row.id);
+                    
+                    
                     $('#submit').val('Save');
                     $('#cancel').removeClass('hidden');
-                    $('#sprintid').val(row.id);
-                    $('#sprintpublicurl').val('');
                     
                     setTimeout(function() { $('#add-control').removeClass('box') }, 2000);
                 },
@@ -136,11 +169,17 @@
                     detailOpen: 'fa fa-plus-circle',
                     detailClose: 'fa fa-minus-circle'
                 },
+                onLoadSuccess: function() {
+                    //activate the tooltips after the data table is initialized
+                    $('[rel="tooltip"]').tooltip();
+                    $('[data-toggle="tooltip"]').tooltip();
+                }
 
             });
 
             //activate the tooltips after the data table is initialized
             $('[rel="tooltip"]').tooltip();
+            $('[data-toggle="tooltip"]').tooltip();
 
             $(window).resize(function () {
                 $table.bootstrapTable('resetView');
