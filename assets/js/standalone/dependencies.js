@@ -1,19 +1,34 @@
         var $table = $('#dependencies-bootstrap-table');
 
 
-        var engine = new Bloodhound({
-            local: [{value: 'red'}, {value: 'blue'}, {value: 'green'} , {value: 'yellow'}, {value: 'violet'}, {value: 'brown'}, {value: 'purple'}, {value: 'black'}, {value: 'white'}],
-            datumTokenizer: function(d) {
-                return Bloodhound.tokenizers.whitespace(d.value);
+        // Reurn a list of stories in JSON format [{ value: "string"}]
+        // insert the data into the bloodhound engine
+        $.ajax({
+            url: './getStoriesByProject',
+            method: 'GET',
+            success: function(data) {
+                console.dir(data);
+                var engine = new Bloodhound({
+                    local: data,
+                    datumTokenizer: function(d) {
+                        return Bloodhound.tokenizers.whitespace(d.value);
+                    },
+                    queryTokenizer: Bloodhound.tokenizers.whitespace
+                });
+
+                engine.initialize();
+
+                $('#tokenfield-typeahead').tokenfield({
+                    typeahead: [null, { display: 'value', source: engine.ttAdapter() }]
+                });
+
             },
-            queryTokenizer: Bloodhound.tokenizers.whitespace
-        });
+            error: function(err) {
+                console.dir(err);
+            }
+        })
 
-        engine.initialize();
 
-        $('#tokenfield-typeahead').tokenfield({
-            typeahead: [null, { display: 'value', source: engine.ttAdapter() }]
-        });
         
         // Called from data-formatter attribute in th
         function operateFormatter(value, row, index) {

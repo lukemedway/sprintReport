@@ -397,7 +397,8 @@ var SprintsController = {
                     storystatus: arrStoryStatus[i],
                     storypoints: arrStoryPoints[i],
                     storyiscommitment: true,
-                    sprintparents: req.param('sprintid')
+                    sprintparents: req.param('sprintid'),
+                    project: req.param('id')
                 });
                 arrFind.push({ storyjiraref: arrStoryJiraRefs[i] });
             }
@@ -447,7 +448,8 @@ var SprintsController = {
                     storystatus: arrStoryStatus[i],
                     storypoints: arrStoryPoints[i],
                     storycomplete: true,
-                    sprintparents: req.param('sprintid')
+                    sprintparents: req.param('sprintid'),
+                    project: req.param('id')
                 });
                 arrFind.push({ storyjiraref: arrStoryJiraRefs[i] });
             }

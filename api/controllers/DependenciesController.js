@@ -82,42 +82,34 @@ var DependenciesController = {
     
     // *******************************************************************
 
+    getStoriesByProject: function(req, res, next) {
+        
+        Story.find( { project: req.param('id') } )
+        .where({ storydeleted: false })
+        .then(function(projectStories) {
 
-    getAllStoriesByProject: function(req, res, next) {
-        Project.find( { jiraprojectref: req.param('id') } )
-        .where( { deleted: false } )
-        .populate('sprint', { where: { sprintdeleted: false } } )
-        .then(function(projectData) {
+            var storyData = [];
 
-            if(typeof projectData == "object") {
+            projectStories.forEach(function(story, i) {
+                storyData.push({ value: story.storyjiraref });
+                if(projectStories.length == i+1) {
+                    res.json(storyData);
+                }
+            });
 
-                var sprints = projectData[0].sprint;
-                var stories = [];
-                var storyids = [];
-
-                sprints.forEach(function(sprint, i) {
-                    console.dir(i);
-                    Story.find()
-                    .populate("sprintparents", { where: { sprintparents: sprint.id } } )
-                    .then(function(storiesData) {
-                        console.log(storiesData.length);
-                        stories.push(storiesData);
-                        if(sprints.length == i+1) {
-                            res.json(stories);
-                        }
-                    })
-                    .catch(function(err) {
-
-                    })
-
-
-                });
-
-            }
         })
         .catch(function(err) {
             res.json(err);
         })
+        
+        // Project.find( { jiraprojectref: req.param('id') } )
+        // .populate('story', { where: { deleted: false } } )
+        // .then(function(projectStories) {
+        //     res.json(projectStories);
+        // })
+        // .catch(function(err) {
+        //     res.json(err);
+        // })
     },
 
 

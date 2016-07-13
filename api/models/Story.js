@@ -46,6 +46,12 @@ module.exports = {
       sprintparents: {
         collection: 'sprint',
         via: 'stories'
+      },
+
+      // One-to-many relationship to project
+      // Many stories can belong to a project
+      project: {
+        model: 'project'
       }
       
   }

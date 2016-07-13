@@ -56,6 +56,13 @@ module.exports = {
      dependency: {
        collection: 'dependency',
        via: 'project'
+     },
+
+     // Relationship to story
+     // One-to-many: Project can have many stories 
+     story: {
+       collection: 'story',
+       via: 'project'
      }
   }
 };
