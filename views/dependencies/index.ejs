@@ -1,6 +1,6 @@
 
 <div class="col-md-12">
-    <div class="card" id="add-control">
+    <div class="card col-md-8" id="add-control">
         <div class="header">
             <h4 class="title">Project Dependencies</h4>
             <p class="category">Add/Modify Dependency</p>
@@ -8,7 +8,7 @@
         <div class="content">
             <form id="dependency-form">
                 <div class="row">
-                    <div class="col-md-2">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label class="loading">Priority <star>*</star></label>
                             <select class="selectpicker form-control show-tick" required="required" name="dependencypriority" id="dependencypriority">
@@ -22,7 +22,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label class="loading">Status <star>*</star></label>
                             <select name="dependencystatus" class="selectpicker form-control show-tick" id="dependencystatus">
@@ -33,7 +33,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label class="loading">Assignee <star>*</star></label>
                             <input type="text" class="form-control" name="dependencyassignee" id="dependencyassignee" />
@@ -43,7 +43,7 @@
 
 
                 <div class="row">
-                    <div class="col-md-8">
+                    <div class="col-md-12">
                         <div class="form-group">
                             <label class="loading">Description <star>*</star></label>
                             <textarea type="text" name="dependencydesc" id="dependencydesc" class="form-control" rows="2"></textarea>
@@ -52,7 +52,7 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-md-8">
+                    <div class="col-md-12">
                         <div class="form-group">
                             <label class="loading">Affected Stories</label>
                             <input type="text" class="form-control bootstrap-tagsinput" id="tokenfield-typeahead" name="dependencystories" value="" />
@@ -82,6 +82,27 @@
             </form>
         </div>
     </div>
+    
+     <div class="col-md-4">
+        <div class="card storyreferencepanel">
+            <div class="header">
+                <h4 class="title">Story Reference</h4>
+                <p class="category">Quick Story Lookup</p>
+            </div>
+            <div class="content table-responsive table-full-width">
+                <table id="dependencies-storyref-bootstrap-table" class="table table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th class="col-md-1" data-field="dependencyref" data-sortable="true">Ref</th>
+                            <th class="col-md-6" data-field="dependencydesc" data-sortable="true">Description</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+     </div>
+    
+    
 </div>  
 
 

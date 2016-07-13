@@ -136,3 +136,7 @@ animation: box 3s ease 0s 1 !important;
 .btn.dropdown-toggle {
     border-color: #e3e3e3;
 }
+
+.storyreferencepanel .content {
+    height: 338px;
+}
