@@ -1,4 +1,5 @@
         var $table = $('#dependencies-bootstrap-table');
+        var $storyTable = $('#dependencies-storyref-bootstrap-table');
 
 
         // Reurn a list of stories in JSON format [{ value: "string"}]
@@ -58,12 +59,18 @@
             
             if(typeof arrStories == 'object') {
                 arrStories.forEach(function(story, i) {
-                    strStories += '<a href="#" class="btn btn-danger btn-fill btn-xs" data-toggle="tooltip" title="' + story.storydesc + '">' + story.storyjiraref + '</a>&nbsp;';
+                    strStories += '<a href="#" class="btn btn-danger btn-fill btn-xs" style="margin-top: 3px" data-toggle="tooltip" title="' + story.storydesc + '">' + story.storyjiraref + '</a>&nbsp;';
                 });
             }
             return [ strStories ].join('');
         }
 
+
+        function storyFormat(value, row, index) {
+            var link = value;
+            link = '<button class="btn btn-primary btn-fill btn-xs addstory" data-toggle="tooltip" title="Add Story">' + value + '<i class="fa fa-plus"></i></button>';
+            return [ link ].join('');
+        }
 
         
         function resetForm() {
@@ -78,7 +85,30 @@
 
         $().ready(function(){
 
-            $('#dependency-form').validate();
+
+            $('#dependency-form').validate({ 
+                ignore: ":hidden:not(.selectpicker)",
+                
+                rules: {
+                    dependencypriority: {
+                        required: true
+                    },
+                    dependencystatus: {
+                        required: true
+                    }
+                },
+                messages: {
+                    dependencypriority: {
+                        required: 'This field is required.' 
+                    },
+                    dependencystatus: {
+                        required: 'This field is required.'
+                    }
+                }
+
+
+                
+            });
             
             $("#cancel").click(function() {
                 resetForm();
@@ -133,6 +163,9 @@
                     });
                 }
             };
+
+
+            
             
             
             var path = window.location.pathname;
@@ -177,6 +210,52 @@
 
             });
 
+            $storyTable.bootstrapTable({
+                toolbar: ".toolbar",
+                clickToSelect: false,
+                showRefresh: false,
+                search: true,
+                showToggle: false,
+                showColumns: false,
+                pagination: false,
+                searchAlign: 'left',
+                pageSize: 5,
+                pageList: [10,25,50,100],
+                ordering: true,
+                url: '/' + projectId + '/stories/getStoriesByProject',
+                dataType: 'json',
+                sidePagination: 'client',
+                queryParams: false,
+                ShowingRows: function(pageFrom, pageTo, totalRows){
+                    //do nothing here, we don't want to show the text "showing x of y from..."
+                },
+                formatRecordsPerPage: function(pageNumber){
+                    return pageNumber + " rows visible";
+                },
+                icons: {
+                    refresh: 'fa fa-refresh',
+                    toggle: 'fa fa-th-list',
+                    columns: 'fa fa-columns',
+                    detailOpen: 'fa fa-plus-circle',
+                    detailClose: 'fa fa-minus-circle'
+                },
+                onLoadSuccess: function() {
+                    //activate the tooltips after the data table is initialized
+                    $('[rel="tooltip"]').tooltip();
+                    $('[data-toggle="tooltip"]').tooltip();
+
+                    $(".addstory").click(function(){
+                        // Holds the product ID of the clicked element
+                        var text = $(this).html();
+                        var cleanText = text.replace(/<\/?[^>]+(>|$)/g, "");
+                        
+                        $('#tokenfield-typeahead').tokenfield();
+                        $('#tokenfield-typeahead').tokenfield('createToken', cleanText);
+                    });
+                }
+            })
+
+
             //activate the tooltips after the data table is initialized
             $('[rel="tooltip"]').tooltip();
             $('[data-toggle="tooltip"]').tooltip();
@@ -199,19 +278,23 @@
                 //     url = '/' + projectId + '/dependencies/update';
                 //     method = "PUT";
                 // }
-                    
-                $.ajax({
-                    url: url,
-                    method: method,
-                    data: formData,
-                    success: function(data) {
-                        $table.bootstrapTable('refresh');
-                        resetForm();    
-                    },
-                    error: function(err) {
-                        console.dir(err);
-                    }
-                });
+
+                if($('#dependency-form').valid() == true) {
+
+                    $.ajax({
+                        url: url,
+                        method: method,
+                        data: formData,
+                        success: function(data) {
+                            $table.bootstrapTable('refresh');
+                            resetForm();    
+                        },
+                        error: function(err) {
+                            console.dir(err);
+                        }
+                    });
+
+                }
                                 
             });
 

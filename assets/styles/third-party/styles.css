@@ -139,4 +139,11 @@ animation: box 3s ease 0s 1 !important;
 
 .storyreferencepanel .content {
     height: 338px;
+    overflow-y: auto;
 }
+
+#dependencies-storyref-bootstrap-table .no-records-found {
+    height: 219px;
+}
+
+

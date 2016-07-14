@@ -78,7 +78,7 @@ module.exports.routes = {
   
   
   // StoriesController Routes
-  
+  '/:id/stories/getStoriesByProject':                 { controller: "StoriesController", action: "getStoriesByProjectRefJson" },
   
   // JIRA Routes
   '/jira/fetchjiraboards/':                           { controller: "JiraController", action: "fetchjiraboards" },
