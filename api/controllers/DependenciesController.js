@@ -190,18 +190,25 @@ var DependenciesController = {
         .populate('dependencies')
         .then(function(storiesData) {
             
-            
-
-                var resultObject = storiesData.reduce(function(result, currentObject) {
-                for(var key in currentObject) {
-                    if(currentObject.hasOwnProperty(key)) {
-                        result[key] = currentObject[key];
-                    }
+            var arrDependencies = [];
+            storiesData.forEach(function(story, i) {
+                var dependency = story.dependencies;
+                if(dependency.length > 0) {
+                    arrDependencies.push(story.dependencies);
                 }
-                    return result;
-                }, {});
+            });
 
-                res.json(storiesData);
+            var resultObject = arrDependencies.reduce(function(result, currentObject) {
+            for(var key in currentObject) {
+                if(currentObject.hasOwnProperty(key)) {
+                    result[key] = currentObject[key];
+                }
+            }
+                return result;
+            }, {});
+
+            res.json(arrDependencies);
+            // res.json(resultObject);
 
 
             // storiesData.forEach(function(story, i) {
