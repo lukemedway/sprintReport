@@ -68,7 +68,7 @@
 
         function storyFormat(value, row, index) {
             var link = value;
-            link = '<button class="btn btn-primary btn-fill btn-xs addstory" data-toggle="tooltip" title="Add Story">' + value + '<i class="fa fa-plus"></i></button>';
+            link = '<button class="btn btn-primary btn-fill btn-xs addstory" rel="tooltip" title="Add Story">' + value + '<i class="fa fa-plus"></i></button>';
             return [ link ].join('');
         }
 
@@ -104,11 +104,36 @@
                     dependencystatus: {
                         required: 'This field is required.'
                     }
-                }
-
-
+                },
                 
+                errorPlacement: function(error, element) {
+                    // Custom Error Styles added to selectpicker - this is disgusting.
+                    if(element.attr('name') == 'dependencypriority') {
+                        console.log($("[data-id='dependencypriority']"));
+                        $("[data-id='dependencypriority']").attr('style', 'border: 1px solid red');
+                    }
+                    if(element.attr('name') == 'dependencystatus') {
+                        console.log($("[data-id='dependencystatus']"));
+                        $("[data-id='dependencystatus']").attr('style', 'border: 1px solid red');
+                    }
+                    error.insertAfter(element); // JQuery Default
+                }
+               
             });
+            
+            // If is valid on change then revert error style attribute
+            $('#dependencypriority').on('change', function(e) {
+                if($('#dependencypriority').valid() == true) {
+                    $("[data-id='dependencypriority']").attr('style', '');
+                }
+            });
+            
+            $('#dependencystatus').on('change', function(e) {
+                if($('#dependencystatus').valid() == true) {
+                    $("[data-id='dependencystatus']").attr('style', '');
+                }
+            });
+       
             
             $("#cancel").click(function() {
                 resetForm();
@@ -264,6 +289,9 @@
                 $table.bootstrapTable('resetView');
             });
             
+
+            
+            
             // Handle the data for POST and PUT requests to the server.
             $('#dependency-form').on('submit', function(e) {
                 e.preventDefault();
@@ -273,6 +301,14 @@
                 url = '/' + projectId + '/dependencies/create';
                 method = 'POST';
 
+                if($('#dependencypriority').valid() == true) {
+                    $("[data-id='dependencypriority']").attr('style', '');
+                }
+                
+                if($('#dependencystatus').valid() == true) {
+                    $("[data-id='dependencystatus']").attr('style', '');
+                }
+
             
                 // if ($('#sprintid').val() !== '' && $('#sprintid').val() !== 'undefined') {
                 //     url = '/' + projectId + '/dependencies/update';
@@ -280,6 +316,8 @@
                 // }
 
                 if($('#dependency-form').valid() == true) {
+                    
+                    console.log("FORM IS VALID")
 
                     $.ajax({
                         url: url,

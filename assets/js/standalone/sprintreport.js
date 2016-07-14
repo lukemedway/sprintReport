@@ -54,6 +54,8 @@ $().ready(function(){
             detailClose: 'fa fa-minus-circle'
         },
     });
+    
+    
 
     $complete.bootstrapTable({
         toolbar: ".toolbar",

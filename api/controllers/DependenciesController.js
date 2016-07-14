@@ -184,12 +184,69 @@ var DependenciesController = {
 
 
     getDependenciesBySprintJson: function(req, res, next) {
-        Dependency.find( { id: req.param('id') } )
-        .where( { dependecydeleted: false } )
-        .exec(function foundDependenciesBySprint(err, dependencyData) {
-            if(err) return next(err);
-            res.json(dependencyData);
-        });
+        
+        Story.find()
+        .populate('sprintparents', { where: { sprintparents: req.param('sprintid') } } )
+        .populate('dependencies')
+        .then(function(storiesData) {
+            
+            
+
+                var resultObject = storiesData.reduce(function(result, currentObject) {
+                for(var key in currentObject) {
+                    if(currentObject.hasOwnProperty(key)) {
+                        result[key] = currentObject[key];
+                    }
+                }
+                    return result;
+                }, {});
+
+                res.json(storiesData);
+
+
+            // storiesData.forEach(function(story, i) {
+
+            //     var arrObj = [];
+            //     arrObj.push(story.dependencies);
+                
+            //     console.log(arrObj);
+                
+
+            //     }
+                
+                
+            // });
+            
+            //res.json(arrDependencies);
+            
+            // var dependencies = Dependency.find({
+                
+            // })
+            
+            
+            // console.dir(storiesData);
+            
+            // var arrDependencies = [];
+            
+            // storiesData.forEach(function(story, i) {
+            //     arrDependencies.push(story.dependencies);
+            //     if(storiesData.length == i+1) {
+            //         res.json(arrDependencies);
+            //     }      
+            // })
+            
+            
+            
+        })
+        
+        
+        // Dependency.find( { project: req.param('id') } )
+        // .populate('stories')
+        // .where( { dependencydeleted: false } )
+        // .exec(function foundDependenciesBySprint(err, dependencyData) {
+        //     if(err) return next(err);
+        //     res.json(dependencyData);
+        // });
     }
 
 };

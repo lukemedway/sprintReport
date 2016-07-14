@@ -104,6 +104,8 @@ StoriesController = {
         // Return back the full list and loop through each story to update it's association
         // If the story is being updated as a completed story, apply the completed value
 
+        console.dir(arrFind);
+
         Story.findOrCreate(arrFind, arrData)
         .then(function(storiesData) {
 
@@ -111,19 +113,25 @@ StoriesController = {
                 Story.findOne({ storyjiraref: story.storyjiraref })
                 .populate("sprintparents")
                 .then(function(story) {
-                    console.log(typeof arrData[0].storycomplete)
                     if(typeof arrData[0].storycomplete == 'boolean') {
                         story.storycomplete = arrData[0].storycomplete;
                     }
+                    console.log("storycomplete: " + i, arrData[0].storycomplete);
+                    
                     story.sprintparents.add(sprintid);
                     story.save();
+                    
+                    if(storiesData.length == i+1) {
+                        return next.success(storiesData);
+                    }
+                    
                 })
                 .catch(function(err) {
                     if(err) return next.error(err);
                 });
             });
 
-            return next.success(storiesData);
+            
         })
         .catch(function(err) {
             if(err) return next.error(err);
