@@ -184,70 +184,66 @@ var DependenciesController = {
 
 
     getDependenciesBySprintJson: function(req, res, next) {
+       
         
-        Dependency.find( { project: req.param('id') } )
-        .then(function(dependencies) {
+        // const json = JSON.stringify([
+        // [{ prop: [1, 2, 3] }, { prop: [4, 5, 6] }, { prop: [7, 8, 9] }],
+        // [{ prop: [1, 2, 3] }, { prop: [4, 5, 6] }, { prop: [7, 8, 9] }]
+        // ])
 
-            // Get list of dependencies
+        // const array = JSON.parse(json)
 
-            // Get a list of stories associated with the sprintData
-            Story.find()
-            .populate('dependencies', { where: {  } } )
-            // .populate('sprintparents', { where: { sprintparents: req.param('sprintid') } } )
-            // .where( { dependencies: dependencies.stories } )
-            .then(function(stories) {
-                res.json(stories);
+
+        // const manipulatedObject = _.chain(array)
+        // .flatten()
+        // .map(obj => obj.prop)
+        // .flatten()
+        // .value()
+
+        // console.info(manipulatedObject)
+        
+        
+        
+        // Return all dependencies associated to stories that are associated with a sprint.
+        
+        // 1. Get all stories 
+        // 2. Get all dependencies where dependencies in stories array
+        
+        
+        Sprint.find( { id: req.param('sprintid') } )
+        .populate('stories')
+        .then(function(sprintData) {
+            
+            console.log(req.param('sprintid'));
+            
+            var arrSprintStories = sprintData[0].stories;
+            var arrStoryIDs = [];
+            
+            arrSprintStories.forEach(function(story, i) {
+                // console.log(story.storyjiraref);
+                arrStoryIDs.push(story.storyjiraref);
+                                
+                if(arrSprintStories.length == i+1) {
+                    console.log(arrStoryIDs);
+                    
+                    Dependency.find()
+                    .populate('stories', { where: { storyjiraref: arrStoryIDs } } )
+                    // .where( { sprint: req.param('sprintid') } )
+                    .then(function(storyDependencyData) {
+                        res.json(storyDependencyData);
+                    })
+                    
+                }
+
             })
-
-
-            // Return list of dependencies based on the retrieved list of stories
-
-            //res.json(dependencies);
+            
+            
         })
-
-
-        // Story.find()
-        // .populate('sprintparents', { where: { sprintparents: req.param('sprintid') } } )
-        // .populate('dependencies')
-        // .then(function(storiesData) {
-            
-        //     var arrDependencies = [];
-        //     storiesData.forEach(function(story, i) {
-        //         var dependency = story.dependencies;
-        //         if(dependency.length > 0) {
-        //             arrDependencies.push(story.dependencies);
-        //         }
-
-        //         if(storiesData.length == i+1) {
-        //             var resultObject = arrDependencies.reduce(function(result, currentObject) {
-        //             for(var key in currentObject) {
-        //                 if(currentObject.hasOwnProperty(key)) {
-        //                     result[key] = currentObject[key];
-        //                 }
-        //             }
-        //                 return result;
-        //             }, {});
-
-        //             res.json(arrDependencies);
-
-        //         }
-
-        //     });
-
-            
-            
-            
-            
-        // })
+        .catch(function(err) {
+            res.send(err);
+        })
         
         
-        // Dependency.find( { project: req.param('id') } )
-        // .populate('stories')
-        // .where( { dependencydeleted: false } )
-        // .exec(function foundDependenciesBySprint(err, dependencyData) {
-        //     if(err) return next(err);
-        //     res.json(dependencyData);
-        // });
     }
 
 };

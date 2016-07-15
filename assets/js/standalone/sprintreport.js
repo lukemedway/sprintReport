@@ -23,6 +23,8 @@ $().ready(function(){
     var path = window.location.pathname;
     var arrPath = path.split("/");
     var sprintId = arrPath[arrPath.length - 1];
+    var projectId = arrPath[1];
+    
 
     $table.bootstrapTable({
         toolbar: ".toolbar",

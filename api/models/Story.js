@@ -58,7 +58,8 @@ module.exports = {
       // Many stories may belong to many dependencies
       dependencies: {
         collection: 'dependency',
-        via: 'stories'
+        via: 'stories',
+        dominant: true
       }
       
   }
