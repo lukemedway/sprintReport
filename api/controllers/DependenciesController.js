@@ -185,66 +185,60 @@ var DependenciesController = {
 
     getDependenciesBySprintJson: function(req, res, next) {
         
-        Story.find()
-        .populate('sprintparents', { where: { sprintparents: req.param('sprintid') } } )
-        .populate('dependencies')
-        .then(function(storiesData) {
-            
-            var arrDependencies = [];
-            storiesData.forEach(function(story, i) {
-                var dependency = story.dependencies;
-                if(dependency.length > 0) {
-                    arrDependencies.push(story.dependencies);
-                }
-            });
+        Dependency.find( { project: req.param('id') } )
+        .then(function(dependencies) {
 
-            var resultObject = arrDependencies.reduce(function(result, currentObject) {
-            for(var key in currentObject) {
-                if(currentObject.hasOwnProperty(key)) {
-                    result[key] = currentObject[key];
-                }
-            }
-                return result;
-            }, {});
+            // Get list of dependencies
 
-            res.json(arrDependencies);
-            // res.json(resultObject);
+            // Get a list of stories associated with the sprintData
+            Story.find()
+            .populate('dependencies', { where: {  } } )
+            // .populate('sprintparents', { where: { sprintparents: req.param('sprintid') } } )
+            // .where( { dependencies: dependencies.stories } )
+            .then(function(stories) {
+                res.json(stories);
+            })
 
 
-            // storiesData.forEach(function(story, i) {
+            // Return list of dependencies based on the retrieved list of stories
 
-            //     var arrObj = [];
-            //     arrObj.push(story.dependencies);
-                
-            //     console.log(arrObj);
-                
-
-            //     }
-                
-                
-            // });
-            
-            //res.json(arrDependencies);
-            
-            // var dependencies = Dependency.find({
-                
-            // })
-            
-            
-            // console.dir(storiesData);
-            
-            // var arrDependencies = [];
-            
-            // storiesData.forEach(function(story, i) {
-            //     arrDependencies.push(story.dependencies);
-            //     if(storiesData.length == i+1) {
-            //         res.json(arrDependencies);
-            //     }      
-            // })
-            
-            
-            
+            //res.json(dependencies);
         })
+
+
+        // Story.find()
+        // .populate('sprintparents', { where: { sprintparents: req.param('sprintid') } } )
+        // .populate('dependencies')
+        // .then(function(storiesData) {
+            
+        //     var arrDependencies = [];
+        //     storiesData.forEach(function(story, i) {
+        //         var dependency = story.dependencies;
+        //         if(dependency.length > 0) {
+        //             arrDependencies.push(story.dependencies);
+        //         }
+
+        //         if(storiesData.length == i+1) {
+        //             var resultObject = arrDependencies.reduce(function(result, currentObject) {
+        //             for(var key in currentObject) {
+        //                 if(currentObject.hasOwnProperty(key)) {
+        //                     result[key] = currentObject[key];
+        //                 }
+        //             }
+        //                 return result;
+        //             }, {});
+
+        //             res.json(arrDependencies);
+
+        //         }
+
+        //     });
+
+            
+            
+            
+            
+        // })
         
         
         // Dependency.find( { project: req.param('id') } )
