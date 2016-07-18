@@ -317,14 +317,14 @@
 
                 if($('#dependency-form').valid() == true) {
                     
-                    console.log("FORM IS VALID")
+                    // console.log("FORM IS VALID")
 
                     $.ajax({
                         url: url,
                         method: method,
                         data: formData,
                         success: function(data) {
-                            $table.bootstrapTable('refresh');
+                            $table.bootstrapTable('refresh', { url: '/' + projectId + '/dependencies/getDependencies' });
                             resetForm();    
                         },
                         error: function(err) {

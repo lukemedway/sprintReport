@@ -182,7 +182,9 @@ var DependenciesController = {
         })
     },
 
-
+    // This needs a re-write - it's disgusting but sails doesn't allow DB sub queries.
+    // Consider grabbing data from the DB and then filtering via array maniupulation.
+    // Copied some code below that will flatten an object of arrays. (commented out)
     getDependenciesBySprintJson: function(req, res, next) {
        
         
@@ -206,44 +208,157 @@ var DependenciesController = {
         
         // Return all dependencies associated to stories that are associated with a sprint.
         
-        // 1. Get all stories 
+        // 1. Get all stories by sprint
         // 2. Get all dependencies where dependencies in stories array
         
         
-        Sprint.find( { id: req.param('sprintid') } )
-        .populate('stories')
+        Sprint.find( { select: ['id', 'sprintname'] } )
+        .where( { id: req.param('sprintid') } )
+        .populate('stories', { select: ['storyjiraref'] } )
         .then(function(sprintData) {
             
-            console.log(req.param('sprintid'));
-            
+            // console.log(sprintData);
+
             var arrSprintStories = sprintData[0].stories;
             var arrStoryIDs = [];
             
             arrSprintStories.forEach(function(story, i) {
-                // console.log(story.storyjiraref);
-                arrStoryIDs.push(story.storyjiraref);
-                                
-                if(arrSprintStories.length == i+1) {
-                    console.log(arrStoryIDs);
-                    
-                    Dependency.find()
-                    .populate('stories', { where: { storyjiraref: arrStoryIDs } } )
-                    // .where( { sprint: req.param('sprintid') } )
-                    .then(function(storyDependencyData) {
-                        res.json(storyDependencyData);
-                    })
-                    
-                }
 
+                arrStoryIDs.push(story.storyjiraref);
+
+                if(arrSprintStories.length == i+1) {
+
+                    Story.find({ select: ['storyjiraref'], where: { storyjiraref: arrStoryIDs } } )
+                    .populate('dependencies', { select: ['id'] } )
+                    .then(function(storyDependencyData) {
+
+                        // console.log(storyDependencyData);
+
+                        // var arrDependencies = storyDependencyData[0].dependencies[0];
+
+                        var arrDependencyIDs = [];
+                        var blnContinue = false;
+
+                        storyDependencyData.forEach(function(storyDependency, i) {
+
+                            var arrDependencies = storyDependency.dependencies;
+                            
+                            // console.log("DEPENDENCIES", arrDependencies);
+
+                            if(typeof arrDependencies != 'undefined') {
+                                // console.log(typeof arrDependencies);
+                                if(arrDependencies instanceof Array) {
+                                    arrDependencies.forEach(function(dependency, ii) {
+                                        arrDependencyIDs.push(dependency.id);  
+                                        // console.log("Depdendency ID: ", dependency.id);                                
+                                    });
+                                } else {
+                                    arrDependencyIDs.push(arrDependencies.id);
+                                }
+                            }
+
+                            if(storyDependencyData.length == i+1) {
+
+                                // if(typeof req.param('dependencypriority') != 'undefined') {
+                                //     // Now we have a list of all dependencies associated to sprint via stories, retrieve them from DB.
+                                //     Dependency.find({ id: arrDependencyIDs })
+                                //     .where({ dependencypriority: req.param('dependencypriority') })
+                                //     .populate('stories', { select: ['storyjiraref'] } )
+                                //     .then(function(dependencyData) {
+                                //         res.json(dependencyData);
+                                //     })
+                                //     .catch(function(err) {
+                                //         console.log(err);
+                                //     });    
+                                // } else if(typeof req.param('dependencystatus' != 'undefined')) {
+                                //     // Now we have a list of all dependencies associated to sprint via stories, retrieve them from DB.
+                                //     Dependency.find({ id: arrDependencyIDs })
+                                //     .where({ dependencstatus: req.param('dependencystatus') })
+                                //     .populate('stories', { select: ['storyjiraref'] } )
+                                //     .then(function(dependencyData) {
+                                //         res.json(dependencyData);
+                                //     })
+                                //     .catch(function(err) {
+                                //         console.log(err);
+                                //     });
+                                // } else {
+
+
+
+                                    // Now we have a list of all dependencies associated to sprint via stories, retrieve them from DB.
+                                    // Dependency.find({ id: arrDependencyIDs })
+                                    // .where( { dependencypriority: '' })
+                                    // .populate('stories', { select: ['storyjiraref'] } )
+                                    // .then(function(dependencyData) {
+                                    //     res.json(dependencyData);
+                                    // })
+                                    // .catch(function(err) {
+                                    //     console.log(err);
+                                    // });
+
+                                    Dependency.find( { id: arrDependencyIDs })
+                                    .where( { dependencypriority: 'Critical' }, { dependencystatus: 'In Progress' } )
+                                    // .where( { dependencystatus: 'In Progress' } )
+                                    .populate('stories', { select: ['storyjiraref'] } )
+                                    .then(function(dependencyData) {
+                                        res.json(dependencyData);
+                                    })
+                                    .catch(function(err){
+                                        console.log(err);
+                                    })
+
+                                // }
+                                
+                            }
+                        })
+                    })   
+                }
             })
-            
             
         })
         .catch(function(err) {
-            res.send(err);
+            console.log(err);
         })
         
         
+    },
+
+    getDependencyData: function(priority, status, next) {
+
+        var blnFilter = false;
+        var priority = req.param('dependencypriority');
+        var status = req.param('dependencystatus');
+
+        if(priority.length > 0) {
+            blnFilter = true;
+
+        }
+
+        if(status.length > 0) {
+            blnFilter = true;
+        }
+
+        if(blnFilter) {
+            // Now we have a list of all dependencies associated to sprint via stories, retrieve them from DB.
+            Dependency.find({ id: arrDependencyIDs })
+            .populate('stories', { select: ['storyjiraref'] } )
+            .then(function(dependencyData) {
+                next(dependencyData);
+            })
+            .catch(function(err) {
+                console.log(err);
+            });
+        } else {
+            // Now we have a list of all dependencies associated to sprint via stories, retrieve them from DB.
+            Dependency.find({ id: arrDependencyIDs })
+            .populate('stories', { select: ['storyjiraref'] } )
+            .then(function(dependencyData) {
+                next(dependencyData);
+            })
+            .catch(function(err) {
+                console.log(err);
+            });
+        }
     }
 
 };

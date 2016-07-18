@@ -1,6 +1,27 @@
 
+    function formatStories(value, row) {
+        var arrStories = value;   
+        var strStories = '';
+        
+        if(typeof arrStories == 'object') {
+            arrStories.forEach(function(story, i) {
+                strStories += '<a href="#" class="btn btn-danger btn-fill btn-xs" style="margin-top: 3px" data-toggle="tooltip" title="' + story.storydesc + '">' + story.storyjiraref + '</a>&nbsp;';
+            });
+        }
+        return [ strStories ].join('');
+    }
+
+    function formatPriority(value, row) {
+        var strFormat = value;
+        strFormat = '<span class="pe-7s-attention text-danger">&nbsp;</span>' + value;
+        return [ strFormat ].join('');
+    }
+
+
 $().ready(function(){
     
+
+
     
     var $table = $('#dependencies-shortlist-bootstrap-table');
     var $commitment = $('#commitment-bootstrap-table');
@@ -24,7 +45,6 @@ $().ready(function(){
     var arrPath = path.split("/");
     var sprintId = arrPath[arrPath.length - 1];
     var projectId = arrPath[1];
-    
 
     $table.bootstrapTable({
         toolbar: ".toolbar",
@@ -38,7 +58,7 @@ $().ready(function(){
         pageSize: 10,
         pageList: [10,25,50,100],
         ordering: true,
-        url: '/dependencies/getDependenciesBySprintJson/' + sprintId,
+        url: '/' + projectId + '/sprints/report/' + sprintId + '/getDependenciesBySprintJson',
         dataType: 'json',
         sidePagination: 'client',
         queryParams: false,

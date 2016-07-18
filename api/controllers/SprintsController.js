@@ -53,8 +53,7 @@ var SprintsController = {
         Sprint.find({ id: req.param('sprintid') })
         .populate('project')
         .then(function(reportData) {
-            if(!reportData) return next(err);
-            if(reportData.length == 0) return next(err);
+            
             if(reportData[0].sprintissetup == false) { return SprintsController.setupreport(req, res, next); }
             SprintsController.getLastXSprintsByProjectRef(reportData[0].project.jiraprojectref, 5, false, {
                 success: function(menuData) {
