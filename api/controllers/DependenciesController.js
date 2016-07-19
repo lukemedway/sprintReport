@@ -104,12 +104,11 @@ var DependenciesController = {
             var dpData = dependencyData;
             return [arrStoryIDs, dpData];
         })
-        .catch(function(err) {
-            console.log(err);
-        })
-        .then(function(arrStoryIDs, dependencyData){
+        .spread(function(arrStoryIDs, dpData){
             
             console.log(arrStoryIDs);
+            
+            //console.log(arrStoryIDs.dependencyref)
             
             // arrStoryIDs.forEach(function(story, i){
                 
@@ -118,6 +117,9 @@ var DependenciesController = {
             // console.log(arrStoryIDs);
             // res.ok();
             
+        })
+        .catch(function(err) {
+            // console.log(err);
         })
         
         
