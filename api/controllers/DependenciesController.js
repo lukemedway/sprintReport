@@ -60,7 +60,8 @@ var DependenciesController = {
     
     // *******************************************************************
     
-    create: function(req, res, next) {
+    
+   create: function(req, res, next) {
         Dependency.create({ 
             dependencyref: 0,
             dependencypriority: req.param('dependencypriority'),
@@ -68,41 +69,89 @@ var DependenciesController = {
             dependencyassignee: req.param('dependencyassignee'),
             dependencystatus: req.param('dependencystatus'),
             project: req.param('id')
-        }).exec(function createdDependency(err, dependencyData) {
-            if(err) return next(err);
-            if(!dependencyData) return next(err);
+        }).then(function(dependencyData) {
             
             // Get the story assignments
             var arrStories = req.param('dependencystories');
-            arrStories = arrStories.split(',');
-            
-            console.dir(arrStories.length);
+            arrStories = arrStories.split(', ');
             
             if(typeof arrStories == 'object') {
-                arrStories.forEach(function(storyid, i) {
-                    // Find the relevant story
-                    Story.findOne({ storyjiraref: storyid.trim() })
-                    .populate('dependencies')
-                    .exec(function(err, storyData) {
-                        // Ignore any stories which are not real
-                        if(err) console.log('Could not locate story ref:', storyid);
-                        if(!storyData) console.log('Could not locate story ref:', storyid);
-                        
-                        // If story exists, assign it to dependency
-                        if(storyData) {
-                            storyData.dependencies.add(dependencyData.id);
-                            storyData.save();
-                        }
-                        
-                        if(arrStories.length == i+1) return res.json(dependencyData);
-                        
-                    })
+                // Assign stories to created dependency
+                dependencyData.stories.add(arrStories);
+                
+                // Commit changes and output data
+                dependencyData.save(function(err){
+                    if(err) console.log(err);
+                    return res.json(dependencyData);
                 });
             } else {
                 return res.json(dependencyData);
             }
             
+        })
+        .catch(function(err) {
+            console.log(err);
         });
+    },
+    
+    
+    update: function(req, res, next) {
+        
+        Dependency.findOne({ id: req.param('dependencyid') } )
+        .populate('stories', { select: ['storyjiraref'] } )
+        .then(function(dependencyData) {
+            var arrStoryIDs = dependencyData.stories;
+            var dpData = dependencyData;
+            return [arrStoryIDs, dpData];
+        })
+        .catch(function(err) {
+            console.log(err);
+        })
+        .then(function(arrStoryIDs, dependencyData){
+            
+            console.log(arrStoryIDs);
+            
+            // arrStoryIDs.forEach(function(story, i){
+                
+            // })
+            
+            // console.log(arrStoryIDs);
+            // res.ok();
+            
+        })
+        
+        
+        
+        // Dependency.update(
+        //     { id: req.param('dependencyid') },
+        //     {
+        //         dependencypriority: req.param('dependencypriority'),
+        //         dependencydesc:     req.param('dependencydesc'),
+        //         dependencyassignee: req.param('dependencyassignee'),
+        //         dependencystatus:   req.param('dependencystatus')
+        //     })
+        //     .then(function(dependencyData){
+                
+        //         var dependencyAssociations = Dependency.findOne({ id: req.param('dependencyid') })
+        //         .populate('stories')
+        //         .then(function(associationData){
+        //             console.log(associationData);
+        //             return associationData.stories;
+        //         });
+        //         return dependencyAssociations;
+        //     })
+        //     .catch(function(err){
+        //         console.log(err);
+        //         res.badRequest('ERROR: Could not update this record.');
+        //     })
+        //     .then(function(dependencyAssociations) {
+        //         console.log("Associations:", dependencyAssociations);
+                
+        //     })
+        //     .catch(function(err){
+        //         console.log(err);
+        //         res.badRequest('ERROR: Could not update associations for this record.');
+        //     })
     },
     
 

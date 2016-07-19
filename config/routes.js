@@ -52,6 +52,7 @@ module.exports.routes = {
   // DependenciesController Routes
   '/:id/dependencies' :                                           { controller: "DependenciesController", action: "index" },
   '/:id/dependencies/create':                                     { controller: "DependenciesController", action: "create" },
+  '/:id/dependencies/update':                                     { controller: "DependenciesController", action: "update" },
   '/:id/dependencies/getDependencies':                            { controller: "DependenciesController", action: "getDependenciesByProjectRefJson" },
   '/:id/dependencies/getStoriesByProject':                        { controller: "DependenciesController", action: "getStoriesByProject" },
   '/:id/sprints/report/:sprintid/getDependenciesBySprintJson':    { controller: "DependenciesController", action: "getDependenciesBySprintJson" },

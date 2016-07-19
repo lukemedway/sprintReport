@@ -76,6 +76,8 @@
         function resetForm() {
             $("#cancel").addClass('hidden');
             $("#submit").val('Add');
+            $('#dependencypriority.selectpicker').selectpicker('val', '');
+            $('#dependencystatus.selectpicker').selectpicker('val', '');
             $('#dependency-form').trigger("reset");
             $('#tokenfield-typeahead').tokenfield();
             $('#tokenfield-typeahead').tokenfield('setTokens', '');
@@ -308,12 +310,16 @@
                 if($('#dependencystatus').valid() == true) {
                     $("[data-id='dependencystatus']").attr('style', '');
                 }
-
             
-                // if ($('#sprintid').val() !== '' && $('#sprintid').val() !== 'undefined') {
-                //     url = '/' + projectId + '/dependencies/update';
-                //     method = "PUT";
-                // }
+                if ($('#dependencyid').val() !== '' && $('#dependencyid').val() !== 'undefined') {
+                    url = '/' + projectId + '/dependencies/update';
+                    method = "PUT";
+                }
+
+
+                console.log("url: ", url)
+                console.log("method: ", method)
+                console.log($('#dependency-form').valid());
 
                 if($('#dependency-form').valid() == true) {
                     
@@ -324,7 +330,7 @@
                         method: method,
                         data: formData,
                         success: function(data) {
-                            $table.bootstrapTable('refresh', { url: '/' + projectId + '/dependencies/getDependencies' });
+                            $table.bootstrapTable('load', { url: '/' + projectId + '/dependencies/getDependencies' });
                             resetForm();    
                         },
                         error: function(err) {
