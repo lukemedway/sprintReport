@@ -76,12 +76,13 @@ var DependenciesController = {
             arrStories = arrStories.split(', ');
             
             if(typeof arrStories == 'object') {
+
                 // Assign stories to created dependency
                 dependencyData.stories.add(arrStories);
                 
                 // Commit changes and output data
                 dependencyData.save(function(err){
-                    if(err) console.log(err);
+                    if(err) return res.json(err);
                     return res.json(dependencyData);
                 });
             } else {
@@ -100,60 +101,56 @@ var DependenciesController = {
         Dependency.findOne({ id: req.param('dependencyid') } )
         .populate('stories', { select: ['storyjiraref'] } )
         .then(function(dependencyData) {
+
+            // Get current assigned Stories
             var arrStoryIDs = dependencyData.stories;
-            var dpData = dependencyData;
-            return [arrStoryIDs, dpData];
-        })
-        .spread(function(arrStoryIDs, dpData){
+            var currentStoryIDs = [];
             
-            console.log(arrStoryIDs);
-            
-            //console.log(arrStoryIDs.dependencyref)
-            
-            // arrStoryIDs.forEach(function(story, i){
+            arrStoryIDs.forEach(function(story, i) {
+                currentStoryIDs.push(story.storyjiraref);                
+            });
+
+            // Get new stories
+            var newStoryIDs = req.param('dependencystories');
+            newStoryIDs = newStoryIDs.split(', ');
+                        
+            // Remove old stories
+            currentStoryIDs.forEach(function(storyid, i) {
+                dependencyData.stories.remove(storyid);
+            });
+
+            // Persist Changes then add the new stories
+            dependencyData.save(function(err) {
                 
-            // })
-            
-            // console.log(arrStoryIDs);
-            // res.ok();
-            
+                if(typeof newStoryIDs == 'object') {
+                    // Assign stories to created dependency
+                    dependencyData.stories.add(newStoryIDs);
+                }
+
+                dependencyData.save(function(err) {
+                    Dependency.update(
+                    { id: req.param('dependencyid') },
+                    {
+                        dependencypriority: req.param('dependencypriority'),
+                        dependencydesc:     req.param('dependencydesc'),
+                        dependencyassignee: req.param('dependencyassignee'),
+                        dependencystatus:   req.param('dependencystatus')
+                    })
+                    .then(function(updatedDependencyData){
+                        return res.json(updatedDependencyData);
+                    })
+                    .catch(function(err) {
+                        res.send(500, err);
+                    })
+                });
+            })
+
         })
         .catch(function(err) {
-            // console.log(err);
+            console.log(err);
+            res.send(500, err);
         })
         
-        
-        
-        // Dependency.update(
-        //     { id: req.param('dependencyid') },
-        //     {
-        //         dependencypriority: req.param('dependencypriority'),
-        //         dependencydesc:     req.param('dependencydesc'),
-        //         dependencyassignee: req.param('dependencyassignee'),
-        //         dependencystatus:   req.param('dependencystatus')
-        //     })
-        //     .then(function(dependencyData){
-                
-        //         var dependencyAssociations = Dependency.findOne({ id: req.param('dependencyid') })
-        //         .populate('stories')
-        //         .then(function(associationData){
-        //             console.log(associationData);
-        //             return associationData.stories;
-        //         });
-        //         return dependencyAssociations;
-        //     })
-        //     .catch(function(err){
-        //         console.log(err);
-        //         res.badRequest('ERROR: Could not update this record.');
-        //     })
-        //     .then(function(dependencyAssociations) {
-        //         console.log("Associations:", dependencyAssociations);
-                
-        //     })
-        //     .catch(function(err){
-        //         console.log(err);
-        //         res.badRequest('ERROR: Could not update associations for this record.');
-        //     })
     },
     
 
@@ -237,8 +234,8 @@ var DependenciesController = {
     // Consider grabbing data from the DB and then filtering via array maniupulation.
     // Copied some code below that will flatten an object of arrays. (commented out)
     getDependenciesBySprintJson: function(req, res, next) {
-       
-        
+
+
         // const json = JSON.stringify([
         // [{ prop: [1, 2, 3] }, { prop: [4, 5, 6] }, { prop: [7, 8, 9] }],
         // [{ prop: [1, 2, 3] }, { prop: [4, 5, 6] }, { prop: [7, 8, 9] }]
@@ -283,24 +280,18 @@ var DependenciesController = {
                     .populate('dependencies', { select: ['id'] } )
                     .then(function(storyDependencyData) {
 
-                        // console.log(storyDependencyData);
-
-                        // var arrDependencies = storyDependencyData[0].dependencies[0];
-
                         var arrDependencyIDs = [];
                         var blnContinue = false;
 
                         storyDependencyData.forEach(function(storyDependency, i) {
 
                             var arrDependencies = storyDependency.dependencies;
-                            
-                            // console.log("DEPENDENCIES", arrDependencies);
 
                             if(typeof arrDependencies != 'undefined') {
                                 // console.log(typeof arrDependencies);
                                 if(arrDependencies instanceof Array) {
                                     arrDependencies.forEach(function(dependency, ii) {
-                                        arrDependencyIDs.push(dependency.id);  
+                                        arrDependencyIDs.push(dependency.id);
                                         // console.log("Depdendency ID: ", dependency.id);                                
                                     });
                                 } else {
@@ -308,58 +299,32 @@ var DependenciesController = {
                                 }
                             }
 
+                            // console.log(arrDependencyIDs);
+
                             if(storyDependencyData.length == i+1) {
 
-                                // if(typeof req.param('dependencypriority') != 'undefined') {
-                                //     // Now we have a list of all dependencies associated to sprint via stories, retrieve them from DB.
-                                //     Dependency.find({ id: arrDependencyIDs })
-                                //     .where({ dependencypriority: req.param('dependencypriority') })
-                                //     .populate('stories', { select: ['storyjiraref'] } )
-                                //     .then(function(dependencyData) {
-                                //         res.json(dependencyData);
-                                //     })
-                                //     .catch(function(err) {
-                                //         console.log(err);
-                                //     });    
-                                // } else if(typeof req.param('dependencystatus' != 'undefined')) {
-                                //     // Now we have a list of all dependencies associated to sprint via stories, retrieve them from DB.
-                                //     Dependency.find({ id: arrDependencyIDs })
-                                //     .where({ dependencstatus: req.param('dependencystatus') })
-                                //     .populate('stories', { select: ['storyjiraref'] } )
-                                //     .then(function(dependencyData) {
-                                //         res.json(dependencyData);
-                                //     })
-                                //     .catch(function(err) {
-                                //         console.log(err);
-                                //     });
-                                // } else {
-
-
-
-                                    // Now we have a list of all dependencies associated to sprint via stories, retrieve them from DB.
-                                    // Dependency.find({ id: arrDependencyIDs })
-                                    // .where( { dependencypriority: '' })
-                                    // .populate('stories', { select: ['storyjiraref'] } )
-                                    // .then(function(dependencyData) {
-                                    //     res.json(dependencyData);
-                                    // })
-                                    // .catch(function(err) {
-                                    //     console.log(err);
-                                    // });
-
-                                    Dependency.find( { id: arrDependencyIDs })
-                                    .where( { dependencypriority: 'Critical' }, { dependencystatus: 'In Progress' } )
-                                    // .where( { dependencystatus: 'In Progress' } )
-                                    .populate('stories', { select: ['storyjiraref'] } )
-                                    .then(function(dependencyData) {
-                                        res.json(dependencyData);
-                                    })
-                                    .catch(function(err){
+                                DependenciesController.getDependencyData(arrDependencyIDs, req, {
+                                    success: function(data) {
+                                        res.json(data);
+                                    },
+                                    error: function(err) {
                                         console.log(err);
-                                    })
+                                    }
+                                });
 
-                                // }
-                                
+                                // Dependency.find( { id: arrDependencyIDs })
+                                // // .where( { dependencypriority: 'Blocker' }, { dependencystatus: 'In Progress' } )
+                                // .where( { dependencypriority: 'Blocker' } )
+                                // .where( { dependencystatus: ['Open', 'In Progress'] } )
+                                // .where( { dependencystatus: { '!': 'Done' } } )
+                                // .populate('stories', { select: ['storyjiraref'] } )
+                                // .then(function(dependencyData) {
+                                //     res.json(dependencyData);
+                                // })
+                                // .catch(function(err){
+                                //     console.log(err);
+                                // })
+                    
                             }
                         })
                     })   
@@ -374,40 +339,58 @@ var DependenciesController = {
         
     },
 
-    getDependencyData: function(priority, status, next) {
+    getDependencyData: function(arrDependencyIDs, req, next) {
 
         var blnFilter = false;
-        var priority = req.param('dependencypriority');
-        var status = req.param('dependencystatus');
+        var priority = req.param('p');
+        var status = req.param('s');
+        var arrStatus = [];
+        
+        console.log("p:", priority);
+        console.log("s:", status);
 
-        if(priority.length > 0) {
+        if(typeof priority != 'undefined') {
             blnFilter = true;
-
         }
 
-        if(status.length > 0) {
+        if(typeof status != 'undefined') {
             blnFilter = true;
+            arrStatus = status.split(',');
         }
 
         if(blnFilter) {
-            // Now we have a list of all dependencies associated to sprint via stories, retrieve them from DB.
-            Dependency.find({ id: arrDependencyIDs })
-            .populate('stories', { select: ['storyjiraref'] } )
-            .then(function(dependencyData) {
-                next(dependencyData);
-            })
-            .catch(function(err) {
-                console.log(err);
-            });
+
+            if(typeof arrStatus == 'object') {
+                // Now we have a list of all dependencies associated to sprint via stories, retrieve them from DB.
+                Dependency.find({ id: arrDependencyIDs })
+                .populate('stories', { select: ['storyjiraref'] } )
+                .where( { dependencystatus: arrStatus } )
+                .then(function(dependencyData) {
+                    next.success(dependencyData);
+                })
+                .catch(function(err) {
+                    next.error(err);
+                });
+            } else {
+                // Now we have a list of all dependencies associated to sprint via stories, retrieve them from DB.
+                Dependency.find({ id: arrDependencyIDs })
+                .populate('stories', { select: ['storyjiraref'] } )
+                .then(function(dependencyData) {
+                    next.success(dependencyData);
+                })
+                .catch(function(err) {
+                    next.error(err);
+                });
+            }
         } else {
             // Now we have a list of all dependencies associated to sprint via stories, retrieve them from DB.
             Dependency.find({ id: arrDependencyIDs })
             .populate('stories', { select: ['storyjiraref'] } )
             .then(function(dependencyData) {
-                next(dependencyData);
+                next.success(dependencyData);
             })
             .catch(function(err) {
-                console.log(err);
+                next.error(err);
             });
         }
     }

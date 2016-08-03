@@ -55,8 +55,8 @@ module.exports.routes = {
   '/:id/dependencies/update':                                     { controller: "DependenciesController", action: "update" },
   '/:id/dependencies/getDependencies':                            { controller: "DependenciesController", action: "getDependenciesByProjectRefJson" },
   '/:id/dependencies/getStoriesByProject':                        { controller: "DependenciesController", action: "getStoriesByProject" },
-  '/:id/sprints/report/:sprintid/getDependenciesBySprintJson':    { controller: "DependenciesController", action: "getDependenciesBySprintJson" },
-  
+  '/:id/sprints/report/:sprintid/getDependenciesBySprintJson/p/:p/s/:s': { controller: "DependenciesController", action: "getDependenciesBySprintJson" },
+  '/:id/sprints/report/:sprintid/getDependenciesBySprintJson': { controller: "DependenciesController", action: "getDependenciesBySprintJson" },
 
 
   // SprintsController Routes

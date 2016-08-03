@@ -26,6 +26,7 @@ $().ready(function(){
     var $table = $('#dependencies-shortlist-bootstrap-table');
     var $commitment = $('#commitment-bootstrap-table');
     var $complete = $('#complete-bootstrap-table');
+    var $dependencies = $('#dependencies-bootstrap-table');
     
     setTimeout(function() { 
         $('#componentLink').attr('aria-expanded', 'true');
@@ -168,12 +169,46 @@ $().ready(function(){
             $('.committotal').text(total);
 
         }
-    })
+    });
+
+
+
+    $dependencies.bootstrapTable({
+            toolbar: ".toolbar",
+            clickToSelect: false,
+            showRefresh: false,
+            search: false,
+            showToggle: false,
+            showColumns: false,
+            pagination: false,
+            searchAlign: 'left',
+            pageSize: 10,
+            pageList: [10,25,50,100],
+            ordering: true,
+            url: '/' + projectId + '/sprints/report/' + sprintId + '/getDependenciesBySprintJson',
+            dataType: 'json',
+            sidePagination: 'client',
+            queryParams: false,
+            ShowingRows: function(pageFrom, pageTo, totalRows){
+                //do nothing here, we don't want to show the text "showing x of y from..."
+            },
+            formatRecordsPerPage: function(pageNumber){
+                return pageNumber + " rows visible";
+            },
+            icons: {
+                refresh: 'fa fa-refresh',
+                toggle: 'fa fa-th-list',
+                columns: 'fa fa-columns',
+                detailOpen: 'fa fa-plus-circle',
+                detailClose: 'fa fa-minus-circle'
+            },
+        });    
     
     $(window).resize(function () {
         $table.bootstrapTable('resetView');
         $commitment.bootstrapTable('resetView');
         $complete.bootstrapTable('resetView');
+        $dependencies.bootstrapTable('resetView');
     });    
     
        

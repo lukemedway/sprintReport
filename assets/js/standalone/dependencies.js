@@ -317,20 +317,15 @@
                 }
 
 
-                console.log("url: ", url)
-                console.log("method: ", method)
-                console.log($('#dependency-form').valid());
-
                 if($('#dependency-form').valid() == true) {
                     
-                    // console.log("FORM IS VALID")
 
                     $.ajax({
                         url: url,
                         method: method,
                         data: formData,
                         success: function(data) {
-                            $table.bootstrapTable('load', { url: '/' + projectId + '/dependencies/getDependencies' });
+                            $table.bootstrapTable('refresh', { url: '/' + projectId + '/dependencies/getDependencies' });
                             resetForm();    
                         },
                         error: function(err) {

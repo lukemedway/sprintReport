@@ -33,7 +33,7 @@
                                         <a href="#overview" data-toggle="tab"><%=reportData[0].sprintname %> - Overview</a>
                                     </li>
                                     <li>
-                                        <a href="#dependencies" data-toggle="tab">Full Dependencies</a>
+                                        <a href="#dependencies" data-toggle="tab"><%=reportData[0].sprintname %> Dependencies</a>
                                     </li>
                                     <li>
                                         <a href="#test" data-toggle="tab">Next Sprint</a>
@@ -160,7 +160,7 @@
                                                             <tr>
                                                                 <th class="col-md-1" data-field="storyjiraref" data-sortable="false">Story ID</th>
                                                                 <th data-field="storydesc" data-sortable="false">Story</th>
-                                                                <th class="col-md-2 hidden"data-field="storystatus" data-sortable="true">Status</th>
+                                                                <th class="col-md-2 hidden" data-field="storystatus" data-sortable="true">Status</th>
                                                                 <th class="col-md-2 text-center" data-field="storypoints" data-sortable="true">Points</th>
                                                             </tr>
                                                         </thead>
@@ -177,73 +177,28 @@
                                         
                                     </div>
                                     <div id="dependencies" class="tab-pane">
-                                        
-                                        <div class="col-md-12">
+                                        <div class="card">
                                                 <div class="header">
-                                                    <h4 class="title">Dependencies</h4>
+                                                    <h4 class="title">Dependencies Affecting This Sprint</h4>
                                                     <p class="category">Full List By Priority</p>
                                                 </div>
-                                                <div class="content">
-                                                    <div class="content table-responsive table-full-width">
-                                                        <table class="table table-hover table-striped">
-                                                            <thead>
-                                                                <tr>
-                                                                <th>ID</th>
-                                                                <th>Priority</th>
-                                                                <th>Description</th>
-                                                                <th>Affected Stories</th>
-                                                                <th>Assignee</th>
-                                                                <th>Status</th>
-                                                            </tr></thead>
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td>1</td>
-                                                                    <td>BLOCKER</td>
-                                                                    <td>Require CSR Certificate for Apple Pay</td>
-                                                                    <td>OAS-81</td>
-                                                                    <td>Oasis</td>
-                                                                    <td>Open</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>2</td>
-                                                                    <td>BLOCKER</td>
-                                                                    <td>Require HMAC Keys for the new template</td>
-                                                                    <td>OAS-81</td>
-                                                                    <td>Oasis</td>
-                                                                    <td>Open</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>3</td>
-                                                                    <td>BLOCKER</td>
-                                                                    <td>Require details for postcode lookup</td>
-                                                                    <td>OAS-81, OAS-39</td>
-                                                                    <td>Red Ant</td>
-                                                                    <td>Open</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>4</td>
-                                                                    <td>BLOCKER</td>
-                                                                    <td>Require HMAC Keys for the new template</td>
-                                                                    <td>OAS-81, OAS-39</td>
-                                                                    <td>Red Ant</td>
-                                                                    <td>Open</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>5</td>
-                                                                    <td>BLOCKER</td>
-                                                                    <td>Require CSR Certificate for Apple Pay</td>
-                                                                    <td>OAS-89</td>
-                                                                    <td>Oasis</td>
-                                                                    <td>Open</td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
+                                                <div class="content table-responsive table-full-width">
+                                                    <table id="dependencies-bootstrap-table" class="table table-hover table-striped">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="col-md-1" data-field="dependencyref" data-sortable="true">Ref</th>
+                                                                <th class="col-md-1" data-field="dependencypriority" data-sortable="true">Priority</th>
+                                                                <th class="col-md-4" data-field="dependencydesc" data-sortable="false">Summary</th>
+                                                                <th class="col-md-1" data-field="dependencyassignee" data-sortable="true">Assignee</th>
+                                                                <th class="col-md-1" data-field="dependencystatus" data-sortable="true">Status</th>
+                                                                <th class="col-md-2" data-field="stories" data-sortable="false" data-formatter="formatStories">Affected Stories</th>
+                                                            </tr>
+                                                        </thead>
+                                                    </table>
+                                                </div>
                                             </div>
-                                        </div>
-                                        
-                                        <div class="clearfix"></div>
-                                        
+                                            
+                                            <div class="clearfix"></div>
                                     </div>
                                     <div id="test" class="tab-pane">
                                        
