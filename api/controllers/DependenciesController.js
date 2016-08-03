@@ -303,13 +303,34 @@ var DependenciesController = {
 
                             if(storyDependencyData.length == i+1) {
 
-                                DependenciesController.getDependencyData(arrDependencyIDs, req, {
-                                    success: function(data) {
-                                        res.json(data);
-                                    },
-                                    error: function(err) {
-                                        console.log(err);
-                                    }
+                                var query = {};
+                                var p = req.param('p');
+                                var s = req.param('s');
+                               
+                                var arrPriorities = [];
+                                var arrStatus = [];
+                               
+                                if(typeof p != 'undefined') {
+                                    arrPriorities = p.split(",");
+                                    arrPriorities.forEach(function(priority, i) {
+                                        query['dependencypriority'] = priority;
+                                    });                                    
+                                }
+
+                                if(typeof s != 'undefined') {
+                                    query['dependencystatus'] = req.param('s');
+                                }
+
+                                console.log(query);
+
+                                Dependency.find({ id: arrDependencyIDs })
+                                .populate('stories', { select: ['storyjiraref'] } )
+                                .where( query )
+                                .then(function(dependencyData) {
+                                    res.json(dependencyData);
+                                })
+                                .catch(function(err) {
+                                    res.json(err);
                                 });
 
                                 // Dependency.find( { id: arrDependencyIDs })
@@ -339,61 +360,6 @@ var DependenciesController = {
         
     },
 
-    getDependencyData: function(arrDependencyIDs, req, next) {
-
-        var blnFilter = false;
-        var priority = req.param('p');
-        var status = req.param('s');
-        var arrStatus = [];
-        
-        console.log("p:", priority);
-        console.log("s:", status);
-
-        if(typeof priority != 'undefined') {
-            blnFilter = true;
-        }
-
-        if(typeof status != 'undefined') {
-            blnFilter = true;
-            arrStatus = status.split(',');
-        }
-
-        if(blnFilter) {
-
-            if(typeof arrStatus == 'object') {
-                // Now we have a list of all dependencies associated to sprint via stories, retrieve them from DB.
-                Dependency.find({ id: arrDependencyIDs })
-                .populate('stories', { select: ['storyjiraref'] } )
-                .where( { dependencystatus: arrStatus } )
-                .then(function(dependencyData) {
-                    next.success(dependencyData);
-                })
-                .catch(function(err) {
-                    next.error(err);
-                });
-            } else {
-                // Now we have a list of all dependencies associated to sprint via stories, retrieve them from DB.
-                Dependency.find({ id: arrDependencyIDs })
-                .populate('stories', { select: ['storyjiraref'] } )
-                .then(function(dependencyData) {
-                    next.success(dependencyData);
-                })
-                .catch(function(err) {
-                    next.error(err);
-                });
-            }
-        } else {
-            // Now we have a list of all dependencies associated to sprint via stories, retrieve them from DB.
-            Dependency.find({ id: arrDependencyIDs })
-            .populate('stories', { select: ['storyjiraref'] } )
-            .then(function(dependencyData) {
-                next.success(dependencyData);
-            })
-            .catch(function(err) {
-                next.error(err);
-            });
-        }
-    }
 
 };
 
