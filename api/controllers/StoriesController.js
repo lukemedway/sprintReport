@@ -95,7 +95,8 @@ StoriesController = {
             return next.success(stories);
         });
     },
-    
+
+
     
 
     assignstories: function(arrFind, arrData, sprintid, next) {

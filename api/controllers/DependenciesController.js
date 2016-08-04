@@ -235,30 +235,6 @@ var DependenciesController = {
     // Copied some code below that will flatten an object of arrays. (commented out)
     getDependenciesBySprintJson: function(req, res, next) {
 
-
-        // const json = JSON.stringify([
-        // [{ prop: [1, 2, 3] }, { prop: [4, 5, 6] }, { prop: [7, 8, 9] }],
-        // [{ prop: [1, 2, 3] }, { prop: [4, 5, 6] }, { prop: [7, 8, 9] }]
-        // ])
-
-        // const array = JSON.parse(json)
-
-
-        // const manipulatedObject = _.chain(array)
-        // .flatten()
-        // .map(obj => obj.prop)
-        // .flatten()
-        // .value()
-
-        // console.info(manipulatedObject)
-        
-        
-        
-        // Return all dependencies associated to stories that are associated with a sprint.
-        
-        // 1. Get all stories by sprint
-        // 2. Get all dependencies where dependencies in stories array
-        
         
         Sprint.find( { select: ['id', 'sprintname'] } )
         .where( { id: req.param('sprintid') } )
@@ -304,47 +280,48 @@ var DependenciesController = {
                             if(storyDependencyData.length == i+1) {
 
                                 var query = {};
+                                var queryNot = {};
+
+                                // Priority, Status, Not In
                                 var p = req.param('p');
                                 var s = req.param('s');
+                                var n = req.param('n');
                                
                                 var arrPriorities = [];
                                 var arrStatus = [];
+                                var arrNot = [];
                                
                                 if(typeof p != 'undefined') {
-                                    arrPriorities = p.split(",");
-                                    arrPriorities.forEach(function(priority, i) {
-                                        query['dependencypriority'] = priority;
-                                    });                                    
+                                    arrPriorities = p.split(',');
+                                    query['dependencypriority'] = arrPriorities;
                                 }
 
                                 if(typeof s != 'undefined') {
-                                    query['dependencystatus'] = req.param('s');
+                                    arrStatus = s.split(',');
+                                    query['dependencystatus'] = arrStatus;
                                 }
 
-                                console.log(query);
+                                if(typeof n != 'undefined') {
+                                    arrNot = n.split(',');
+                                    var q = {};
+                                    q = { '!': arrNot };
+                                    queryNot['dependencystatus'] = q;
+                                }
+
+                                // console.dir(query);
+                                // console.log(queryNot);
 
                                 Dependency.find({ id: arrDependencyIDs })
-                                .populate('stories', { select: ['storyjiraref'] } )
+                                .populate('stories', { select: ['storyjiraref', 'storydesc'] } )
                                 .where( query )
+                                .where( queryNot )
+                                // .where( { dependencystatus: { '!': ['In Progress', 'Open'] } } )
                                 .then(function(dependencyData) {
                                     res.json(dependencyData);
                                 })
                                 .catch(function(err) {
                                     res.json(err);
                                 });
-
-                                // Dependency.find( { id: arrDependencyIDs })
-                                // // .where( { dependencypriority: 'Blocker' }, { dependencystatus: 'In Progress' } )
-                                // .where( { dependencypriority: 'Blocker' } )
-                                // .where( { dependencystatus: ['Open', 'In Progress'] } )
-                                // .where( { dependencystatus: { '!': 'Done' } } )
-                                // .populate('stories', { select: ['storyjiraref'] } )
-                                // .then(function(dependencyData) {
-                                //     res.json(dependencyData);
-                                // })
-                                // .catch(function(err){
-                                //     console.log(err);
-                                // })
                     
                             }
                         })

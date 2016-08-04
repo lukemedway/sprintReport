@@ -50,14 +50,16 @@ module.exports.routes = {
   // ****************************************************
 
   // DependenciesController Routes
-  '/:id/dependencies' :                                                   { controller: "DependenciesController", action: "index" },
-  '/:id/dependencies/create':                                             { controller: "DependenciesController", action: "create" },
-  '/:id/dependencies/update':                                             { controller: "DependenciesController", action: "update" },
-  '/:id/dependencies/getDependencies':                                    { controller: "DependenciesController", action: "getDependenciesByProjectRefJson" },
-  '/:id/dependencies/getStoriesByProject':                                { controller: "DependenciesController", action: "getStoriesByProject" },
-  '/:id/sprints/report/:sprintid/getDependenciesBySprintJson/p/:p/s/:s':  { controller: "DependenciesController", action: "getDependenciesBySprintJson" },
-  '/:id/sprints/report/:sprintid/getDependenciesBySprintJson/p/:p':       { controller: "DependenciesController", action: "getDependenciesBySprintJson" },
-  '/:id/sprints/report/:sprintid/getDependenciesBySprintJson':            { controller: "DependenciesController", action: "getDependenciesBySprintJson" },
+  '/:id/dependencies' :                                                         { controller: "DependenciesController", action: "index" },
+  '/:id/dependencies/create':                                                   { controller: "DependenciesController", action: "create" },
+  '/:id/dependencies/update':                                                   { controller: "DependenciesController", action: "update" },
+  '/:id/dependencies/getDependencies':                                          { controller: "DependenciesController", action: "getDependenciesByProjectRefJson" },
+  '/:id/dependencies/getStoriesByProject':                                      { controller: "DependenciesController", action: "getStoriesByProject" },
+  '/:id/sprints/report/:sprintid/getDependenciesBySprintJson/p/:p/s/:s':        { controller: "DependenciesController", action: "getDependenciesBySprintJson" },
+  '/:id/sprints/report/:sprintid/getDependenciesBySprintJson/p/:p/s/:s/n/:n':   { controller: "DependenciesController", action: "getDependenciesBySprintJson" },
+  '/:id/sprints/report/:sprintid/getDependenciesBySprintJson/p/:p':             { controller: "DependenciesController", action: "getDependenciesBySprintJson" },
+  '/:id/sprints/report/:sprintid/getDependenciesBySprintJson/p/:p/n/:n':        { controller: "DependenciesController", action: "getDependenciesBySprintJson" },
+  '/:id/sprints/report/:sprintid/getDependenciesBySprintJson':                  { controller: "DependenciesController", action: "getDependenciesBySprintJson" },
 
 
   // SprintsController Routes

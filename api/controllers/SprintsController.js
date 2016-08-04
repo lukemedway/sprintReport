@@ -483,6 +483,8 @@ var SprintsController = {
         });
     },
 
+
+
     
     update: function(req, res, next) {
         Sprint.update({ 'id': req.param('sprintid') }, { sprintname: req.param('sprintname') }).exec(function updatedSprint(err, sprint) {
@@ -520,6 +522,7 @@ var SprintsController = {
             }
         });
     },
+
     
     getSprintCountByProject: function(req, res, next) {
         Sprint.count({ project: req.param('id') })
