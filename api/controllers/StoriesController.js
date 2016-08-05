@@ -117,7 +117,7 @@ StoriesController = {
                     if(typeof arrData[0].storycomplete == 'boolean') {
                         story.storycomplete = arrData[0].storycomplete;
                     }
-                    console.log("storycomplete: " + i, arrData[0].storycomplete);
+                    // console.log("storycomplete: " + i, arrData[0].storycomplete);
                     
                     story.sprintparents.add(sprintid);
                     story.save();
@@ -187,7 +187,7 @@ StoriesController = {
             .then(function(storyData) {
                 Story.update({ storyjiraref: story.storyjiraref, storydeleted: true })
                 .then(function(storyUpdated) {
-                    console.log("index: " + i);
+                    // console.log("index: " + i);
                 });
                 return next(storyData);
             })

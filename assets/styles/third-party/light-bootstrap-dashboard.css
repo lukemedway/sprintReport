@@ -5858,6 +5858,8 @@ star {
   margin: 5px 0px;
   padding: 15px 15px;
   font-size: 20px;
+  text-transform: uppercase;
+
 }
 .navbar .navbar-nav > li > a {
   padding: 10px 15px;
