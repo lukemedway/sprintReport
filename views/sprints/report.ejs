@@ -18,6 +18,7 @@
                             </div>
                         </div>
                         <div style="height: 10px;"></div>
+
                         <div class="card">
                             <div class="header">
                                 <h4 class="title"><%=reportData[0].sprintname %> - Sprint Report</h4>
@@ -122,15 +123,24 @@
                                             </div>
                                         </div>
                                             
-                                            
-                                            
+                                              
                                         
                                        <div class="col-md-12">
                                             <div class="card">
+                                                
                                                 <div class="header">
-                                                    <h4 class="title"><%=reportData[0].sprintname %> - Stories Complete</h4>
-                                                    <p class="category"><span class="completetotal"></span> Story Points</p>
+                                                    <div class="row">
+                                                        <div class="col-md-8">
+                                                            <h4 class="title"><%=reportData[0].sprintname %> - Stories Complete</h4>
+                                                            <p class="category"><span class="completetotal"></span> Story Points</p>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <a href="/<%=reportData[0].project.jiraprojectref %>/dependencies/" class="btn btn-fill btn-primary pull-right">Edit</a>         
+                                                        </div>
+                                                    </div>
+                                                        
                                                 </div>
+                                                
                                                 <div class="content table-responsive table-full-width">
                                                     <table id="complete-bootstrap-table" class="table table-hover table-striped">
                                                         <thead>
@@ -151,8 +161,16 @@
                                         <div class="col-md-12">
                                             <div class="card">
                                                 <div class="header">
-                                                    <h4 class="title"><%=reportData[0].sprintname %> - Commitment</h4>
-                                                    <p class="category"><span class="committotal"></span> Story Points</p>
+                                                    <div class="row">
+                                                        <div class="col-md-8">
+                                                        <h4 class="title"><%=reportData[0].sprintname %> - Commitment</h4>
+                                                        <p class="category"><span class="committotal"></span> Story Points</p>
+                                                        </div>
+
+                                                        <div class="col-md-4">
+                                                            <a href="/<%=reportData[0].project.jiraprojectref %>/dependencies/" class="btn btn-fill btn-primary pull-right">Edit</a>         
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 <div class="content table-responsive table-full-width">
                                                     <table id="commitment-bootstrap-table" class="table table-hover table-striped">
@@ -177,6 +195,8 @@
                                         
                                     </div>
                                     <div id="dependencies" class="tab-pane">
+
+                                       <div class="col-md-14">
                                         <div class="card">
                                                 <div class="header">
                                                     <h4 class="title">Dependencies Affecting This Sprint</h4>
@@ -199,9 +219,10 @@
                                             </div>
                                             
                                             <div class="clearfix"></div>
+                                       </div>
                                     </div>
                                     <div id="test" class="tab-pane">
-                                       <div class="col-md-12">
+                                       <div class="col-md-14">
                                             <div class="card">
 
                                                 <div class="header">
