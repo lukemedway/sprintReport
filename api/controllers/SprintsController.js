@@ -511,6 +511,17 @@ var SprintsController = {
     
     // *******************************************************************      
            
+
+    getNextSprintStoriesJson: function(req, res, next) {
+        Story.find()
+        .then(function(storyData) {
+            res.json(storyData);
+        })
+        .catch(function(err) {
+            res.send(500, err);
+        })
+    },
+
     
     getJiraSprintsByName: function(req, res, next) {
         var sprintname = req.param('sprintname');

@@ -40,6 +40,10 @@ module.exports = {
         type: 'boolean',
         defaultsTo: false
       },
+      storyisnext: { 
+        type: 'boolean',
+        defaultsTo: false
+      },
       
       // Many-to-many relationship to sprint
       // Many stories may belong to many sprints

@@ -227,7 +227,7 @@ $().ready(function(){
         pageSize: 10,
         pageList: [10,25,50,100],
         ordering: true,
-        url: '/' + projectId + '/sprints/report/' + sprintId + '/getDependenciesBySprintJson',
+        url: '/' + projectId + '/sprints/report/' + sprintId + '/getNextSprintStoriesJson',
         dataType: 'json',
         sidePagination: 'client',
         queryParams: false,

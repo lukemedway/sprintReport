@@ -80,6 +80,7 @@ module.exports.routes = {
   '/:id/sprints/report/:sprintid/getdonestoriesbysprintid':               { controller: "SprintsController", action: "getdonestoriesbysprintid" },
   '/:id/sprints/report/:sprintid/completestories':                        { controller: "SprintsController", action: "completestories" },
   '/:id/sprints/report/:sprintid/storiesdonecomplete':                    { controller: "SprintsController", action: "storiesdonecomplete" },
+  '/:id/sprints/report/:sprintid/getNextSprintStoriesJson':               { controller: "SprintsController", action: "getNextSprintStoriesJson" },
         
         
         
