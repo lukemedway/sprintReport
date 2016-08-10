@@ -5,17 +5,17 @@ An application (built with [Sails](http://www.sailsjs.org)) to faciliate the pro
 
 ## Technical Dependencies
 
-Node
-Sailsjs
-MongoDB
-JIRA Installation
+- Node
+- Sailsjs
+- MongoDB
+- JIRA Installation
 
 ## General Setup Notes
 
 Application requires JIRA connectivity and along with that a jira.js file should be created with the following properties defined:
 
-apiUser: "foo",
-apiPass: "bar",
-apiHost: "hostname",
-apiPort: 443
+- apiUser: "foo",
+- apiPass: "bar",
+- apiHost: "hostname",
+- apiPort: 443
 
