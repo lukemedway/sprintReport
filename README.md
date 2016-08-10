@@ -1,7 +1,7 @@
 # sprintReport
 
 ## Description
-An application (built with [Sails](http://www.sailsjs.org)) to faciliate the production of sprint reports, leveraging the JIRA API to avoid data duplication and ease of set up.
+An application (built with [Sails](http://www.sailsjs.org)) to faciliate the production of sprint reports, leveraging the JIRA API to avoid data duplication and provide ease of set up / time savings.
 
 ## Technical Dependencies
 
