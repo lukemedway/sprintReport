@@ -12,7 +12,7 @@ An application (built with [Sails](http://www.sailsjs.org)) to faciliate the pro
 
 ## General Setup Notes
 
-Application requires JIRA connectivity and along with that a jira.js file should be created with the following properties defined:
+Application requires JIRA connectivity and along with that a jira.js file should be created in the /config/ root directory with the following properties defined according to the user:
 
 - apiUser: "foo",
 - apiPass: "bar",
