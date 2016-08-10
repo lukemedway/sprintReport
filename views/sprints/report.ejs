@@ -197,10 +197,21 @@
 
                                        <div class="col-md-14">
                                         <div class="card">
+
                                                 <div class="header">
-                                                    <h4 class="title">Dependencies Affecting This Sprint</h4>
-                                                    <p class="category">Full List By Priority</p>
+                                                    <div class="row">
+                                                        <div class="col-md-8">
+                                                            <h4 class="title">Dependencies Affecting This Sprint</h4>
+                                                            <p class="category">Full List By Priority</p>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <a href="/<%=reportData[0].project.jiraprojectref %>/dependencies" class="btn btn-fill btn-primary pull-right">Edit</a>         
+                                                        </div>
+                                                    </div>
+                                                        
                                                 </div>
+
+                                                
                                                 <div class="content table-responsive table-full-width">
                                                     <table id="dependencies-bootstrap-table" class="table table-hover table-striped">
                                                         <thead>
@@ -225,19 +236,25 @@
                                             <div class="card">
 
                                                 <div class="header">
-                                                    <h4 class="title">Next Sprint - Story Commitment List</h4>
-                                                    <p class="category">Stories intended to be completed during the next sprint</p>
+                                                    <div class="row">
+                                                        <div class="col-md-8">
+                                                        <h4 class="title">Next Sprint - Story Commitment List</h4>
+                                                        <p class="category"><span class="commitnexttotal"></span> story points intended to be completed during the next sprint</p>
+                                                        </div>
+
+                                                        <div class="col-md-4">
+                                                            <a href="/<%=reportData[0].project.jiraprojectref %>/sprints/report/<%=reportData[0].id%>/storiesnext" class="btn btn-fill btn-primary pull-right">Assign</a>         
+                                                        </div>
+                                                    </div>
                                                 </div>
+
                                                 <div class="content table-responsive table-full-width">
                                                     <table id="nextsprint-bootstrap-table" class="table table-hover table-striped">
                                                         <thead>
                                                             <tr>
-                                                                <th class="col-md-1" data-field="dependencyref" data-sortable="true">Ref</th>
-                                                                <th class="col-md-1" data-field="dependencypriority" data-sortable="true">Priority</th>
-                                                                <th class="col-md-4" data-field="dependencydesc" data-sortable="false">Summary</th>
-                                                                <th class="col-md-1" data-field="dependencyassignee" data-sortable="true">Assignee</th>
-                                                                <th class="col-md-1" data-field="dependencystatus" data-sortable="true">Status</th>
-                                                                <th class="col-md-2" data-field="stories" data-sortable="false" data-formatter="formatStories">Affected Stories</th>
+                                                                <th class="col-md-1" data-field="storyjiraref" data-sortable="true">Story ID</th>
+                                                                <th class="col-md-6" data-field="storydesc" data-sortable="true">Story</th>
+                                                                <th class="col-md-1" data-field="storypoints" data-sortable="false">Points</th>
                                                             </tr>
                                                         </thead>
                                                     </table>

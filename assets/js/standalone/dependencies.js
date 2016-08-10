@@ -267,11 +267,13 @@
                     detailClose: 'fa fa-minus-circle'
                 },
                 onLoadSuccess: function() {
+
                     //activate the tooltips after the data table is initialized
                     $('[rel="tooltip"]').tooltip();
                     $('[data-toggle="tooltip"]').tooltip();
 
                     $(".addstory").click(function(){
+                        
                         // Holds the product ID of the clicked element
                         var text = $(this).html();
                         var cleanText = text.replace(/<\/?[^>]+(>|$)/g, "");
@@ -283,6 +285,7 @@
             })
 
 
+
             //activate the tooltips after the data table is initialized
             $('[rel="tooltip"]').tooltip();
             $('[data-toggle="tooltip"]').tooltip();
@@ -292,6 +295,7 @@
             });
             
 
+            
             
             
             // Handle the data for POST and PUT requests to the server.

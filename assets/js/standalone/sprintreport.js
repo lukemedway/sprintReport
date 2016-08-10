@@ -244,6 +244,19 @@ $().ready(function(){
             detailOpen: 'fa fa-plus-circle',
             detailClose: 'fa fa-minus-circle'
         },
+        onLoadSuccess: function() {
+            // Get the story amount of story points committed for this sprint.
+            var tblData = $commitment.bootstrapTable('getData');
+            var total = 0;
+            // Get the values from each table row                 
+            $.each(tblData, function(i, row) {
+                if(typeof row.storypoints === 'number') {
+                    total = (total + row.storypoints);
+                }
+            });
+            // Populate span in the reports page
+            $('.commitnexttotal').text(total);
+        }
     });
     
     

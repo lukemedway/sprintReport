@@ -513,16 +513,14 @@ var SprintsController = {
            
 
     getNextSprintStoriesJson: function(req, res, next) {
-        Story.find( { project: req.param('id') } )
-        .populate('sprintparents', { select: ['sprintid', 'sprintname'], where: { id: req.param('sprintid') } } )
-        .then(function(storyData) {
-            res.json(storyData);
-
-
+        Sprint.find( { id: req.param('sprintid') } )
+        .populate('stories', { where: { storyiscommitment: true } } )
+        .then(function(sprint) {
+            res.json(sprint[0].stories);
         })
         .catch(function(err) {
             res.send(500, err);
-        })
+        });
     },
 
 

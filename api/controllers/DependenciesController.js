@@ -246,38 +246,50 @@ var DependenciesController = {
             var arrSprintStories = sprintData[0].stories;
             var arrStoryIDs = [];
             
+            // console.log(arrSprintStories)
+
             arrSprintStories.forEach(function(story, i) {
 
                 arrStoryIDs.push(story.storyjiraref);
 
+
                 if(arrSprintStories.length == i+1) {
+
+                    // console.log(arrStoryIDs)
 
                     Story.find({ select: ['storyjiraref'], where: { storyjiraref: arrStoryIDs } } )
                     .populate('dependencies', { select: ['id'] } )
                     .then(function(storyDependencyData) {
 
+                        // console.log(storyDependencyData)
+
                         var arrDependencyIDs = [];
                         var blnContinue = false;
 
                         storyDependencyData.forEach(function(storyDependency, i) {
+                            
+                            if(storyDependency.dependencies.length > 0) {
 
-                            var arrDependencies = storyDependency.dependencies;
+                                var arrDependencies = storyDependency.dependencies;
 
-                            if(typeof arrDependencies != 'undefined') {
-                                // console.log(typeof arrDependencies);
-                                if(arrDependencies instanceof Array) {
-                                    arrDependencies.forEach(function(dependency, ii) {
-                                        arrDependencyIDs.push(dependency.id);
-                                        // console.log("Depdendency ID: ", dependency.id);                                
-                                    });
-                                } else {
-                                    arrDependencyIDs.push(arrDependencies.id);
+                                if(typeof arrDependencies != 'undefined') {
+                                    // console.log("INSTANCEOF:", arrDependencies instanceof Array);
+                                    if(arrDependencies instanceof Array) {
+                                        arrDependencies.forEach(function(dependency, ii) {
+                                            arrDependencyIDs.push(dependency.id);
+                                            // console.log("Depdendency ID: ", dependency.id);                                
+                                        });
+                                    } else {
+                                        // console.log(arrDependencies.id)
+                                        arrDependencyIDs.push(arrDependencies.id);
+                                    }
                                 }
                             }
 
-                            // console.log(arrDependencyIDs);
-
                             if(storyDependencyData.length == i+1) {
+
+
+                                // console.log(arrDependencyIDs.length);
 
                                 var query = {};
                                 var queryNot = {};
@@ -310,6 +322,11 @@ var DependenciesController = {
 
                                 // console.dir(query);
                                 // console.log(queryNot);
+                                // console.log("dependencyids:", arrDependencyIDs)
+
+                                if(arrDependencyIDs.length == 0) {
+                                    arrDependencyIDs = 0;
+                                }
 
                                 Dependency.find({ id: arrDependencyIDs })
                                 .populate('stories', { select: ['storyjiraref', 'storydesc'] } )
